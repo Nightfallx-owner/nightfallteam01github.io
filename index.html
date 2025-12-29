@@ -3,202 +3,121 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cyber Security Website</title>
+<title>Cyber Security</title>
+
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+*{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI,sans-serif}
+body{background:#0b0f1a;color:#fff;overflow-x:hidden}
 
-body {
-  overflow-x: hidden;
-  color: #fff;
-  background: #0d0d0d;
-  position: relative;
+/* ===== Canvas Background ===== */
+canvas{
+ position:fixed;
+ top:0;left:0;
+ width:100%;height:100%;
+ z-index:-1;
 }
 
-/* Canvas for interactive background */
-#bgCanvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
+/* ===== Navbar ===== */
+nav{
+ position:fixed;
+ top:0;left:0;
+ width:100%;
+ background:rgba(0,0,0,.85);
+ padding:15px;
+ display:flex;
+ justify-content:center;
+ z-index:10
+}
+nav a{
+ color:#fff;
+ text-decoration:none;
+ margin:0 15px;
+ font-weight:600;
+ transition:.3s
+}
+nav a:hover{color:#00bfff}
+
+/* ===== Section ===== */
+section{
+ min-height:100vh;
+ padding:120px 10%;
+ display:flex;
+ flex-direction:column;
+ justify-content:center
 }
 
-/* Navbar */
-nav {
-  width: 100%;
-  background: rgba(0,0,0,0.8);
-  position: fixed;
-  top: 0;
-  left: 0;
-  display: flex;
-  justify-content: center;
-  z-index: 10;
-}
+h1{font-size:42px;margin-bottom:20px}
+p{opacity:.85;line-height:1.6}
 
-nav ul { list-style: none; display: flex; flex-wrap: wrap; }
-nav ul li { position: relative; }
-nav ul li a {
-  display: block;
-  padding: 15px 25px;
-  color: #fff;
-  text-decoration: none;
-  transition: 0.3s;
+/* ===== Button ===== */
+.btn{
+ margin-top:30px;
+ width:200px;
+ padding:14px;
+ background:linear-gradient(90deg,#00bfff,#0066ff);
+ border:none;
+ border-radius:30px;
+ color:white;
+ font-size:16px;
+ cursor:pointer;
+ transition:.3s
 }
-nav ul li a:hover { background: #1e90ff; }
+.btn:hover{transform:scale(1.05)}
 
-nav ul li ul {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background: rgba(0,0,0,0.9);
-  display: none;
-  flex-direction: column;
-  min-width: 180px;
-}
-nav ul li:hover ul { display: flex; }
-nav ul li ul li a { padding: 10px 20px; }
-
-/* Sections */
-section {
-  min-height: 100vh;
-  padding: 120px 50px 50px 50px;
-}
-h1, h2 { margin-bottom: 20px; }
-.video-container { margin: 20px 0; }
-video { max-width: 100%; border-radius: 10px; }
-.description {
-  background: rgba(30,30,30,0.7);
-  padding: 20px;
-  border-radius: 10px;
-}
-
-/* Responsive */
+/* ===== Mobile ===== */
 @media(max-width:768px){
-  nav ul { flex-direction: column; }
-  nav ul li ul { position: relative; top: 0; }
+ h1{font-size:32px}
+ nav{flex-wrap:wrap}
 }
-
-/* Smooth scroll */
-html { scroll-behavior: smooth; }
-
 </style>
 </head>
+
 <body>
 
-<canvas id="bgCanvas"></canvas>
+<canvas id="bg"></canvas>
 
 <nav>
-  <ul>
-    <li><a href="#news">News</a></li>
-    <li>
-      <a href="#lesson">Lesson</a>
-      <ul>
-        <li><a href="#lesson1">Lesson 1</a></li>
-        <li><a href="#lesson2">Lesson 2</a></li>
-      </ul>
-    </li>
-    <li><a href="#about">About</a></li>
-    <li><a href="#book">Book</a></li>
-    <li><a href="#section5">Section 5</a></li>
-    <li><a href="#section6">Section 6</a></li>
-    <li><a href="#section7">Section 7</a></li>
-    <li><a href="#section8">Section 8</a></li>
-  </ul>
+ <a href="index.html">Home</a>
+ <a href="news.html">News</a>
+ <a href="lesson.html">Lesson</a>
+ <a href="book.html">Book</a>
+ <a href="about.html">About</a>
 </nav>
 
-<section id="news">
-  <h1>News</h1>
-  <div class="description"><p>Yangiliklarni shu yerga qo'shasiz.</p></div>
+<section>
+ <h1>Cyber Security Platform</h1>
+ <p>Zamonaviy cyber security darslari, yangiliklar va materiallar.</p>
+ <button class="btn" onclick="location.href='lesson.html'">Boshlash</button>
 </section>
-
-<section id="lesson">
-  <h1>Lesson</h1>
-  <div class="video-container">
-    <video controls>
-      <source src="your-video.mp4" type="video/mp4">
-      Sizning brauzeringiz video tagini qo'llab-quvvatlamaydi.
-    </video>
-  </div>
-  <div class="description"><p>Lesson tavsifi shu yerda.</p></div>
-</section>
-
-<section id="about">
-  <h1>About</h1>
-  <div class="description"><p>Sayt yoki o'zingiz haqingizda ma'lumot.</p></div>
-</section>
-
-<section id="book">
-  <h1>Book</h1>
-  <div class="description">
-    <p>Bu bo‘lim alohida sahifa ham bo‘lishi mumkin: <a href="book.html" style="color:#1e90ff;">Book sahifasiga o'ting</a></p>
-  </div>
-</section>
-
-<section id="section5"><h1>Section 5</h1></section>
-<section id="section6"><h1>Section 6</h1></section>
-<section id="section7"><h1>Section 7</h1></section>
-<section id="section8"><h1>Section 8</h1></section>
 
 <script>
-// Interactive star background
-const canvas = document.getElementById('bgCanvas');
-const ctx = canvas.getContext('2d');
-let width = canvas.width = window.innerWidth;
-let height = canvas.height = window.innerHeight;
-
-let stars = [];
-for(let i=0;i<150;i++){
-  stars.push({
-    x: Math.random()*width,
-    y: Math.random()*height,
-    r: Math.random()*2,
-    dx: 0,
-    dy: 0
-  });
-}
+const c=document.getElementById("bg"),x=c.getContext("2d");
+let w=c.width=innerWidth,h=c.height=innerHeight;
+let stars=[...Array(180)].map(()=>({x:Math.random()*w,y:Math.random()*h,r:Math.random()*2}));
+let mx=0,my=0;
 
 function draw(){
-  ctx.clearRect(0,0,width,height);
-  for(let star of stars){
-    ctx.beginPath();
-    ctx.arc(star.x, star.y, star.r, 0, Math.PI*2);
-    ctx.fillStyle = "white";
-    ctx.fill();
-  }
+ x.clearRect(0,0,w,h);
+ x.fillStyle="white";
+ stars.forEach(s=>{
+  s.x+=mx*0.02; s.y+=my*0.02;
+  if(s.x<0)s.x=w;if(s.x>w)s.x=0;
+  if(s.y<0)s.y=h;if(s.y>h)s.y=0;
+  x.beginPath();x.arc(s.x,s.y,s.r,0,Math.PI*2);x.fill();
+ });
+ requestAnimationFrame(draw);
 }
+draw();
 
-function update(){
-  for(let star of stars){
-    star.x += star.dx*0.1;
-    star.y += star.dy*0.1;
-    if(star.x>width) star.x=0;
-    if(star.x<0) star.x=width;
-    if(star.y>height) star.y=0;
-    if(star.y<0) star.y=height;
-  }
-}
-
-function animate(){
-  draw();
-  update();
-  requestAnimationFrame(animate);
-}
-animate();
-
-window.addEventListener('mousemove', (e)=>{
-  const mouseX = e.clientX;
-  const mouseY = e.clientY;
-  for(let star of stars){
-    star.dx = (mouseX - width/2)/200;
-    star.dy = (mouseY - height/2)/200;
-  }
-});
-
-window.addEventListener('resize', ()=>{
-  width = canvas.width = window.innerWidth;
-  height = canvas.height = window.innerHeight;
-});
+onmousemove=e=>{
+ mx=(e.clientX-w/2)/50;
+ my=(e.clientY-h/2)/50;
+};
+ontouchmove=e=>{
+ mx=(e.touches[0].clientX-w/2)/50;
+ my=(e.touches[0].clientY-h/2)/50;
+};
+onresize=()=>{w=c.width=innerWidth;h=c.height=innerHeight};
 </script>
 
 </body>
