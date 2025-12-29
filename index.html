@@ -1,10 +1,116 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Nightfall Team</title>
-  <meta charset="UTF-8">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nightfall Team</title>
+<style>
+  html, body {
+    margin: 0; padding: 0;
+    height: 100%;
+    overflow: hidden;
+    background: radial-gradient(ellipse at bottom, #0d1b2a 0%, #000 100%);
+    font-family: Arial, sans-serif;
+    color: white;
+  }
+  #moon {
+    position: absolute;
+    top: 50px;
+    right: 50px;
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle, #fff 0%, #aaa 80%);
+    border-radius: 50%;
+    box-shadow: 0 0 30px 5px #fff;
+  }
+  #info {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    background: rgba(0,0,0,0.5);
+    padding: 15px;
+    border-radius: 10px;
+    max-width: 300px;
+  }
+  canvas {
+    position: absolute;
+    top:0; left:0;
+    z-index: 0;
+  }
+</style>
 </head>
 <body>
-  <h1>Sayt ishlayapti 🚀</h1>
+
+<canvas id="stars"></canvas>
+<div id="moon"></div>
+<div id="info">
+  <h2>Information</h2>
+  <p>Welcome to Nightfall Team interactive demo site!</p>
+</div>
+
+<script>
+const canvas = document.getElementById('stars');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let stars = [];
+const starCount = 100;
+
+for(let i=0;i<starCount;i++){
+  stars.push({
+    x: Math.random()*canvas.width,
+    y: Math.random()*canvas.height,
+    size: Math.random()*2+1,
+    speedX: 0,
+    speedY: 0
+  });
+}
+
+// Kamera bo‘yicha yulduzlarni harakatlantirish (mobile / mouse fallback)
+let gamma = 0;
+let beta = 0;
+
+if(window.DeviceOrientationEvent){
+  window.addEventListener("deviceorientation", (e)=>{
+    gamma = e.gamma / 10;
+    beta = e.beta / 10;
+  });
+} else {
+  // PC fallback: mouse
+  window.addEventListener("mousemove", (e)=>{
+    gamma = (e.clientX - window.innerWidth/2)/50;
+    beta = (e.clientY - window.innerHeight/2)/50;
+  });
+}
+
+function updateStars(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  for(let i=0;i<stars.length;i++){
+    let s = stars[i];
+    s.x += s.speedX + gamma;
+    s.y += s.speedY + beta;
+
+    if(s.x<0) s.x = canvas.width;
+    if(s.x>canvas.width) s.x = 0;
+    if(s.y<0) s.y = canvas.height;
+    if(s.y>canvas.height) s.y = 0;
+
+    ctx.fillStyle = 'white';
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.size, 0, Math.PI*2);
+    ctx.fill();
+  }
+  requestAnimationFrame(updateStars);
+}
+
+updateStars();
+
+window.addEventListener("resize", ()=>{
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+});
+</script>
+
 </body>
 </html>
