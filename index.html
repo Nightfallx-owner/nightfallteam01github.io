@@ -5,88 +5,88 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cyber Security Website</title>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
 
-  body {
-    background: linear-gradient(120deg, #1a1a1a, #0d0d0d);
-    color: #fff;
-    overflow-x: hidden;
-    position: relative;
-  }
+body {
+  overflow-x: hidden;
+  color: #fff;
+  background: #0d0d0d;
+  position: relative;
+}
 
-  /* Animated stars */
-  body::before {
-    content: '';
-    position: fixed;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(white, transparent 2px) repeat;
-    background-size: 5px 5px;
-    animation: stars 60s linear infinite;
-    z-index: -1;
-  }
+/* Canvas for interactive background */
+#bgCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
 
-  @keyframes stars {
-    0% { transform: translate(0,0); }
-    100% { transform: translate(-1000px, 1000px); }
-  }
+/* Navbar */
+nav {
+  width: 100%;
+  background: rgba(0,0,0,0.8);
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  z-index: 10;
+}
 
-  /* Navbar */
-  nav {
-    width: 100%;
-    background: rgba(0,0,0,0.8);
-    position: fixed;
-    top: 0;
-    left: 0;
-    display: flex;
-    justify-content: center;
-    z-index: 10;
-  }
+nav ul { list-style: none; display: flex; flex-wrap: wrap; }
+nav ul li { position: relative; }
+nav ul li a {
+  display: block;
+  padding: 15px 25px;
+  color: #fff;
+  text-decoration: none;
+  transition: 0.3s;
+}
+nav ul li a:hover { background: #1e90ff; }
 
-  nav ul { list-style: none; display: flex; flex-wrap: wrap; }
-  nav ul li { position: relative; }
-  nav ul li a {
-    display: block;
-    padding: 15px 25px;
-    color: #fff;
-    text-decoration: none;
-    transition: 0.3s;
-  }
-  nav ul li a:hover { background: #1e90ff; }
+nav ul li ul {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: rgba(0,0,0,0.9);
+  display: none;
+  flex-direction: column;
+  min-width: 180px;
+}
+nav ul li:hover ul { display: flex; }
+nav ul li ul li a { padding: 10px 20px; }
 
-  nav ul li ul {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background: rgba(0,0,0,0.9);
-    display: none;
-    flex-direction: column;
-    min-width: 180px;
-  }
-  nav ul li:hover ul { display: flex; }
-  nav ul li ul li a { padding: 10px 20px; }
+/* Sections */
+section {
+  min-height: 100vh;
+  padding: 120px 50px 50px 50px;
+}
+h1, h2 { margin-bottom: 20px; }
+.video-container { margin: 20px 0; }
+video { max-width: 100%; border-radius: 10px; }
+.description {
+  background: rgba(30,30,30,0.7);
+  padding: 20px;
+  border-radius: 10px;
+}
 
-  section {
-    min-height: 100vh;
-    padding: 100px 50px 50px 50px;
-  }
+/* Responsive */
+@media(max-width:768px){
+  nav ul { flex-direction: column; }
+  nav ul li ul { position: relative; top: 0; }
+}
 
-  h1, h2 { margin-bottom: 20px; }
+/* Smooth scroll */
+html { scroll-behavior: smooth; }
 
-  .video-container { margin: 20px 0; }
-  video { max-width: 100%; border-radius: 10px; }
-
-  .description {
-    background: rgba(30, 30, 30, 0.7);
-    padding: 20px;
-    border-radius: 10px;
-  }
-
-  /* Smooth scroll */
-  html { scroll-behavior: smooth; }
 </style>
 </head>
 <body>
+
+<canvas id="bgCanvas"></canvas>
 
 <nav>
   <ul>
@@ -109,9 +109,7 @@
 
 <section id="news">
   <h1>News</h1>
-  <div class="description">
-    <p>Bu yerda siz yangiliklarni qo'shasiz.</p>
-  </div>
+  <div class="description"><p>Yangiliklarni shu yerga qo'shasiz.</p></div>
 </section>
 
 <section id="lesson">
@@ -122,22 +120,18 @@
       Sizning brauzeringiz video tagini qo'llab-quvvatlamaydi.
     </video>
   </div>
-  <div class="description">
-    <p>Lesson uchun tavsif bu yerda bo'ladi.</p>
-  </div>
+  <div class="description"><p>Lesson tavsifi shu yerda.</p></div>
 </section>
 
 <section id="about">
   <h1>About</h1>
-  <div class="description">
-    <p>Bu bo‘limda siz o‘zingiz haqingizda ma’lumot qo‘shasiz.</p>
-  </div>
+  <div class="description"><p>Sayt yoki o'zingiz haqingizda ma'lumot.</p></div>
 </section>
 
 <section id="book">
   <h1>Book</h1>
   <div class="description">
-    <p>Bu bo‘lim alohida sahifa ham bo‘lishi mumkin. <a href="book.html" style="color:#1e90ff;">Book sahifasiga o‘ting</a></p>
+    <p>Bu bo‘lim alohida sahifa ham bo‘lishi mumkin: <a href="book.html" style="color:#1e90ff;">Book sahifasiga o'ting</a></p>
   </div>
 </section>
 
@@ -145,6 +139,67 @@
 <section id="section6"><h1>Section 6</h1></section>
 <section id="section7"><h1>Section 7</h1></section>
 <section id="section8"><h1>Section 8</h1></section>
+
+<script>
+// Interactive star background
+const canvas = document.getElementById('bgCanvas');
+const ctx = canvas.getContext('2d');
+let width = canvas.width = window.innerWidth;
+let height = canvas.height = window.innerHeight;
+
+let stars = [];
+for(let i=0;i<150;i++){
+  stars.push({
+    x: Math.random()*width,
+    y: Math.random()*height,
+    r: Math.random()*2,
+    dx: 0,
+    dy: 0
+  });
+}
+
+function draw(){
+  ctx.clearRect(0,0,width,height);
+  for(let star of stars){
+    ctx.beginPath();
+    ctx.arc(star.x, star.y, star.r, 0, Math.PI*2);
+    ctx.fillStyle = "white";
+    ctx.fill();
+  }
+}
+
+function update(){
+  for(let star of stars){
+    star.x += star.dx*0.1;
+    star.y += star.dy*0.1;
+    if(star.x>width) star.x=0;
+    if(star.x<0) star.x=width;
+    if(star.y>height) star.y=0;
+    if(star.y<0) star.y=height;
+  }
+}
+
+function animate(){
+  draw();
+  update();
+  requestAnimationFrame(animate);
+}
+animate();
+
+window.addEventListener('mousemove', (e)=>{
+  const mouseX = e.clientX;
+  const mouseY = e.clientY;
+  for(let star of stars){
+    star.dx = (mouseX - width/2)/200;
+    star.dy = (mouseY - height/2)/200;
+  }
+});
+
+window.addEventListener('resize', ()=>{
+  width = canvas.width = window.innerWidth;
+  height = canvas.height = window.innerHeight;
+});
+</script>
 
 </body>
 </html>
