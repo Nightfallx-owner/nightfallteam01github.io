@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Book</title>
+<style>
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(120deg, #0a0a0a, #1a1a1a);
+    color: #fff;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(white, transparent 2px) repeat;
+    background-size: 5px 5px;
+    animation: stars 60s linear infinite;
+    z-index: -1;
+  }
+
+  @keyframes stars {
+    0% { transform: translate(0,0); }
+    100% { transform: translate(-1000px, 1000px); }
+  }
+
+  .container {
+    max-width: 800px;
+    margin: 150px auto;
+    padding: 20px;
+    background: rgba(30,30,30,0.7);
+    border-radius: 15px;
+  }
+
+  h1 { margin-bottom: 20px; }
+  p { line-height: 1.6; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Book</h1>
+  <p>Bu sahifada siz kitob yoki boshqa materiallarni joylashtirishingiz mumkin.</p>
+  <p>Masalan, cyber security kitoblar, maqolalar yoki darsliklar.</p>
+</div>
+</body>
+</html>
