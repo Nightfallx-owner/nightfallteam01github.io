@@ -4,121 +4,30 @@
 <meta charset="UTF-8">
 <title>Nightfallx Team</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <style>
 *{box-sizing:border-box}
-html,body{
-  margin:0;
-  width:100%;
-  height:100%;
-  overflow:hidden;
-  font-family:Segoe UI,Arial;
-  background:radial-gradient(circle at bottom,#0b1b2a,#000);
-  color:white;
-}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:Segoe UI,Arial;background:radial-gradient(circle at bottom,#0b1b2a,#000);color:white;}
 
-/* ===== Canvas ===== */
-canvas{
-  position:fixed;
-  inset:0;
-  z-index:0;
-}
+/* Canvas stars */
+canvas{position:fixed;inset:0;z-index:0;}
 
-/* ===== Mouse glow ===== */
-#cursor{
-  position:fixed;
-  width:35px;
-  height:35px;
-  border-radius:50%;
-  pointer-events:none;
-  background:radial-gradient(circle,#00f0ff,transparent 70%);
-  filter:blur(8px);
-  z-index:999;
-}
+/* Cursor glow */
+#cursor{position:fixed;width:35px;height:35px;border-radius:50%;pointer-events:none;background:radial-gradient(circle,#00f0ff,transparent 70%);filter:blur(8px);z-index:999;}
 
-/* ===== Moon ===== */
-#moon{
-  position:fixed;
-  top:30px;
-  right:30px;
-  width:90px;
-  height:90px;
-  border-radius:50%;
-  background:radial-gradient(circle,#fff,#aaa);
-  box-shadow:0 0 30px #fff;
-  z-index:2;
-}
+/* Moon */
+#moon{position:fixed;top:30px;right:30px;width:90px;height:90px;border-radius:50%;background:radial-gradient(circle,#fff,#aaa);box-shadow:0 0 30px #fff;z-index:2;}
 
-/* ===== Hamburger ===== */
-#hamburger{
-  position:fixed;
-  top:25px;
-  left:25px;
-  font-size:32px;
-  cursor:pointer;
-  z-index:4;
-}
+/* Hamburger menu */
+#hamburger{position:fixed;top:25px;left:25px;font-size:32px;cursor:pointer;z-index:4;}
+#menu{position:fixed;top:0;left:-260px;width:250px;height:100%;background:rgba(0,0,0,0.85);padding:70px 20px;transition:.4s;z-index:3;}
+#menu button{width:100%;margin:10px 0;padding:12px;background:rgba(255,255,255,0.1);border:1px solid #0ff;color:white;font-size:16px;cursor:pointer;transition:.3s;}
+#menu button:hover{background:#0ff;color:black;}
 
-/* ===== Menu ===== */
-#menu{
-  position:fixed;
-  top:0;
-  left:-260px;
-  width:250px;
-  height:100%;
-  background:rgba(0,0,0,0.85);
-  padding:70px 20px;
-  transition:.4s;
-  z-index:3;
-}
-
-#menu button{
-  width:100%;
-  margin:10px 0;
-  padding:12px;
-  background:rgba(255,255,255,0.1);
-  border:1px solid #0ff;
-  color:white;
-  font-size:16px;
-  cursor:pointer;
-  transition:.3s;
-}
-#menu button:hover{
-  background:#0ff;
-  color:black;
-}
-
-/* ===== Section box ===== */
-.section{
-  position:absolute;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%) scale(0.8);
-  width:90%;
-  max-width:600px;
-  background:rgba(0,0,0,0.75);
-  padding:20px;
-  border-radius:15px;
-  display:none;
-  opacity:0;
-  transition:.4s;
-  z-index:2;
-}
-
-/* ===== Book ===== */
-textarea{
-  width:100%;
-  height:200px;
-  background:black;
-  color:#0ff;
-  border:1px solid #0ff;
-  padding:10px;
-  resize:none;
-  font-size:16px;
-}
+/* Sections */
+.section{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(0.8);width:90%;max-width:600px;background:rgba(0,0,0,0.75);padding:20px;border-radius:15px;display:none;opacity:0;transition:.4s;z-index:2;}
+textarea{width:100%;height:200px;background:black;color:#0ff;border:1px solid #0ff;padding:10px;resize:none;font-size:16px;}
 </style>
 </head>
-
 <body>
 
 <canvas id="stars"></canvas>
@@ -131,90 +40,74 @@ textarea{
   <button onclick="openSection('about')">About</button>
   <button onclick="openSection('services')">Services</button>
   <button onclick="openSection('book')">📖 Kitob</button>
+  <button onclick="openSection('community')">Community</button>
+  <button onclick="openSection('sign')">🔐 Sign</button>
 </div>
 
-<div id="home" class="section">
-  <h2>Nightfallx Team</h2>
-  <p>Cyber • Code • Creativity</p>
-</div>
-
-<div id="about" class="section">
-  <h2>About</h2>
-  <p>Bu sahifa Nightfallx Team uchun interaktiv demo.</p>
-</div>
-
-<div id="services" class="section">
-  <h2>Services</h2>
-  <ul>
-    <li>Web Security</li>
-    <li>Frontend UI</li>
-    <li>Creative Coding</li>
-  </ul>
-</div>
-
+<!-- Sections -->
+<div id="home" class="section"><h2>Nightfallx Team</h2><p>Cyber • Code • Creativity</p></div>
+<div id="about" class="section"><h2>About</h2><p>Bu sahifa Nightfallx Team uchun interaktiv demo.</p></div>
+<div id="services" class="section"><h2>Services</h2><ul><li>Web Security</li><li>Frontend UI</li><li>Creative Coding</li></ul></div>
 <div id="book" class="section">
   <h2>📖 Kitob</h2>
   <p>Bu yerga o‘zing xohlagan yozuvlarni yoz:</p>
   <textarea id="bookText" placeholder="Bugun nimani o‘rganding..."></textarea>
-  <br><br>
-  <button onclick="saveBook()">💾 Saqlash</button>
+  <br><br><button onclick="saveBook()">💾 Saqlash</button>
+</div>
+<div id="community" class="section"><h2>Community</h2><ul id="userList"></ul></div>
+<div id="sign" class="section">
+  <h2>Sign</h2>
+  <p>Telegram orqali Sign qilish:</p>
+  <button onclick="startTelegramSign()">Open Telegram</button>
 </div>
 
 <script>
-/* ===== Stars ===== */
+// Stars
 const c=document.getElementById("stars"),x=c.getContext("2d");
 function resize(){c.width=innerWidth;c.height=innerHeight}
 resize();onresize=resize;
 let stars=[...Array(160)].map(()=>({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*2}));
-let mx=0,my=0;
-onmousemove=e=>{mx=(e.clientX-innerWidth/2)/50;my=(e.clientY-innerHeight/2)/50};
-(function draw(){
-  x.clearRect(0,0,c.width,c.height);
-  stars.forEach(s=>{
-    s.x+=mx;s.y+=my;
-    if(s.x<0)s.x=c.width;if(s.y<0)s.y=c.height;
-    if(s.x>c.width)s.x=0;if(s.y>c.height)s.y=0;
-    x.beginPath();x.arc(s.x,s.y,s.r,0,Math.PI*2);x.fillStyle="white";x.fill();
-  });
-  requestAnimationFrame(draw);
-})();
+let mx=0,my=0;onmousemove=e=>{mx=(e.clientX-innerWidth/2)/50;my=(e.clientY-innerHeight/2)/50};
+(function draw(){x.clearRect(0,0,c.width,c.height);stars.forEach(s=>{s.x+=mx;s.y+=my;if(s.x<0)s.x=c.width;if(s.y<0)s.y=c.height;if(s.x>c.width)s.x=0;if(s.y>c.height)s.y=0;x.beginPath();x.arc(s.x,s.y,s.r,0,Math.PI*2);x.fillStyle="white";x.fill()});requestAnimationFrame(draw);})();
 
-/* ===== Cursor ===== */
+// Cursor
 const cur=document.getElementById("cursor");
-document.addEventListener("mousemove",e=>{
-  cur.style.left=e.clientX-18+"px";
-  cur.style.top=e.clientY-18+"px";
-});
+document.addEventListener("mousemove",e=>{cur.style.left=e.clientX-18+"px";cur.style.top=e.clientY-18+"px";});
 
-/* ===== Menu ===== */
+// Menu
 let open=false;
-function toggleMenu(){
-  menu.style.left=open?"-260px":"0";
-  open=!open;
-}
+function toggleMenu(){menu.style.left=open?"-260px":"0";open=!open;}
 
-/* ===== Sections ===== */
+// Sections
 function openSection(id){
-  document.querySelectorAll(".section").forEach(s=>{
-    s.style.display="none";
-    s.style.opacity=0;
-  });
+  document.querySelectorAll(".section").forEach(s=>{s.style.display="none";s.style.opacity=0;});
   toggleMenu();
   const el=document.getElementById(id);
   el.style.display="block";
-  setTimeout(()=>{
-    el.style.opacity=1;
-    el.style.transform="translate(-50%,-50%) scale(1)";
-  },50);
+  setTimeout(()=>{el.style.opacity=1;el.style.transform="translate(-50%,-50%) scale(1)";},50);
 }
 
-/* ===== Book save ===== */
-function saveBook(){
-  localStorage.setItem("nightfallBook",bookText.value);
-  alert("Saqlab qo‘yildi!");
-}
+// Book
+function saveBook(){localStorage.setItem("nightfallBook",bookText.value);alert("Saqlab qo‘yildi!");}
 bookText.value=localStorage.getItem("nightfallBook")||"";
-</script>
 
+// Telegram Sign
+function startTelegramSign(){
+  // Minimal demo uchun Telegram bot link
+  window.open("https://t.me/NightfallxAuthBot","_blank");
+}
+
+// Load community users
+async function loadCommunity(){
+  try{
+    const res=await fetch("http://localhost:3000/users");
+    const data=await res.json();
+    const ul=document.getElementById("userList");
+    ul.innerHTML="";
+    data.forEach(u=>{const li=document.createElement("li");li.textContent=u.username;ul.appendChild(li);});
+  }catch(e){console.log("Backend ishlamayapti")}
+}
+loadCommunity();
+</script>
 </body>
 </html>
