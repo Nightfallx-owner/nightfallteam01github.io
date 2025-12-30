@@ -3,177 +3,169 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lesson</title>
+<title>Lesson | Hacker Platform</title>
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{
  background:#050505;
- color:#eee;
+ color:#fff;
  font-family:Consolas,monospace;
- overflow-x:hidden;
+ overflow:hidden;
 }
 
-/* ===== Canvas Effect ===== */
+/* Canvas */
 canvas{
  position:fixed;
  inset:0;
  z-index:-1;
 }
 
-/* ===== Header ===== */
-header{
- padding:15px 20px;
- border-bottom:1px solid #222;
+/* Top bar */
+.top{
+ position:fixed;
+ top:0;left:0;
+ width:100%;
+ padding:10px 20px;
  display:flex;
  justify-content:space-between;
  align-items:center;
-}
-header h1{
- letter-spacing:2px;
- font-size:18px;
-}
-
-/* ===== Lesson Container ===== */
-.lesson{
- max-width:900px;
- margin:40px auto;
- padding:20px;
+ background:rgba(0,0,0,.6);
+ border-bottom:1px solid #222;
+ z-index:10;
 }
 
-/* ===== Video ===== */
+.top a{
+ color:#fff;
+ text-decoration:none;
+ opacity:.7;
+}
+.top a:hover{opacity:1}
+
+/* Content */
+.content{
+ height:100vh;
+ padding-top:70px;
+ display:flex;
+ flex-direction:column;
+ align-items:center;
+ justify-content:center;
+ text-align:center;
+}
+
+/* Video box */
 .video-box{
+ width:80%;
+ max-width:900px;
  border:1px solid #333;
- box-shadow:0 0 25px rgba(255,255,255,.08);
+ background:#000;
+ padding:10px;
+ box-shadow:0 0 20px rgba(255,255,255,.05);
 }
+
 video{
  width:100%;
- background:black;
- display:block;
+ background:#000;
 }
 
-/* ===== Content ===== */
-.content{
- margin-top:30px;
-}
-.content h2{
- margin-bottom:15px;
- letter-spacing:1px;
-}
-.content p{
+/* Description */
+.desc{
+ margin-top:20px;
+ max-width:800px;
  opacity:.8;
- line-height:1.7;
- margin-bottom:15px;
+ font-size:14px;
+ line-height:1.6;
 }
 
-/* ===== Image ===== */
-.content img{
- max-width:100%;
- border:1px solid #333;
- margin:20px 0;
- display:block;
+/* Button */
+.btn{
+ margin-top:25px;
+ padding:12px 30px;
+ background:#111;
+ border:1px solid #444;
+ color:#fff;
+ cursor:pointer;
+ transition:.3s;
 }
-
-/* ===== Footer ===== */
-footer{
- text-align:center;
- padding:30px;
- opacity:.35;
- font-size:12px;
- border-top:1px solid #222;
+.btn:hover{
+ background:#222;
+ transform:scale(1.05);
 }
 </style>
 </head>
 <body>
 
-<canvas id="fx"></canvas>
+<canvas id="bg"></canvas>
 
-<header>
- <h1>LESSON 1</h1>
-</header>
+<!-- TOP -->
+<div class="top">
+ <a href="index.html">⬅ BACK</a>
+ <div>LESSON</div>
+</div>
 
-<section class="lesson">
+<!-- CONTENT -->
+<div class="content">
 
- <!-- VIDEO + SUBTITLE -->
  <div class="video-box">
+  <!-- VIDEO -->
   <video controls>
-   <source src="assets/video/lesson1.mp4" type="video/mp4">
-
-   <!-- SUBTITLE -->
-   <track src="assets/subs/lesson1.vtt"
-          kind="subtitles"
-          srclang="en"
-          label="English"
-          default>
-
-   Browser video qo‘llab-quvvatlamaydi
+   <source src="lesson1.mp4" type="video/mp4">
+   Brauzeringiz video’ni qo‘llamaydi
   </video>
  </div>
 
- <!-- DARS MATNI -->
- <div class="content">
-  <h2>Cyber Security Introduction</h2>
-
-  <p>
-   Ushbu darsda cyber security asoslari, hacker fikrlashi
-   va tizimlar qanday ishlashi tushuntiriladi.
-  </p>
-
-  <!-- RASM (o‘zing qo‘shasan) -->
-  <img src="assets/img/lesson1.jpg" alt="lesson image">
-
-  <p>
-   Bu joyga dars davomiy tushuntirishlari yoziladi.
-   Barcha lesson sahifalari bir xil dark hacker style’da bo‘ladi.
-  </p>
+ <div class="desc">
+  Bu darsda cyber security asoslari tushuntiriladi.  
+  Videoni to‘liq ko‘rib chiqing, keyin amaliy qismga o‘tamiz.
  </div>
 
-</section>
+ <button class="btn" onclick="alert('Keyingi dars tez orada!')">
+  NEXT LESSON
+ </button>
 
-<footer>
- © Hacker Platform
-</footer>
+</div>
 
 <script>
-/* ===== Mouse Shadow Effect ===== */
-const c=document.getElementById("fx");
+/* ===== FULLSCREEN (PC) ===== */
+if(innerWidth > 900){
+ document.addEventListener("click",()=>{
+  if(!document.fullscreenElement){
+   document.documentElement.requestFullscreen().catch(()=>{});
+  }
+ },{once:true});
+}
+
+/* ===== PARTICLES ===== */
+const c=document.getElementById("bg");
 const ctx=c.getContext("2d");
-let w=c.width=innerWidth;
-let h=c.height=innerHeight;
-let particles=[];
+let w=c.width=innerWidth,h=c.height=innerHeight;
+let parts=[];
 
 onmousemove=e=>{
  for(let i=0;i<4;i++){
-  particles.push({
+  parts.push({
    x:e.clientX,
    y:e.clientY,
-   vx:(Math.random()-.5)*1.5,
-   vy:(Math.random()-.5)*1.5,
-   life:60,
-   r:Math.random()*2+1
+   vx:(Math.random()-.5)*1.2,
+   vy:(Math.random()-.5)*1.2,
+   life:50
   });
  }
 };
 
-function draw(){
+function animate(){
  ctx.clearRect(0,0,w,h);
- particles.forEach((p,i)=>{
+ parts.forEach((p,i)=>{
   p.x+=p.vx;
   p.y+=p.vy;
   p.life--;
-
-  ctx.beginPath();
-  ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-  ctx.fillStyle="rgba(255,255,255,.8)";
-  ctx.shadowColor="white";
-  ctx.shadowBlur=12;
-  ctx.fill();
-
-  if(p.life<=0)particles.splice(i,1);
+  ctx.fillStyle="rgba(255,255,255,.7)";
+  ctx.fillRect(p.x,p.y,2,2);
+  if(p.life<=0)parts.splice(i,1);
  });
- requestAnimationFrame(draw);
+ requestAnimationFrame(animate);
 }
-draw();
+animate();
 
 onresize=()=>{
  w=c.width=innerWidth;
