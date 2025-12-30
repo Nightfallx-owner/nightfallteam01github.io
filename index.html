@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hacker Lesson</title>
+<title>Hacker Platform</title>
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -11,10 +11,10 @@ body{
  background:#050505;
  color:#eee;
  font-family:Consolas,monospace;
- overflow-x:hidden;
+ overflow:hidden;
 }
 
-/* ===== Canvas Effect ===== */
+/* ===== Canvas ===== */
 canvas{
  position:fixed;
  inset:0;
@@ -34,66 +34,91 @@ header h1{
  letter-spacing:2px;
 }
 
-/* ===== Button ===== */
-.btn{
+/* ===== Menu Button ===== */
+.menu-btn{
  padding:10px 18px;
  background:#111;
  border:1px solid #444;
  color:#fff;
  cursor:pointer;
 }
-.btn:hover{
+.menu-btn:hover{
  background:#fff;
  color:#000;
 }
 
-/* ===== Lesson ===== */
-.lesson{
- max-width:900px;
- margin:40px auto;
+/* ===== Side Menu ===== */
+.menu{
+ position:fixed;
+ top:0;
+ left:-260px;
+ width:260px;
+ height:100%;
+ background:#000;
+ border-right:1px solid #222;
+ padding:80px 20px;
+ transition:.4s;
+ z-index:5;
+}
+.menu.active{left:0}
+.menu button{
+ width:100%;
+ margin:10px 0;
+ padding:14px;
+ background:#111;
+ color:#fff;
+ border:1px solid #444;
+ cursor:pointer;
+}
+.menu button:hover{
+ background:#fff;
+ color:#000;
+}
+
+/* ===== Center ===== */
+.center{
+ min-height:100vh;
+ display:flex;
+ flex-direction:column;
+ justify-content:center;
+ align-items:center;
+ text-align:center;
  padding:20px;
 }
-
-/* ===== Video ===== */
-.video-box{
- border:1px solid #333;
- box-shadow:0 0 25px rgba(255,255,255,.08);
+.center h2{
+ font-size:42px;
+ letter-spacing:3px;
+ text-shadow:0 0 15px #fff;
 }
-video{
- width:100%;
- background:black;
- display:block;
-}
-
-/* ===== Content ===== */
-.content{
- margin-top:30px;
-}
-.content h2{
- margin-bottom:15px;
- letter-spacing:1px;
-}
-.content p{
- opacity:.8;
- line-height:1.7;
- margin-bottom:15px;
-}
-
-/* ===== Image ===== */
-.content img{
- max-width:100%;
- border:1px solid #333;
+.center p{
+ max-width:500px;
+ opacity:.75;
  margin:20px 0;
- display:block;
+}
+
+/* ===== Start Button ===== */
+.start-btn{
+ margin-top:30px;
+ padding:14px 40px;
+ font-size:15px;
+ background:#111;
+ color:#fff;
+ border:1px solid #555;
+ cursor:pointer;
+}
+.start-btn:hover{
+ background:#fff;
+ color:#000;
 }
 
 /* ===== Footer ===== */
 footer{
+ position:fixed;
+ bottom:15px;
+ width:100%;
  text-align:center;
- padding:30px;
  opacity:.4;
- font-size:13px;
- border-top:1px solid #222;
+ font-size:12px;
 }
 </style>
 </head>
@@ -102,39 +127,27 @@ footer{
 <canvas id="fx"></canvas>
 
 <header>
- <h1>HACKER LESSON</h1>
- <button class="btn">MENU</button>
+ <h1>HACKER SYSTEM</h1>
+ <button class="menu-btn" onclick="toggleMenu()">MENU</button>
 </header>
 
-<section class="lesson">
+<div class="menu" id="menu">
+ <button onclick="go('index.html')">Home</button>
+ <button onclick="go('main.html')">Lesson</button>
+ <button onclick="go('tools.html')">Tools</button>
+ <button onclick="go('about.html')">About</button>
+</div>
 
- <!-- VIDEO -->
- <div class="video-box">
-  <!-- video faylni shu papkaga qo'y -->
-  <video controls>
-   <source src="lesson1.mp4" type="video/mp4">
-   Video qo‘llab-quvvatlanmaydi
-  </video>
- </div>
-
- <!-- DARSLAR -->
- <div class="content">
-  <h2>Lesson 1 — Introduction</h2>
-
-  <p>
-   Ushbu darsda cyber security asoslari, tizimlar qanday ishlashi
-   va hackerlar qanday fikrlashi tushuntiriladi.
-  </p>
-
-  <!-- RASMNI O'ZING QO'SHASAN -->
-  <img src="image1.jpg" alt="lesson image">
-
-  <p>
-   Bu yerga xohlagancha dars matni yozishing mumkin.
-   Hammasi bir xil dark backgroundda bo‘ladi.
-  </p>
- </div>
-
+<section class="center">
+ <h2>ACCESS GRANTED</h2>
+ <p>
+  Real cyber security lessons.  
+  Real hacker mindset.  
+  Practice & knowledge.
+ </p>
+ <button class="start-btn" onclick="go('main.html')">
+  START TRAINING
+ </button>
 </section>
 
 <footer>
@@ -142,22 +155,23 @@ footer{
 </footer>
 
 <script>
-/* ===== Mouse Shadow / Light ===== */
+/* ===== Menu ===== */
+const menu=document.getElementById("menu");
+function toggleMenu(){menu.classList.toggle("active")}
+function go(p){location.href=p}
+
+/* ===== Mouse Shadow Effect ===== */
 const c=document.getElementById("fx");
 const ctx=c.getContext("2d");
 let w=c.width=innerWidth;
 let h=c.height=innerHeight;
-let mx=0,my=0;
-
 let particles=[];
 
 onmousemove=e=>{
- mx=e.clientX;
- my=e.clientY;
  for(let i=0;i<4;i++){
   particles.push({
-   x:mx,
-   y:my,
+   x:e.clientX,
+   y:e.clientY,
    vx:(Math.random()-.5)*1.5,
    vy:(Math.random()-.5)*1.5,
    life:60,
@@ -177,7 +191,7 @@ function draw(){
   ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
   ctx.fillStyle="rgba(255,255,255,.8)";
   ctx.shadowColor="white";
-  ctx.shadowBlur=10;
+  ctx.shadowBlur=12;
   ctx.fill();
 
   if(p.life<=0)particles.splice(i,1);
