@@ -1,14 +1,105 @@
-<section>
- <h1>Lesson</h1>
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 1</title>
 
- <video controls style="width:100%;border-radius:15px;margin:20px 0">
-  <source src="video.mp4" type="video/mp4">
- </video>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+ background:#050505;
+ color:#eee;
+ font-family:Consolas,monospace;
+}
 
- <p>
- Bu yerda video ostida description bo‘ladi.
- Cyber security asoslari, real misollar, tushuntirishlar.
- </p>
+header{
+ padding:15px 20px;
+ border-bottom:1px solid #222;
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+}
 
- <button class="btn" onclick="location.href='book.html'">Materiallar</button>
+.lesson{
+ max-width:900px;
+ margin:40px auto;
+ padding:20px;
+}
+
+/* Video */
+.video-box{
+ border:1px solid #333;
+ box-shadow:0 0 25px rgba(255,255,255,.08);
+}
+video{
+ width:100%;
+ background:black;
+}
+
+/* Content */
+.content{
+ margin-top:30px;
+}
+.content h2{
+ margin-bottom:15px;
+}
+.content p{
+ opacity:.8;
+ line-height:1.7;
+ margin-bottom:15px;
+}
+.content img{
+ max-width:100%;
+ border:1px solid #333;
+ margin:20px 0;
+}
+
+</style>
+</head>
+<body>
+
+<header>
+ <h1>LESSON 1</h1>
+</header>
+
+<section class="lesson">
+
+ <!-- VIDEO + SUBTITLE -->
+ <div class="video-box">
+  <video controls>
+   <source src="assets/video/lesson1.mp4" type="video/mp4">
+
+   <!-- SUBTITLE -->
+   <track src="assets/subs/lesson1.vtt"
+          kind="subtitles"
+          srclang="en"
+          label="English"
+          default>
+
+   Browser video qo‘llab-quvvatlamaydi
+  </video>
+ </div>
+
+ <!-- DARS MATNI -->
+ <div class="content">
+  <h2>Cyber Security Introduction</h2>
+
+  <p>
+   Ushbu darsda cyber security asoslari,
+   hacker fikrlashi va xavfsizlik tushunchalari o‘rganiladi.
+  </p>
+
+  <!-- RASM (o'zing qo'yasan) -->
+  <img src="assets/img/lesson1.jpg" alt="lesson image">
+
+  <p>
+   Bu joyga xohlagancha matn yozishing mumkin.
+   Hamma lesson bir xil style’da bo‘ladi.
+  </p>
+ </div>
+
 </section>
+
+</body>
+</html>
