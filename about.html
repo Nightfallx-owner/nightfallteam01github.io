@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Book | Hacker Platform</title>
+<title>About | Nightfall Team</title>
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -34,7 +34,6 @@ canvas{
  border-bottom:1px solid #222;
  z-index:10;
 }
-
 .top a{
  color:#fff;
  text-decoration:none;
@@ -51,20 +50,9 @@ canvas{
  font-size:15px;
 }
 
-/* Next button */
-.next-btn{
- display:block;
- margin:30px auto;
- padding:12px 30px;
- background:#111;
- border:1px solid #444;
- color:#fff;
- cursor:pointer;
- transition:.3s;
-}
-.next-btn:hover{
- background:#222;
- transform:scale(1.05);
+h1,h2{
+ margin-bottom:15px;
+ letter-spacing:1px;
 }
 </style>
 </head>
@@ -74,30 +62,40 @@ canvas{
 
 <!-- TOP -->
 <div class="top">
- <a href="index.html">⬅ BACK</a>
- <div>BOOK</div>
+ <a href="index.html"> ---BACK</a>
+ <div>ABOUT</div>
 </div>
 
 <!-- CONTENT -->
-<div class="content" id="bookContent">
+<div class="content">
+ <h1> Nightfall Team haqida</h1>
  <p>
-  Cyber Security kitobi sizga asosiy tushunchalarni o‘rgatadi.  
-  Bu yerda nazariy bilimlar va amaliy masalalar mavjud.
+  Nightfall Team  cyber security darslari, amaliy mashqlar va
+  bilimlarni bir joyda jamlash uchun yaratilgan Education.  
+  Maqsad – foydalanuvchilarga **hacker uslubi** bilan o‘rganish va
+  nazariy bilimni mustahkamlash imkonini berish.
+ </p>
+
+ <h2>Asosiy Skillarimiz:</h2>
+ <li>Telegram bot yaratish
+       Cyber Security middle
+       Website Devloper
+       Bugbounter
+     </li>
+ <ul>
+  <li>Nightfall Team 2024 Yil Create Bo'gan owner - nightfallteam02@gmail.com  </li>
+  <li>Owner - Nicname - Nightfall  Age - "secret" Country - Uzbekistan </li>
+  <li>Admin - Nicname - Dark Force Age - "secret" Country - Uzbekistan </li>
+  <li> Instagram kanal - https://www.instagram.com/nightfall_team_701?igsh=MTR0dW01aG5odGdpYg==  </li>
+  <li>Murojat uchun  Telegram - @Nightfallmxx  admin id -7981372922    Kanal - https://t.me/Nightfall_team_learn </li>
+ </ul>
+
+ <p>
+ 
  </p>
 </div>
 
-<button class="next-btn" onclick="nextPage()">NEXT</button>
-
 <script>
-/* ===== FULLSCREEN (PC) ===== */
-if(innerWidth > 900){
- document.addEventListener("click",()=>{
-  if(!document.fullscreenElement){
-   document.documentElement.requestFullscreen().catch(()=>{});
-  }
- },{once:true});
-}
-
 /* ===== PARTICLES ===== */
 const c=document.getElementById("bg");
 const ctx=c.getContext("2d");
@@ -132,22 +130,16 @@ animate();
 
 onresize=()=>{w=c.width=innerWidth;h=c.height=innerHeight};
 
-/* ===== BOOK PAGES ===== */
-const pages=[
- "Page 1: Cyber security bu tizimlarni va ma’lumotlarni himoyalash san’ati.",
- "Page 2: Xavfsizlik turlari: Network, Web, Application, Mobile.",
- "Page 3: SQL Injection, XSS, CSRF, IDOR kabi hujumlar haqida nazariy ma’lumot.",
- "Page 4: Amaliy mashqlar: testlar, lablar va mini-proyektlar.",
- "Page 5: Advanced: Penetration Testing va Bug Bounty konseptlari."
-];
-
-let currentPage = 0;
-function nextPage(){
- currentPage++;
- if(currentPage >= pages.length) currentPage=0;
- document.getElementById("bookContent").innerHTML = "<p>"+pages[currentPage]+"</p>";
-}
+/* ===== MENU ===== */
+fetch("menu.html")
+ .then(res => res.text())
+ .then(data => {
+   document.body.insertAdjacentHTML("beforeend", data);
+ });
 </script>
 
 </body>
-</html>
+</html>             
+
+
+
