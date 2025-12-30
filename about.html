@@ -38,8 +38,10 @@ canvas{
  color:#fff;
  text-decoration:none;
  opacity:.7;
+ font-weight:600;
+ transition:.3s;
 }
-.top a:hover{opacity:1}
+.top a:hover{opacity:1; transform:rotate(-5deg);}
 
 /* Content */
 .content{
@@ -54,6 +56,42 @@ h1,h2{
  margin-bottom:15px;
  letter-spacing:1px;
 }
+
+ul{
+ margin-left:20px;
+ margin-bottom:20px;
+}
+
+ul li{
+ margin-bottom:10px;
+}
+
+a{
+ color:#00bfff;
+ text-decoration:none;
+}
+a:hover{
+ text-decoration:underline;
+}
+
+/* Typing animation */
+.typing {
+ display:inline-block;
+ border-right: 2px solid #00ff9c;
+ white-space: nowrap;
+ overflow: hidden;
+ animation: typing 3s steps(80) 1 forwards, blink 0.7s step-end infinite alternate;
+}
+
+@keyframes typing {
+ 0% { width: 0; }
+ 100% { width: 100%; }
+}
+
+@keyframes blink {
+ 0%,100% { border-color: transparent; }
+ 50% { border-color: #00ff9c; }
+}
 </style>
 </head>
 <body>
@@ -62,37 +100,33 @@ h1,h2{
 
 <!-- TOP -->
 <div class="top">
- <a href="index.html"> ---BACK</a>
+ <a href="index.html">⬅ BACK</a>
  <div>ABOUT</div>
 </div>
 
 <!-- CONTENT -->
 <div class="content">
- <h1> Nightfall Team haqida</h1>
- <p>
-  Nightfall Team  cyber security darslari, amaliy mashqlar va
-  bilimlarni bir joyda jamlash uchun yaratilgan Education.  
-  Maqsad – foydalanuvchilarga **hacker uslubi** bilan o‘rganish va
-  nazariy bilimni mustahkamlash imkonini berish.
- </p>
+ <h1><span class="typing" id="title">Nightfall Team haqida</span></h1>
+
+ <p id="text"></p>
 
  <h2>Asosiy Skillarimiz:</h2>
- <li>Telegram bot yaratish
-       Cyber Security middle
-       Website Devloper
-       Bugbounter
-     </li>
  <ul>
-  <li>Nightfall Team 2024 Yil Create Bo'gan owner - nightfallteam02@gmail.com  </li>
-  <li>Owner - Nicname - Nightfall  Age - "secret" Country - Uzbekistan </li>
-  <li>Admin - Nicname - Dark Force Age - "secret" Country - Uzbekistan </li>
-  <li> Instagram kanal - https://www.instagram.com/nightfall_team_701?igsh=MTR0dW01aG5odGdpYg==  </li>
-  <li>Murojat uchun  Telegram - @Nightfallmxx  admin id -7981372922    Kanal - https://t.me/Nightfall_team_learn </li>
+  <li>Telegram bot yaratish</li>
+  <li>Cyber Security (Middle)</li>
+  <li>Website Developer</li>
+  <li>Bug Bounty</li>
  </ul>
 
- <p>
- 
- </p>
+ <h2>Jamoa haqida:</h2>
+ <ul>
+  <li>Nightfall Team — 2024-yil tashkil topgan</li>
+  <li>Owner: Nightfall, Uzbekistan</li>
+  <li>Admin: Dark Force, Uzbekistan</li>
+  <li>Email: <a href="mailto:nightfallteam02@gmail.com">nightfallteam02@gmail.com</a></li>
+  <li>Instagram: <a href="https://www.instagram.com/nightfall_team_701" target="_blank">nightfall_team_701</a></li>
+  <li>Telegram: <a href="https://t.me/Nightfall_team_learn" target="_blank">@Nightfall_team_learn</a></li>
+ </ul>
 </div>
 
 <script>
@@ -127,7 +161,6 @@ function animate(){
  requestAnimationFrame(animate);
 }
 animate();
-
 onresize=()=>{w=c.width=innerWidth;h=c.height=innerHeight};
 
 /* ===== MENU ===== */
@@ -136,10 +169,21 @@ fetch("menu.html")
  .then(data => {
    document.body.insertAdjacentHTML("beforeend", data);
  });
+
+/* ===== TYPING TEXT ===== */
+const text = "Nightfall Team cyber security darslari, amaliy mashqlar va bilimlarni bir joyda jamlash uchun yaratilgan Education platforma. Maqsad – foydalanuvchilarga hacker uslubi bilan o‘rganish va nazariy bilimni mustahkamlash imkonini berish.";
+let i=0;
+const el = document.getElementById("text");
+
+function typeWriter(){
+ if(i<text.length){
+   el.innerHTML += text.charAt(i);
+   i++;
+   setTimeout(typeWriter,20);
+ }
+}
+typeWriter();
 </script>
 
 </body>
-</html>             
-
-
-
+</html>
