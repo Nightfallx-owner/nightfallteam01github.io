@@ -30,31 +30,28 @@ canvas{
  display:flex;
  justify-content:space-between;
  align-items:center;
- background:rgba(0,0,0,.6);
+ background:rgba(0,0,0,.65);
  border-bottom:1px solid #222;
  z-index:10;
 }
-
 .top a{
  color:#fff;
  text-decoration:none;
  opacity:.7;
+ transition:.3s;
 }
 .top a:hover{opacity:1}
 
 /* Content */
 .content{
  max-width:900px;
- margin:80px auto 40px;
+ margin:90px auto 40px;
  padding:0 20px;
  line-height:1.8;
  font-size:15px;
 }
 
-h1,h2{
- margin-bottom:15px;
- letter-spacing:1px;
-}
+h1,h2{margin-bottom:15px;letter-spacing:1px;}
 
 /* News items */
 .news-item{
@@ -100,39 +97,44 @@ h1,h2{
 </div>
 
 <script>
-/* ===== PARTICLES ===== */
+/* ===== PARTICLES (CHEKSIZ) ===== */
 const c=document.getElementById("bg");
 const ctx=c.getContext("2d");
-let w=c.width=innerWidth,h=c.height=innerHeight;
+
+function resize(){
+ c.width = innerWidth;
+ c.height = innerHeight;
+}
+resize();
+addEventListener("resize", resize);
+
 let parts=[];
 
-onmousemove=e=>{
+addEventListener("mousemove", e=>{
  for(let i=0;i<3;i++){
   parts.push({
    x:e.clientX,
    y:e.clientY,
    vx:(Math.random()-.5)*1.5,
    vy:(Math.random()-.5)*1.5,
-   l:60
+   life:60
   });
  }
-};
+});
 
 function animate(){
- ctx.clearRect(0,0,w,h);
+ ctx.clearRect(0,0,c.width,c.height);
  parts.forEach((p,i)=>{
   p.x+=p.vx;
   p.y+=p.vy;
-  p.l--;
+  p.life--;
   ctx.fillStyle="rgba(255,255,255,.7)";
   ctx.fillRect(p.x,p.y,2,2);
-  if(p.l<=0)parts.splice(i,1);
+  if(p.life<=0) parts.splice(i,1);
  });
  requestAnimationFrame(animate);
 }
 animate();
-
-onresize=()=>{w=c.width=innerWidth;h=c.height=innerHeight};
 </script>
 
 </body>
