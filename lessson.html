@@ -24,13 +24,14 @@ canvas{
 /* Top bar */
 .top{
  position:fixed;
- top:0;left:0;
+ top:0;
+ left:0;
  width:100%;
  padding:10px 20px;
  display:flex;
  justify-content:space-between;
  align-items:center;
- background:rgba(0,0,0,.6);
+ background:rgba(0,0,0,.65);
  border-bottom:1px solid #222;
  z-index:10;
 }
@@ -39,6 +40,7 @@ canvas{
  color:#fff;
  text-decoration:none;
  opacity:.7;
+ transition:.3s;
 }
 .top a:hover{opacity:1}
 
@@ -91,6 +93,12 @@ video{
  background:#222;
  transform:scale(1.05);
 }
+
+/* Mobile */
+@media(max-width:768px){
+ body{overflow:auto;}
+ .video-box{width:95%;}
+}
 </style>
 </head>
 <body>
@@ -107,7 +115,6 @@ video{
 <div class="content">
 
  <div class="video-box">
-  <!-- VIDEO -->
   <video controls>
    <source src="lesson1.mp4" type="video/mp4">
    Brauzeringiz video’ni qo‘llamaydi
@@ -126,23 +133,21 @@ video{
 </div>
 
 <script>
-/* ===== FULLSCREEN (PC) ===== */
-if(innerWidth > 900){
- document.addEventListener("click",()=>{
-  if(!document.fullscreenElement){
-   document.documentElement.requestFullscreen().catch(()=>{});
-  }
- },{once:true});
+/* ===== PARTICLES ONLY (NO FULLSCREEN) ===== */
+const c = document.getElementById("bg");
+const ctx = c.getContext("2d");
+
+function resize(){
+ c.width = innerWidth;
+ c.height = innerHeight;
 }
+resize();
+addEventListener("resize", resize);
 
-/* ===== PARTICLES ===== */
-const c=document.getElementById("bg");
-const ctx=c.getContext("2d");
-let w=c.width=innerWidth,h=c.height=innerHeight;
-let parts=[];
+let parts = [];
 
-onmousemove=e=>{
- for(let i=0;i<4;i++){
+addEventListener("mousemove", e=>{
+ for(let i=0;i<3;i++){
   parts.push({
    x:e.clientX,
    y:e.clientY,
@@ -151,26 +156,21 @@ onmousemove=e=>{
    life:50
   });
  }
-};
+});
 
 function animate(){
- ctx.clearRect(0,0,w,h);
+ ctx.clearRect(0,0,c.width,c.height);
  parts.forEach((p,i)=>{
   p.x+=p.vx;
   p.y+=p.vy;
   p.life--;
-  ctx.fillStyle="rgba(255,255,255,.7)";
+  ctx.fillStyle="rgba(255,255,255,.6)";
   ctx.fillRect(p.x,p.y,2,2);
-  if(p.life<=0)parts.splice(i,1);
+  if(p.life<=0) parts.splice(i,1);
  });
  requestAnimationFrame(animate);
 }
 animate();
-
-onresize=()=>{
- w=c.width=innerWidth;
- h=c.height=innerHeight;
-};
 </script>
 
 </body>
