@@ -6,7 +6,12 @@
 <title>Hacker Platform</title>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
+*{
+ margin:0;
+ padding:0;
+ box-sizing:border-box;
+}
+
 body{
  background:#050505;
  color:#fff;
@@ -14,33 +19,36 @@ body{
  overflow:hidden;
 }
 
-/* Canvas particles */
+/* ===== BACKGROUND CANVAS ===== */
 canvas{
  position:fixed;
  inset:0;
  z-index:-1;
 }
 
-/* Top bar */
+/* ===== TOP BAR ===== */
 .top{
  position:fixed;
- top:0;left:0;
+ top:0;
+ left:0;
  width:100%;
  padding:10px 20px;
  display:flex;
  justify-content:space-between;
  align-items:center;
  border-bottom:1px solid #222;
- background:rgba(0,0,0,.6);
+ background:rgba(0,0,0,.65);
+ backdrop-filter:blur(4px);
  z-index:10;
 }
+
 .clock{
- font-size:14px;
+ font-size:13px;
  opacity:.85;
  letter-spacing:1px;
 }
 
-/* Center */
+/* ===== CENTER ===== */
 .center{
  height:100vh;
  display:flex;
@@ -50,51 +58,66 @@ canvas{
  text-align:center;
 }
 
-/* Start button */
+/* ===== START BUTTON ===== */
 .start{
- padding:16px 40px;
- border:1px solid #555;
- background:#111;
+ padding:16px 42px;
+ border:1px solid #444;
+ background:#0d0d0d;
  color:#fff;
- font-size:16px;
+ font-size:15px;
  letter-spacing:2px;
  cursor:pointer;
  transition:.3s;
 }
+
 .start:hover{
- background:#222;
- transform:scale(1.05);
+ background:#1a1a1a;
+ transform:scale(1.06);
 }
 
-/* Menu */
+/* ===== MENU ===== */
 .menu{
  position:fixed;
- top:0;right:-260px;
- width:260px;
+ top:0;
+ right:-270px;
+ width:270px;
  height:100vh;
  background:#000;
  border-left:1px solid #333;
- padding:60px 20px;
- transition:.4s;
+ padding:70px 25px;
+ transition:.4s ease;
  z-index:9;
 }
-.menu.active{right:0}
+
+.menu.active{
+ right:0;
+}
 
 .menu a{
  display:block;
- margin-bottom:20px;
+ margin-bottom:22px;
  color:#fff;
  text-decoration:none;
  letter-spacing:1px;
- opacity:.8;
+ opacity:.75;
+ transition:.3s;
 }
-.menu a:hover{opacity:1}
 
-/* Hint */
+.menu a:hover{
+ opacity:1;
+ padding-left:5px;
+}
+
+/* ===== HINT ===== */
 .hint{
  margin-top:20px;
  font-size:12px;
  opacity:.5;
+}
+
+/* ===== MOBILE FIX ===== */
+@media(max-width:768px){
+ body{overflow:auto;}
 }
 </style>
 </head>
@@ -102,7 +125,7 @@ canvas{
 
 <canvas id="bg"></canvas>
 
-<!-- TOP BAR -->
+<!-- TOP -->
 <div class="top">
  <div>HACKER PLATFORM</div>
  <div class="clock" id="clock"></div>
@@ -119,22 +142,22 @@ canvas{
 
 <!-- CENTER -->
 <div class="center">
- <button class="start" onclick="openMenu()">START TRAINING</button>
+ <button class="start" onclick="toggleMenu()">START TRAINING</button>
  <div class="hint">Click to enter</div>
 </div>
 
 <script>
-/* ===== FULLSCREEN (PC) ===== */
-if(innerWidth > 900){
- document.addEventListener("click",()=>{
-  if(!document.fullscreenElement){
+/* ===== FULLSCREEN (PC ONLY) ===== */
+if (window.innerWidth > 900) {
+ document.addEventListener("click", () => {
+  if (!document.fullscreenElement) {
    document.documentElement.requestFullscreen().catch(()=>{});
   }
- },{once:true});
+ }, { once:true });
 }
 
 /* ===== MENU ===== */
-function openMenu(){
+function toggleMenu(){
  document.getElementById("menu").classList.toggle("active");
 }
 
@@ -143,62 +166,55 @@ function updateClock(){
  const d = new Date();
 
  const days = ["Yakshanba","Dushanba","Seshanba","Chorshanba","Payshanba","Juma","Shanba"];
- const months = [
-  "Yanvar","Fevral","Mart","Aprel","May","Iyun",
-  "Iyul","Avgust","Sentabr","Oktabr","Noyabr","Dekabr"
- ];
+ const months = ["Yanvar","Fevral","Mart","Aprel","May","Iyun","Iyul","Avgust","Sentabr","Oktabr","Noyabr","Dekabr"];
 
- const dayName = days[d.getDay()];
- const day = String(d.getDate()).padStart(2,"0");
- const month = months[d.getMonth()];
- const year = d.getFullYear();
+ const text =
+  `${days[d.getDay()]}, ${String(d.getDate()).padStart(2,"0")} ${months[d.getMonth()]} ${d.getFullYear()} | ` +
+  `${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}:${String(d.getSeconds()).padStart(2,"0")}`;
 
- const h = String(d.getHours()).padStart(2,"0");
- const m = String(d.getMinutes()).padStart(2,"0");
- const s = String(d.getSeconds()).padStart(2,"0");
-
- document.getElementById("clock").textContent =
-  `${dayName}, ${day} ${month} ${year} | ${h}:${m}:${s}`;
+ document.getElementById("clock").textContent = text;
 }
-
 setInterval(updateClock,1000);
 updateClock();
 
 /* ===== PARTICLES ===== */
-const c=document.getElementById("bg");
-const ctx=c.getContext("2d");
-let w=c.width=innerWidth,h=c.height=innerHeight;
-let p=[];
+const canvas = document.getElementById("bg");
+const ctx = canvas.getContext("2d");
 
-onmousemove=e=>{
- for(let i=0;i<3;i++)
-  p.push({
+function resize(){
+ canvas.width = innerWidth;
+ canvas.height = innerHeight;
+}
+resize();
+addEventListener("resize", resize);
+
+let particles = [];
+
+addEventListener("mousemove", e => {
+ for(let i=0;i<2;i++){
+  particles.push({
    x:e.clientX,
    y:e.clientY,
-   vx:(Math.random()-.5)*1.5,
-   vy:(Math.random()-.5)*1.5,
-   l:60
+   vx:(Math.random()-.5)*1.2,
+   vy:(Math.random()-.5)*1.2,
+   life:50
   });
-};
+ }
+});
 
-function draw(){
- ctx.clearRect(0,0,w,h);
- p.forEach((o,i)=>{
-  o.x+=o.vx;
-  o.y+=o.vy;
-  o.l--;
-  ctx.fillStyle="rgba(255,255,255,.7)";
-  ctx.fillRect(o.x,o.y,2,2);
-  if(o.l<=0)p.splice(i,1);
+function animate(){
+ ctx.clearRect(0,0,canvas.width,canvas.height);
+ particles.forEach((p,i)=>{
+  p.x+=p.vx;
+  p.y+=p.vy;
+  p.life--;
+  ctx.fillStyle="rgba(255,255,255,.6)";
+  ctx.fillRect(p.x,p.y,2,2);
+  if(p.life<=0) particles.splice(i,1);
  });
- requestAnimationFrame(draw);
+ requestAnimationFrame(animate);
 }
-draw();
-
-onresize=()=>{
- w=c.width=innerWidth;
- h=c.height=innerHeight;
-};
+animate();
 </script>
 
 </body>
