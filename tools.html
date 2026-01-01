@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hacker Tools Terminal</title>
+<title>Red Hacker Instrument Terminal</title>
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{
- background:#050505;
- color:#00ff9c;
+ background:#050000;
+ color:#ff2a2a;
  font-family:Consolas,monospace;
  overflow:hidden;
 }
@@ -21,39 +21,42 @@ canvas{position:fixed;inset:0;z-index:-1}
 .top{
  position:fixed;top:0;left:0;width:100%;
  padding:10px 20px;
- background:rgba(0,0,0,.7);
- display:flex;justify-content:space-between;
- border-bottom:1px solid #222;
+ background:rgba(0,0,0,.85);
+ border-bottom:1px solid #300;
+ display:flex;
+ justify-content:space-between;
  z-index:10;
 }
-.top a{color:#fff;text-decoration:none;opacity:.7}
-.top a:hover{opacity:1}
+.top a{color:#ff2a2a;text-decoration:none;opacity:.7}
 
 /* TERMINAL */
 .terminal{
  margin:70px auto;
  width:90%;max-width:900px;
  background:#000;
- border:1px solid #333;
+ border:1px solid #400;
  padding:15px;
- box-shadow:0 0 30px rgba(0,255,150,.1);
+ box-shadow:0 0 40px rgba(255,40,40,.2);
 }
 .output{
- height:300px;
+ height:260px;
  overflow-y:auto;
  font-size:14px;
 }
 .input-line{display:flex;margin-top:10px}
-.prompt{margin-right:5px}
+.prompt{margin-right:6px}
 input{
- flex:1;background:#000;border:none;
- color:#00ff9c;outline:none;
+ flex:1;
+ background:#000;
+ border:none;
+ color:#ff2a2a;
+ outline:none;
 }
 
-/* OVERLAY (PIANO + GUITAR) */
+/* OVERLAY */
 .overlay{
  position:fixed;inset:0;
- background:rgba(0,0,0,.95);
+ background:rgba(0,0,0,.96);
  display:none;
  align-items:center;
  justify-content:center;
@@ -62,31 +65,20 @@ input{
 
 .instrument{display:flex;gap:10px}
 
+/* KEYS */
 .key{
  width:60px;height:220px;
- background:#111;
- border:1px solid #00ff9c;
- color:#00ff9c;
+ background:#080000;
+ border:1px solid #ff2a2a;
+ color:#ff2a2a;
  display:flex;
  align-items:flex-end;
  justify-content:center;
  padding-bottom:10px;
- transition:.1s;
+ transition:.08s;
 }
 .key.active{
- background:#00ff9c;
- color:#000;
-}
-
-/* guitar look */
-.string{
- width:40px;height:220px;
- background:#050505;
- border:1px solid #ffaa00;
- color:#ffaa00;
-}
-.string.active{
- background:#ffaa00;
+ background:#ff2a2a;
  color:#000;
 }
 </style>
@@ -96,53 +88,48 @@ input{
 <canvas id="bg"></canvas>
 
 <div class="top">
- <a href="index.html">⬅ BACK</a>
- <div>TOOLS TERMINAL</div>
+ <a href="#">⬅ BACK</a>
+ <div>RED HACKER TERMINAL</div>
 </div>
 
 <div class="terminal">
- <div class="output" id="output">
-  <div>Welcome Hacker Terminal</div>
-  <div>Commands: help, sudo piano, sudo guitar, exit</div>
+ <div class="output" id="out">
+  <div>Commands: help | sudo piano | sudo guitar | exit</div>
  </div>
-
  <div class="input-line">
   <span class="prompt">root@ai:~$</span>
   <input id="cmd" autofocus>
  </div>
 </div>
 
-<!-- OVERLAY -->
 <div class="overlay" id="overlay">
  <div class="instrument" id="instrument"></div>
 </div>
 
-<!-- PIANO AUDIO -->
-<audio id="pC" src="piano/C.mp3"></audio>
-<audio id="pD" src="piano/D.mp3"></audio>
-<audio id="pE" src="piano/E.mp3"></audio>
-<audio id="pF" src="piano/F.mp3"></audio>
-<audio id="pG" src="piano/G.mp3"></audio>
-<audio id="pA" src="piano/A.mp3"></audio>
-<audio id="pB" src="piano/B.mp3"></audio>
-
-<!-- GUITAR AUDIO -->
-<audio id="g1" src="guitar/1.mp3"></audio>
-<audio id="g2" src="guitar/2.mp3"></audio>
-<audio id="g3" src="guitar/3.mp3"></audio>
-<audio id="g4" src="guitar/4.mp3"></audio>
-<audio id="g5" src="guitar/5.mp3"></audio>
-<audio id="g6" src="guitar/6.mp3"></audio>
-
 <script>
-/* TERMINAL */
-const out=document.getElementById("output");
+/* ===== TERMINAL ===== */
+const out=document.getElementById("out");
 const cmd=document.getElementById("cmd");
 const overlay=document.getElementById("overlay");
 const instrument=document.getElementById("instrument");
 
 let mode=null;
 
+/* audio */
+const ctx=new (window.AudioContext||window.webkitAudioContext)();
+function sound(freq){
+ const o=ctx.createOscillator();
+ const g=ctx.createGain();
+ o.type="sawtooth";
+ o.frequency.value=freq;
+ g.gain.value=0.6;       // OVOZ BALAND
+ o.connect(g);
+ g.connect(ctx.destination);
+ o.start();
+ o.stop(ctx.currentTime+0.25);
+}
+
+/* terminal input */
 cmd.onkeydown=e=>{
  if(e.key==="Enter"){
   run(cmd.value.toLowerCase());
@@ -157,19 +144,9 @@ function log(t){
 
 function run(c){
  log("root@ai:~$ "+c);
-
- if(c==="help"){
-  log("sudo piano | sudo guitar | exit");
- }
-
- if(c==="sudo piano"){
-  openPiano();
- }
-
- if(c==="sudo guitar"){
-  openGuitar();
- }
-
+ if(c==="help") log("sudo piano | sudo guitar | exit");
+ if(c==="sudo piano") openPiano();
+ if(c==="sudo guitar") openGuitar();
  if(c==="exit"){
   overlay.style.display="none";
   instrument.innerHTML="";
@@ -181,80 +158,74 @@ function run(c){
 /* PIANO */
 function openPiano(){
  mode="piano";
- instrument.innerHTML="";
  overlay.style.display="flex";
+ instrument.innerHTML="";
  ["A","S","D","F","G","H","J"].forEach(k=>{
   const d=document.createElement("div");
   d.className="key";
   d.textContent=k;
   instrument.appendChild(d);
  });
- log("🎹 Piano mode: A S D F G H J");
+ log("🎹 Piano: A S D F G H J");
 }
 
 /* GUITAR */
 function openGuitar(){
  mode="guitar";
- instrument.innerHTML="";
  overlay.style.display="flex";
+ instrument.innerHTML="";
  ["Q","W","E","R","T","Y"].forEach(k=>{
   const d=document.createElement("div");
-  d.className="string";
+  d.className="key";
   d.textContent=k;
   instrument.appendChild(d);
  });
- log("🎸 Guitar mode: Q W E R T Y");
+ log("🎸 Guitar: Q W E R T Y");
 }
 
-/* KEYBOARD CONTROL */
+/* KEYBOARD PLAY */
 document.onkeydown=e=>{
  if(!mode) return;
 
- if(mode==="piano"){
-  const map={
-   a:"pC",s:"pD",d:"pE",f:"pF",
-   g:"pG",h:"pA",j:"pB"
-  };
-  play(map[e.key],".key",e.key);
- }
+ const piano={
+  a:261,s:294,d:329,f:349,g:392,h:440,j:493
+ };
+ const guitar={
+  q:110,w:147,e:196,r:247,t:330,y:392
+ };
 
- if(mode==="guitar"){
-  const map={
-   q:"g1",w:"g2",e:"g3",
-   r:"g4",t:"g5",y:"g6"
-  };
-  play(map[e.key],".string",e.key);
- }
-};
+ let freq=null;
+ if(mode==="piano") freq=piano[e.key];
+ if(mode==="guitar") freq=guitar[e.key];
+ if(!freq) return;
 
-function play(id,cls,key){
- if(!id) return;
- const a=document.getElementById(id);
- a.currentTime=0;a.play();
- const el=[...document.querySelectorAll(cls)]
-  .find(x=>x.textContent.toLowerCase()===key);
+ sound(freq);
+
+ const el=[...document.querySelectorAll(".key")]
+  .find(x=>x.textContent.toLowerCase()===e.key);
  el?.classList.add("active");
  setTimeout(()=>el?.classList.remove("active"),120);
-}
+};
 
 /* PARTICLES */
-const c=document.getElementById("bg"),ctx=c.getContext("2d");
+const c=document.getElementById("bg"),x=c.getContext("2d");
 let w=c.width=innerWidth,h=c.height=innerHeight,p=[];
 onmousemove=e=>{
  for(let i=0;i<2;i++)
  p.push({x:e.x,y:e.y,vx:(Math.random()-.5),vy:(Math.random()-.5),l:60});
 };
 function anim(){
- ctx.clearRect(0,0,w,h);
+ x.clearRect(0,0,w,h);
  p.forEach((o,i)=>{
   o.x+=o.vx;o.y+=o.vy;o.l--;
-  ctx.fillStyle="#fff";
-  ctx.fillRect(o.x,o.y,2,2);
+  x.fillStyle="#ff2a2a";
+  x.fillRect(o.x,o.y,2,2);
   if(o.l<0)p.splice(i,1);
  });
  requestAnimationFrame(anim);
 }
 anim();
+onresize=()=>{w=c.width=innerWidth;h=c.height=innerHeight};
 </script>
 
 </body>
