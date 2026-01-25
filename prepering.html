@@ -5,36 +5,52 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Prepering Lesson - Nightfall Team</title>
 <style>
-body{margin:0; font-family:Consolas,monospace; background:#050505; color:#fff;}
-video, canvas{border:1px solid #333; display:block; margin:10px auto;}
-button{margin:5px; padding:10px 20px; background:#0d0d0d; color:#fff; border:1px solid #444; cursor:pointer;}
-button:hover{background:#1a1a1a;}
-#tools{display:flex; justify-content:center; flex-wrap:wrap;}
+body {
+  margin:0; font-family:Consolas,monospace; background:#050505; color:#fff; text-align:center;
+}
+video, canvas, img {
+  border:1px solid #333; display:block; margin:10px auto; max-width:90%;
+}
+button {
+  margin:5px; padding:10px 20px; background:#0d0d0d; color:#fff; border:1px solid #444; cursor:pointer;
+}
+button:hover {background:#1a1a1a;}
+#tools {display:flex; justify-content:center; flex-wrap:wrap;}
+#userText {width:80%; max-width:600px; padding:10px; margin:10px auto; display:block; font-size:16px;}
 </style>
 </head>
 <body>
 
-<h2 style="text-align:center;">Prepering Lesson</h2>
+<h2>Prepering Lesson</h2>
 
 <div id="tools">
   <div>
     <h3>Kamera Video</h3>
-    <video id="cameraVideo" autoplay playsinline width="320" height="240"></video><br>
+    <video id="cameraVideo" autoplay playsinline width="480" height="360"></video><br>
     <button id="startCam">Start</button>
     <button id="stopCam">Stop & Download</button>
+    <button id="camFull">Full Screen</button>
   </div>
 
   <div>
     <h3>Screen Video</h3>
-    <video id="screenVideo" autoplay playsinline width="320" height="240"></video><br>
+    <video id="screenVideo" autoplay playsinline width="480" height="360"></video><br>
     <button id="startScreen">Start Screen</button>
     <button id="stopScreen">Stop & Download</button>
+    <button id="screenFull">Full Screen</button>
   </div>
 </div>
 
-<h3 style="text-align:center;">Background Chizish</h3>
-<canvas id="drawCanvas" width="600" height="400" style="display:block; margin:auto; background:#111;"></canvas>
+<h3>Background Chizish</h3>
+<canvas id="drawCanvas" width="800" height="500" style="background:#111;"></canvas><br>
 <button id="clearCanvas">Clear Canvas</button>
+
+<h3>Foydalanuvchi Matni</h3>
+<input type="text" id="userText" placeholder="Bu yerga yozing...">
+
+<h3>Rasm</h3>
+<img id="sampleImg" src="https://via.placeholder.com/400x250.png?text=Rasm" alt="Sample Image"><br>
+<button id="nextImg">Oldingi/Keyingi Rasm</button>
 
 <script>
 // ===== CAMERA =====
@@ -42,7 +58,7 @@ let camStream, camRecorder, camChunks = [];
 const camVideo = document.getElementById('cameraVideo');
 
 document.getElementById('startCam').onclick = async () => {
-  camStream = await navigator.mediaDevices.getUserMedia({ video:true, audio:true });
+  camStream = await navigator.mediaDevices.getUserMedia({ video:{width:1280,height:720}, audio:true });
   camVideo.srcObject = camStream;
   camRecorder = new MediaRecorder(camStream);
   camChunks = [];
@@ -63,12 +79,17 @@ document.getElementById('stopCam').onclick = () => {
   }
 };
 
+document.getElementById('camFull').onclick = () => {
+  if(camVideo.requestFullscreen) camVideo.requestFullscreen();
+  else if(camVideo.webkitRequestFullscreen) camVideo.webkitRequestFullscreen();
+};
+
 // ===== SCREEN =====
 let screenStream, screenRecorder, screenChunks = [];
 const screenVideo = document.getElementById('screenVideo');
 
 document.getElementById('startScreen').onclick = async () => {
-  screenStream = await navigator.mediaDevices.getDisplayMedia({ video:true, audio:true });
+  screenStream = await navigator.mediaDevices.getDisplayMedia({ video:{width:1280,height:720}, audio:true });
   screenVideo.srcObject = screenStream;
   screenRecorder = new MediaRecorder(screenStream);
   screenChunks = [];
@@ -89,6 +110,11 @@ document.getElementById('stopScreen').onclick = () => {
   }
 };
 
+document.getElementById('screenFull').onclick = () => {
+  if(screenVideo.requestFullscreen) screenVideo.requestFullscreen();
+  else if(screenVideo.webkitRequestFullscreen) screenVideo.webkitRequestFullscreen();
+};
+
 // ===== CANVAS DRAW =====
 const canvas = document.getElementById('drawCanvas');
 const ctx = canvas.getContext('2d');
@@ -104,6 +130,20 @@ canvas.onmousemove = e => {
 
 document.getElementById('clearCanvas').onclick = () => {
   ctx.clearRect(0,0,canvas.width,canvas.height);
+};
+
+// ===== IMAGE SLIDER =====
+const images = [
+  'https://via.placeholder.com/400x250.png?text=Rasm1',
+  'https://via.placeholder.com/400x250.png?text=Rasm2',
+  'https://via.placeholder.com/400x250.png?text=Rasm3'
+];
+let imgIndex = 0;
+const sampleImg = document.getElementById('sampleImg');
+
+document.getElementById('nextImg').onclick = () => {
+  imgIndex = (imgIndex + 1) % images.length;
+  sampleImg.src = images[imgIndex];
 };
 </script>
 
