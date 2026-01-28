@@ -123,7 +123,13 @@ canvas{
 </head>
 <body>
 
+<!-- BACKGROUND -->
 <canvas id="bg"></canvas>
+
+<!-- MUSIC -->
+<audio id="bgMusic" loop>
+ <source src="song.mp3" type="audio/mpeg">
+</audio>
 
 <!-- TOP -->
 <div class="top">
@@ -136,11 +142,11 @@ canvas{
  <a href="lesson.html">Lesson</a>
  <a href="tools.html">Shop</a>
  <a href="profile.html">Profile</a>
-  <a href="planlesson.html">Plan lesson</a>     
+ <a href="planlesson.html">Plan lesson</a>
  <a href="news.html">News</a>
  <a href="about.html">About</a>
  <a href="prepering.html">Prepering Lesson</a>
-  <a href="community.html">Community</a>
+ <a href="community.html">Community</a>
 </div>
 
 <!-- CENTER -->
@@ -159,23 +165,31 @@ if (window.innerWidth > 900) {
  }, { once:true });
 }
 
-/* ===== MENU ===== */
+/* ===== MENU + MUSIC ===== */
+let musicStarted = false;
+
 function toggleMenu(){
- document.getElementById("menu").classList.toggle("active");
+ const menu = document.getElementById("menu");
+ const music = document.getElementById("bgMusic");
+
+ menu.classList.toggle("active");
+
+ if(!musicStarted){
+  music.volume = 0.6; // 0.0 - 1.0
+  music.play();
+  musicStarted = true;
+ }
 }
 
 /* ===== CLOCK ===== */
 function updateClock(){
  const d = new Date();
-
  const days = ["Yakshanba","Dushanba","Seshanba","Chorshanba","Payshanba","Juma","Shanba"];
  const months = ["Yanvar","Fevral","Mart","Aprel","May","Iyun","Iyul","Avgust","Sentabr","Oktabr","Noyabr","Dekabr"];
 
- const text =
+ document.getElementById("clock").textContent =
   `${days[d.getDay()]}, ${String(d.getDate()).padStart(2,"0")} ${months[d.getMonth()]} ${d.getFullYear()} | ` +
   `${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}:${String(d.getSeconds()).padStart(2,"0")}`;
-
- document.getElementById("clock").textContent = text;
 }
 setInterval(updateClock,1000);
 updateClock();
