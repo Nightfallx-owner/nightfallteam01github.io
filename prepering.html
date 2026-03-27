@@ -3,6 +3,106 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nightfall Recorder</title>
+
+<style>
+body {
+  margin:0;
+  font-family:Consolas, monospace;
+  background:#050505;
+  color:#fff;
+  text-align:center;
+}
+
+video {
+  border:1px solid #333;
+  margin-top:20px;
+  max-width:90%;
+}
+
+button {
+  margin:10px;
+  padding:12px 25px;
+  background:#0d0d0d;
+  color:#fff;
+  border:1px solid #444;
+  cursor:pointer;
+  font-size:16px;
+}
+
+button:hover {
+  background:#1a1a1a;
+}
+</style>
+</head>
+
+<body>
+
+<h2>🎥 Nightfall Screen Recorder</h2>
+
+<video id="screenVideo" autoplay playsinline></video><br>
+
+<button id="startBtn">▶ START</button>
+<button id="stopBtn">⏹ STOP & DOWNLOAD</button>
+
+<script>
+let stream, recorder, chunks = [];
+const video = document.getElementById("screenVideo");
+
+// START
+document.getElementById("startBtn").onclick = async () => {
+  stream = await navigator.mediaDevices.getDisplayMedia({
+    video: {
+      width: { ideal: 3840 },   // 4K
+      height: { ideal: 2160 },
+      frameRate: 60
+    },
+    audio: true
+  });
+
+  video.srcObject = stream;
+
+  // MP4 ga yaqin (browser qo‘llab-quvvatlasa)
+  recorder = new MediaRecorder(stream, {
+    mimeType: "video/webm; codecs=vp9"
+  });
+
+  chunks = [];
+
+  recorder.ondataavailable = e => {
+    if (e.data.size > 0) chunks.push(e.data);
+  };
+
+  recorder.start();
+};
+
+// STOP + DOWNLOAD
+document.getElementById("stopBtn").onclick = () => {
+  recorder.stop();
+
+  recorder.onstop = () => {
+    const blob = new Blob(chunks, { type: "video/webm" });
+
+    // MP4 nom bilan saqlaymiz (keyin convert qilsa bo‘ladi)
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+
+    a.href = url;
+    a.download = "nightfall_record.mp4";
+
+    a.click();
+
+    stream.getTracks().forEach(track => track.stop());
+  };
+};
+</script>
+
+</body>
+</html><!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Prepering Lesson - Nightfall Team</title>
 <style>
 body {
