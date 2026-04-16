@@ -3,158 +3,237 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>About | Nightfall Team</title>
+<title>Nightfall Team | About</title>
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
+
 body{
- background:#050505;
- color:#fff;
- font-family:Consolas,monospace;
+ background:#000;
+ color:#ddd;
+ font-family:Consolas, monospace;
  overflow-x:hidden;
 }
 
-/* Canvas */
+/* CANVAS */
 canvas{
  position:fixed;
  inset:0;
  z-index:-1;
 }
 
-/* Top bar */
+/* TOP */
 .top{
  position:fixed;
- top:0;left:0;
+ top:0;
  width:100%;
- padding:10px 20px;
+ padding:12px 25px;
  display:flex;
  justify-content:space-between;
  align-items:center;
- background:rgba(0,0,0,.65);
- border-bottom:1px solid #222;
- z-index:10;
+ background:rgba(0,0,0,.9);
+ border-bottom:1px solid #111;
 }
+
 .top a{
- color:#fff;
+ color:#aaa;
  text-decoration:none;
- opacity:.7;
- font-weight:600;
  transition:.3s;
 }
-.top a:hover{opacity:1; transform:rotate(-5deg);}
+.top a:hover{
+ color:#fff;
+}
 
-/* Content */
+/* CONTENT */
 .content{
- max-width:900px;
- margin:90px auto 40px;
+ max-width:850px;
+ margin:100px auto 50px;
  padding:0 20px;
  line-height:1.8;
  font-size:15px;
 }
 
-/* Headings */
-h1,h2{margin-bottom:15px;letter-spacing:1px;}
-ul{margin-left:20px;margin-bottom:20px;}
-ul li{margin-bottom:10px;}
-a{color:#00bfff;text-decoration:none;}
-a:hover{text-decoration:underline;}
-
-/* Typing animation */
-.typing {
- display:inline-block;
- border-right: 2px solid #00ff9c;
- white-space: nowrap;
- overflow: hidden;
- animation: typing 3s steps(80) 1 forwards, blink 0.7s step-end infinite alternate;
+/* TEXT */
+h1{
+ margin-bottom:20px;
+ font-size:26px;
+ color:#fff;
 }
-@keyframes typing {0% { width: 0; } 100% { width: 100%; }}
-@keyframes blink {0%,100% { border-color: transparent; } 50% { border-color: #00ff9c; }}
+
+h2{
+ margin:25px 0 10px;
+ color:#ccc;
+ font-size:16px;
+}
+
+ul{margin-left:20px;}
+ul li{margin-bottom:8px;}
+
+/* LINKS */
+a{
+ color:#ccc;
+ text-decoration:none;
+}
+a:hover{color:#fff}
+
+/* CARD */
+.card{
+ background:rgba(255,255,255,0.02);
+ border:1px solid rgba(255,255,255,0.05);
+ padding:18px;
+ border-radius:10px;
+ margin-bottom:15px;
+ transition:.3s;
+}
+.card:hover{
+ transform:translateY(-4px);
+ box-shadow:0 0 20px rgba(255,255,255,0.05);
+}
+
+/* TYPING */
+.typing{
+ border-right:2px solid #888;
+ white-space:nowrap;
+ overflow:hidden;
+ display:inline-block;
+ animation:blink .7s infinite;
+}
+
+@keyframes blink{
+ 50%{border-color:transparent;}
+}
 </style>
 </head>
+
 <body>
 
 <canvas id="bg"></canvas>
 
-<!-- TOP -->
 <div class="top">
- <a href="index.html">⬅ BACK</a>
- <div>ABOUT</div>
+ <a href="#">⬅ Back</a>
+ <div>Nightfall</div>
 </div>
 
-<!-- CONTENT -->
 <div class="content">
- <h1><span class="typing" id="title">Nightfall Team haqida</span></h1>
- <p id="text"></p>
 
- <h2>Main Skills:</h2>
- <ul>
-  <li>Telegram bot yaratish</li>
-  <li>Cyber Security (Middle)</li>
-  <li>Website Developer</li>
-  <li>Bug Bounty</li>
- </ul>
+ <h1><span id="title" class="typing"></span></h1>
 
- <h2>Jamoa haqida:</h2>
- <ul>
-  <li>Nightfall Team — 2024-yil tashkil topgan Rasman 4-avgust 2025-yil Online ishlarni boshlagan Assosan Yumor va Qiziqarli  Voqealar va Hacking (Informatsiyalar)</li>
-  <li>Owner: Nightfallx - skills -  (Create Telegram bot , Website , cod meaning , Hacking  (Etc) ) </li>
-  <li>Admin: ----  </li>
-  <li>Email: <a href="mailto:nightfallteam02@gmail.com">Gmail Account</a></li>
-  <li>Instagram: <a href="https://www.instagram.com/nightfallteam_owner" target="_blank">Nightfall_Team</a></li>
-  <li>Telegram Channel: <a href="https://t.me/Nightfall_team_learn" target="_blank">Nightfall Team's </a></li>
+ <div class="card">
+  <p id="text"></p>
+ </div>
 
+ <div class="card">
+  <h2>Skills</h2>
+  <ul>
+   <li>Telegram Bot</li>
+   <li>Cyber Security</li>
+   <li>Web Development</li>
+   <li>Bug Bounty</li>
+  </ul>
+ </div>
 
-   <h4>Dream is Wonderfull Things! But if your dream comes true You win This World also Alloh want this it come true Dont Remember this. Pray and Take action</h4>
- </ul>
+ <div class="card">
+  <h2>Team</h2>
+  <ul>
+   <li>Nightfall Team — 2024</li>
+   <li>Active since 2025</li>
+   <li>Owner: Nightfallx</li>
+   <li>Email: <a href="mailto:nightfallteam02@gmail.com">nightfallteam02@gmail.com</a></li>
+   <li>Telegram: <a href="#">Channel</a></li>
+  </ul>
+ </div>
+
 </div>
 
 <script>
-/* ===== PARTICLES ===== */
-const c=document.getElementById("bg");
-const ctx=c.getContext("2d");
-let w=c.width=innerWidth,h=c.height=innerHeight;
-let parts=[];
 
-onmousemove=e=>{
+/* ===== BLACK SMOKE ===== */
+const c = document.getElementById("bg");
+const ctx = c.getContext("2d");
+
+let w = c.width = innerWidth;
+let h = c.height = innerHeight;
+
+let parts = [];
+
+function createSmoke(x,y){
  for(let i=0;i<3;i++){
   parts.push({
-   x:e.clientX,
-   y:e.clientY,
-   vx:(Math.random()-.5)*1.2,
-   vy:(Math.random()-.5)*1.2,
-   life:60
+   x:x,
+   y:y,
+   size: Math.random()*25+10,
+   alpha: 0.08,
+   vx:(Math.random()-.5)*0.6,
+   vy:(Math.random()-.5)*0.6 - 0.2,
+   life: 120
   });
  }
-};
+}
 
-function animate(){
- ctx.clearRect(0,0,w,h);
+onmousemove = e => createSmoke(e.clientX,e.clientY);
+
+setInterval(()=>{
+ createSmoke(Math.random()*w,h);
+},250);
+
+function draw(){
+ ctx.fillStyle="rgba(0,0,0,0.25)";
+ ctx.fillRect(0,0,w,h);
+
  parts.forEach((p,i)=>{
   p.x+=p.vx;
   p.y+=p.vy;
   p.life--;
-  ctx.fillStyle="rgba(255,255,255,.6)";
-  ctx.fillRect(p.x,p.y,2,2);
+  p.alpha-=0.0008;
+
+  let g=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.size);
+  g.addColorStop(0,`rgba(255,255,255,${p.alpha})`);
+  g.addColorStop(1,"rgba(0,0,0,0)");
+
+  ctx.beginPath();
+  ctx.fillStyle=g;
+  ctx.arc(p.x,p.y,p.size,0,Math.PI*2);
+  ctx.fill();
+
+  ctx.shadowBlur=20;
+  ctx.shadowColor="rgba(255,255,255,0.2)";
+
   if(p.life<=0) parts.splice(i,1);
  });
- requestAnimationFrame(animate);
+
+ requestAnimationFrame(draw);
 }
-animate();
-onresize=()=>{w=c.width=innerWidth;h=c.height=innerHeight};
+draw();
 
-/* ===== TYPING TEXT ===== */
-const text = "Nightfall Team cyber security darslari, amaliy mashqlar va bilimlarni bir joyda jamlash uchun yaratilgan Education platforma. Maqsad – foydalanuvchilarga hacker uslubi bilan o‘rganish va nazariy bilimni mustahkamlash imkonini berish.";
-let i=0;
-const el = document.getElementById("text");
+onresize=()=>{
+ w=c.width=innerWidth;
+ h=c.height=innerHeight;
+};
 
-function typeWriter(){
- if(i<text.length){
-   el.innerHTML += text.charAt(i);
-   i++;
-   setTimeout(typeWriter,20);
+/* TITLE */
+const t="Nightfall Team";
+let ti=0;
+function typeT(){
+ if(ti<t.length){
+  document.getElementById("title").innerHTML+=t.charAt(ti);
+  ti++;
+  setTimeout(typeT,70);
  }
 }
-typeWriter();
+typeT();
+
+/* TEXT */
+const txt="Cyber security va real skill o‘rganish platformasi.";
+let i=0;
+function type(){
+ if(i<txt.length){
+  document.getElementById("text").innerHTML+=txt.charAt(i);
+  i++;
+  setTimeout(type,20);
+ }
+}
+type();
+
 </script>
 
 </body>
