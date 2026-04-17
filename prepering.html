@@ -3,247 +3,203 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nightfall Recorder</title>
+<title>Nightfall Pro Studio</title>
 
 <style>
-body {
-  margin:0;
-  font-family:Consolas, monospace;
-  background:#050505;
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+  font-family:Consolas,monospace;
   color:#fff;
   text-align:center;
+  transition:0.5s;
 }
 
-video {
+/* BACKGROUNDS */
+.bg-dark{background:#050505;}
+.bg-blue{background:radial-gradient(circle,#001f3f,#000);}
+.bg-purple{background:linear-gradient(135deg,#1a0033,#000);}
+.bg-smoke{
+  background:radial-gradient(circle at 20% 20%,#0ff2,transparent),
+             radial-gradient(circle at 80% 80%,#00f2,transparent),
+             #000;
+}
+
+/* UI */
+h2{margin:10px;text-shadow:0 0 10px #0ff;}
+
+video,canvas,img{
   border:1px solid #333;
-  margin-top:20px;
+  border-radius:10px;
+  margin:10px auto;
+  display:block;
   max-width:90%;
 }
 
-button {
-  margin:10px;
-  padding:12px 25px;
+button{
+  margin:5px;
+  padding:10px 20px;
   background:#0d0d0d;
   color:#fff;
   border:1px solid #444;
   cursor:pointer;
-  font-size:16px;
+  border-radius:8px;
 }
 
-button:hover {
+button:hover{
   background:#1a1a1a;
+  box-shadow:0 0 10px #0ff;
+}
+
+#tools{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+
+#userText{
+  width:80%;
+  max-width:500px;
+  padding:10px;
+  margin:10px auto;
+  display:block;
+  background:#111;
+  color:#fff;
+  border:1px solid #444;
 }
 </style>
 </head>
 
-<body>
+<body class="bg-dark">
 
-<h2>🎥 Nightfall Screen Recorder</h2>
+<h2>🌌 Nightfall Pro Studio</h2>
 
-<video id="screenVideo" autoplay playsinline></video><br>
-
-<button id="startBtn">▶ START</button>
-<button id="stopBtn">⏹ STOP & DOWNLOAD</button>
-
-<script>
-let stream, recorder, chunks = [];
-const video = document.getElementById("screenVideo");
-
-// START
-document.getElementById("startBtn").onclick = async () => {
-  stream = await navigator.mediaDevices.getDisplayMedia({
-    video: {
-      width: { ideal: 3840 },   // 4K
-      height: { ideal: 2160 },
-      frameRate: 60
-    },
-    audio: true
-  });
-
-  video.srcObject = stream;
-
-  // MP4 ga yaqin (browser qo‘llab-quvvatlasa)
-  recorder = new MediaRecorder(stream, {
-    mimeType: "video/webm; codecs=vp9"
-  });
-
-  chunks = [];
-
-  recorder.ondataavailable = e => {
-    if (e.data.size > 0) chunks.push(e.data);
-  };
-
-  recorder.start();
-};
-
-// STOP + DOWNLOAD
-document.getElementById("stopBtn").onclick = () => {
-  recorder.stop();
-
-  recorder.onstop = () => {
-    const blob = new Blob(chunks, { type: "video/webm" });
-
-    // MP4 nom bilan saqlaymiz (keyin convert qilsa bo‘ladi)
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-
-    a.href = url;
-    a.download = "nightfall_record.mp4";
-
-    a.click();
-
-    stream.getTracks().forEach(track => track.stop());
-  };
-};
-</script>
-
-</body>
-</html><!DOCTYPE html>
-<html lang="uz">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Prepering Lesson - Nightfall Team</title>
-<style>
-body {
-  margin:0; font-family:Consolas,monospace; background:#050505; color:#fff; text-align:center;
-}
-video, canvas, img {
-  border:1px solid #333; display:block; margin:10px auto; max-width:90%;
-}
-button {
-  margin:5px; padding:10px 20px; background:#0d0d0d; color:#fff; border:1px solid #444; cursor:pointer;
-}
-button:hover {background:#1a1a1a;}
-#tools {display:flex; justify-content:center; flex-wrap:wrap;}
-#userText {width:80%; max-width:600px; padding:10px; margin:10px auto; display:block; font-size:16px;}
-</style>
-</head>
-<body>
-
-<h2>Prepering Lesson</h2>
-
-<div id="tools">
-  <div>
-    <h3>Kamera Video</h3>
-    <video id="cameraVideo" autoplay playsinline width="480" height="360"></video><br>
-    <button id="startCam">Start</button>
-    <button id="stopCam">Stop & Download</button>
-    <button id="camFull">Full Screen</button>
-  </div>
-
-  <div>
-    <h3>Screen Video</h3>
-    <video id="screenVideo" autoplay playsinline width="480" height="360"></video><br>
-    <button id="startScreen">Start Screen</button>
-    <button id="stopScreen">Stop & Download</button>
-    <button id="screenFull">Full Screen</button>
-  </div>
+<!-- BG SWITCH -->
+<div>
+<button onclick="setBG('bg-dark')">Dark</button>
+<button onclick="setBG('bg-blue')">Blue</button>
+<button onclick="setBG('bg-purple')">Purple</button>
+<button onclick="setBG('bg-smoke')">Smoke</button>
 </div>
 
-<h3>Background Chizish</h3>
-<canvas id="drawCanvas" width="800" height="500" style="background:#111;"></canvas><br>
-<button id="clearCanvas">Clear Canvas</button>
+<div id="tools">
 
-<h3>Foydalanuvchi Matni</h3>
-<input type="text" id="userText" placeholder="Bu yerga yozing...">
+<!-- VIRTUAL CAMERA -->
+<div>
+<h3>🎥 Virtual Camera</h3>
+<canvas id="virtualCam" width="400" height="250"></canvas><br>
+<button id="startCam">Start</button>
+<button id="stopCam">Stop</button>
+</div>
 
-<h3>Rasm</h3>
-<img id="sampleImg" src="https://via.placeholder.com/400x250.png?text=Rasm" alt="Sample Image"><br>
-<button id="nextImg">Oldingi/Keyingi Rasm</button>
+<!-- SCREEN -->
+<div>
+<h3>🖥 Screen</h3>
+<video id="screenVideo" autoplay></video><br>
+<button id="startScreen">Start</button>
+<button id="stopScreen">Stop</button>
+</div>
+
+</div>
+
+<!-- CANVAS -->
+<h3>🎨 Draw</h3>
+<canvas id="drawCanvas" width="600" height="300"></canvas><br>
+<button id="clearCanvas">Clear</button>
+
+<!-- TEXT -->
+<h3>✍ Text</h3>
+<input id="userText" placeholder="Yozing...">
+
+<!-- IMAGE -->
+<h3>🖼 Images</h3>
+<img id="img" src="https://via.placeholder.com/400x200?text=Night"><br>
+<button id="nextImg">Next</button>
 
 <script>
-// ===== CAMERA =====
-let camStream, camRecorder, camChunks = [];
-const camVideo = document.getElementById('cameraVideo');
+// ===== BG SWITCH =====
+function setBG(bg){
+  document.body.className = bg;
+}
 
-document.getElementById('startCam').onclick = async () => {
-  camStream = await navigator.mediaDevices.getUserMedia({ video:{width:1280,height:720}, audio:true });
-  camVideo.srcObject = camStream;
-  camRecorder = new MediaRecorder(camStream);
-  camChunks = [];
-  camRecorder.ondataavailable = e => camChunks.push(e.data);
-  camRecorder.start();
+// ===== VIRTUAL CAMERA =====
+let camStream;
+let running=false;
+
+const canvasCam=document.getElementById("virtualCam");
+const ctxCam=canvasCam.getContext("2d");
+
+const video=document.createElement("video");
+video.autoplay=true;
+
+// background image
+const bg=new Image();
+bg.src="https://images.unsplash.com/photo-1506744038136-46273834b3fb";
+
+startCam.onclick=async ()=>{
+  camStream=await navigator.mediaDevices.getUserMedia({video:true});
+  video.srcObject=camStream;
+  running=true;
+  loop();
 };
 
-document.getElementById('stopCam').onclick = () => {
-  camRecorder.stop();
-  camRecorder.onstop = () => {
-    const blob = new Blob(camChunks, {type:'video/webm'});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'camera_video.webm';
-    a.click();
-    camStream.getTracks().forEach(track => track.stop());
-  }
+stopCam.onclick=()=>{
+  running=false;
+  camStream.getTracks().forEach(t=>t.stop());
 };
 
-document.getElementById('camFull').onclick = () => {
-  if(camVideo.requestFullscreen) camVideo.requestFullscreen();
-  else if(camVideo.webkitRequestFullscreen) camVideo.webkitRequestFullscreen();
-};
+function loop(){
+  if(!running) return;
+
+  // background
+  ctxCam.drawImage(bg,0,0,canvasCam.width,canvasCam.height);
+
+  // camera overlay
+  ctxCam.globalAlpha=0.9;
+  ctxCam.drawImage(video,0,0,canvasCam.width,canvasCam.height);
+
+  requestAnimationFrame(loop);
+}
 
 // ===== SCREEN =====
-let screenStream, screenRecorder, screenChunks = [];
-const screenVideo = document.getElementById('screenVideo');
+let screenStream;
+const screenVideo=document.getElementById("screenVideo");
 
-document.getElementById('startScreen').onclick = async () => {
-  screenStream = await navigator.mediaDevices.getDisplayMedia({ video:{width:1280,height:720}, audio:true });
-  screenVideo.srcObject = screenStream;
-  screenRecorder = new MediaRecorder(screenStream);
-  screenChunks = [];
-  screenRecorder.ondataavailable = e => screenChunks.push(e.data);
-  screenRecorder.start();
+startScreen.onclick=async ()=>{
+  screenStream=await navigator.mediaDevices.getDisplayMedia({video:true});
+  screenVideo.srcObject=screenStream;
 };
 
-document.getElementById('stopScreen').onclick = () => {
-  screenRecorder.stop();
-  screenRecorder.onstop = () => {
-    const blob = new Blob(screenChunks, {type:'video/webm'});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'screen_video.webm';
-    a.click();
-    screenStream.getTracks().forEach(track => track.stop());
-  }
+stopScreen.onclick=()=>{
+  screenStream.getTracks().forEach(t=>t.stop());
 };
 
-document.getElementById('screenFull').onclick = () => {
-  if(screenVideo.requestFullscreen) screenVideo.requestFullscreen();
-  else if(screenVideo.webkitRequestFullscreen) screenVideo.webkitRequestFullscreen();
+// ===== DRAW =====
+const canvas=document.getElementById("drawCanvas");
+const ctx=canvas.getContext("2d");
+let draw=false;
+
+canvas.onmousedown=()=>draw=true;
+canvas.onmouseup=()=>draw=false;
+canvas.onmousemove=e=>{
+  if(!draw) return;
+  ctx.fillStyle="white";
+  ctx.fillRect(e.offsetX,e.offsetY,3,3);
 };
 
-// ===== CANVAS DRAW =====
-const canvas = document.getElementById('drawCanvas');
-const ctx = canvas.getContext('2d');
-let drawing = false;
+clearCanvas.onclick=()=>ctx.clearRect(0,0,canvas.width,canvas.height);
 
-canvas.onmousedown = () => drawing = true;
-canvas.onmouseup = () => drawing = false;
-canvas.onmousemove = e => {
-  if(!drawing) return;
-  ctx.fillStyle = 'white';
-  ctx.fillRect(e.offsetX, e.offsetY, 4, 4);
-};
-
-document.getElementById('clearCanvas').onclick = () => {
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-};
-
-// ===== IMAGE SLIDER =====
-const images = [
-  'https://via.placeholder.com/400x250.png?text=Rasm1',
-  'https://via.placeholder.com/400x250.png?text=Rasm2',
-  'https://via.placeholder.com/400x250.png?text=Rasm3'
+// ===== IMAGE =====
+const imgs=[
+ "https://via.placeholder.com/400x200?text=Night1",
+ "https://via.placeholder.com/400x200?text=Night2",
+ "https://via.placeholder.com/400x200?text=Night3"
 ];
-let imgIndex = 0;
-const sampleImg = document.getElementById('sampleImg');
 
-document.getElementById('nextImg').onclick = () => {
-  imgIndex = (imgIndex + 1) % images.length;
-  sampleImg.src = images[imgIndex];
+let i=0;
+nextImg.onclick=()=>{
+  i=(i+1)%imgs.length;
+  img.src=imgs[i];
 };
 </script>
 
