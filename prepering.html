@@ -3,204 +3,123 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nightfall Pro Studio</title>
+<title>Nightfall AI Cam</title>
+
+<!-- TensorFlow + BodyPix -->
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.10.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/body-pix"></script>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-
 body{
-  font-family:Consolas,monospace;
+  margin:0;
+  background:#000;
   color:#fff;
   text-align:center;
-  transition:0.5s;
+  font-family:Consolas;
 }
 
-/* BACKGROUNDS */
-.bg-dark{background:#050505;}
-.bg-blue{background:radial-gradient(circle,#001f3f,#000);}
-.bg-purple{background:linear-gradient(135deg,#1a0033,#000);}
-.bg-smoke{
-  background:radial-gradient(circle at 20% 20%,#0ff2,transparent),
-             radial-gradient(circle at 80% 80%,#00f2,transparent),
-             #000;
-}
-
-/* UI */
-h2{margin:10px;text-shadow:0 0 10px #0ff;}
-
-video,canvas,img{
+canvas{
   border:1px solid #333;
   border-radius:10px;
-  margin:10px auto;
-  display:block;
-  max-width:90%;
+  margin-top:20px;
 }
 
 button{
-  margin:5px;
+  margin:10px;
   padding:10px 20px;
-  background:#0d0d0d;
-  color:#fff;
-  border:1px solid #444;
-  cursor:pointer;
-  border-radius:8px;
-}
-
-button:hover{
-  background:#1a1a1a;
-  box-shadow:0 0 10px #0ff;
-}
-
-#tools{
-  display:flex;
-  flex-wrap:wrap;
-  justify-content:center;
-}
-
-#userText{
-  width:80%;
-  max-width:500px;
-  padding:10px;
-  margin:10px auto;
-  display:block;
   background:#111;
   color:#fff;
   border:1px solid #444;
+  cursor:pointer;
 }
 </style>
 </head>
 
-<body class="bg-dark">
+<body>
 
-<h2>🌌 Nightfall Pro Studio</h2>
+<h2>🤖 Nightfall AI Virtual Background</h2>
 
-<!-- BG SWITCH -->
-<div>
-<button onclick="setBG('bg-dark')">Dark</button>
-<button onclick="setBG('bg-blue')">Blue</button>
-<button onclick="setBG('bg-purple')">Purple</button>
-<button onclick="setBG('bg-smoke')">Smoke</button>
-</div>
+<video id="video" autoplay playsinline style="display:none"></video>
+<canvas id="canvas" width="640" height="360"></canvas><br>
 
-<div id="tools">
-
-<!-- VIRTUAL CAMERA -->
-<div>
-<h3>🎥 Virtual Camera</h3>
-<canvas id="virtualCam" width="400" height="250"></canvas><br>
-<button id="startCam">Start</button>
-<button id="stopCam">Stop</button>
-</div>
-
-<!-- SCREEN -->
-<div>
-<h3>🖥 Screen</h3>
-<video id="screenVideo" autoplay></video><br>
-<button id="startScreen">Start</button>
-<button id="stopScreen">Stop</button>
-</div>
-
-</div>
-
-<!-- CANVAS -->
-<h3>🎨 Draw</h3>
-<canvas id="drawCanvas" width="600" height="300"></canvas><br>
-<button id="clearCanvas">Clear</button>
-
-<!-- TEXT -->
-<h3>✍ Text</h3>
-<input id="userText" placeholder="Yozing...">
-
-<!-- IMAGE -->
-<h3>🖼 Images</h3>
-<img id="img" src="https://via.placeholder.com/400x200?text=Night"><br>
-<button id="nextImg">Next</button>
+<button onclick="start()">START AI CAM</button>
+<button onclick="stop()">STOP</button>
 
 <script>
-// ===== BG SWITCH =====
-function setBG(bg){
-  document.body.className = bg;
-}
-
-// ===== VIRTUAL CAMERA =====
-let camStream;
+let net;
+let stream;
 let running=false;
 
-const canvasCam=document.getElementById("virtualCam");
-const ctxCam=canvasCam.getContext("2d");
-
-const video=document.createElement("video");
-video.autoplay=true;
+const video=document.getElementById("video");
+const canvas=document.getElementById("canvas");
+const ctx=canvas.getContext("2d");
 
 // background image
 const bg=new Image();
 bg.src="https://images.unsplash.com/photo-1506744038136-46273834b3fb";
 
-startCam.onclick=async ()=>{
-  camStream=await navigator.mediaDevices.getUserMedia({video:true});
-  video.srcObject=camStream;
+async function start(){
+  net = await bodyPix.load({
+    architecture:'MobileNetV1',
+    outputStride:16,
+    multiplier:0.75,
+    quantBytes:2
+  });
+
+  stream = await navigator.mediaDevices.getUserMedia({video:true});
+  video.srcObject = stream;
+
   running=true;
-  loop();
-};
-
-stopCam.onclick=()=>{
-  running=false;
-  camStream.getTracks().forEach(t=>t.stop());
-};
-
-function loop(){
-  if(!running) return;
-
-  // background
-  ctxCam.drawImage(bg,0,0,canvasCam.width,canvasCam.height);
-
-  // camera overlay
-  ctxCam.globalAlpha=0.9;
-  ctxCam.drawImage(video,0,0,canvasCam.width,canvasCam.height);
-
-  requestAnimationFrame(loop);
+  render();
 }
 
-// ===== SCREEN =====
-let screenStream;
-const screenVideo=document.getElementById("screenVideo");
+function stop(){
+  running=false;
+  stream.getTracks().forEach(t=>t.stop());
+}
 
-startScreen.onclick=async ()=>{
-  screenStream=await navigator.mediaDevices.getDisplayMedia({video:true});
-  screenVideo.srcObject=screenStream;
-};
+async function render(){
+  if(!running) return;
 
-stopScreen.onclick=()=>{
-  screenStream.getTracks().forEach(t=>t.stop());
-};
+  // segmentation
+  const segmentation = await net.segmentPerson(video,{
+    internalResolution:'medium',
+    segmentationThreshold:0.7
+  });
 
-// ===== DRAW =====
-const canvas=document.getElementById("drawCanvas");
-const ctx=canvas.getContext("2d");
-let draw=false;
+  const {data} = segmentation;
+  const imgData = ctx.createImageData(canvas.width,canvas.height);
 
-canvas.onmousedown=()=>draw=true;
-canvas.onmouseup=()=>draw=false;
-canvas.onmousemove=e=>{
-  if(!draw) return;
-  ctx.fillStyle="white";
-  ctx.fillRect(e.offsetX,e.offsetY,3,3);
-};
+  // background draw
+  ctx.drawImage(bg,0,0,canvas.width,canvas.height);
+  const bgPixels = ctx.getImageData(0,0,canvas.width,canvas.height);
 
-clearCanvas.onclick=()=>ctx.clearRect(0,0,canvas.width,canvas.height);
+  // camera frame
+  ctx.drawImage(video,0,0,canvas.width,canvas.height);
+  const frame = ctx.getImageData(0,0,canvas.width,canvas.height);
 
-// ===== IMAGE =====
-const imgs=[
- "https://via.placeholder.com/400x200?text=Night1",
- "https://via.placeholder.com/400x200?text=Night2",
- "https://via.placeholder.com/400x200?text=Night3"
-];
+  for(let i=0;i<data.length;i++){
+    let n=i*4;
 
-let i=0;
-nextImg.onclick=()=>{
-  i=(i+1)%imgs.length;
-  img.src=imgs[i];
-};
+    if(data[i]===1){
+      // odam
+      imgData.data[n]=frame.data[n];
+      imgData.data[n+1]=frame.data[n+1];
+      imgData.data[n+2]=frame.data[n+2];
+      imgData.data[n+3]=255;
+    }else{
+      // background
+      imgData.data[n]=bgPixels.data[n];
+      imgData.data[n+1]=bgPixels.data[n+1];
+      imgData.data[n+2]=bgPixels.data[n+2];
+      imgData.data[n+3]=255;
+    }
+  }
+
+  ctx.putImageData(imgData,0,0);
+
+  requestAnimationFrame(render);
+}
 </script>
 
 </body>
