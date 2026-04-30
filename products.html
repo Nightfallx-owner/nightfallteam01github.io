@@ -2,189 +2,22 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BSJ Products - Order System</title>
-
-<style>
-body{font-family:Arial;margin:0;background:#fff}
-header{
-display:flex;justify-content:space-between;align-items:center;
-padding:14px;box-shadow:0 4px 10px rgba(0,0,0,.08)
-}
-.logo{color:#2e7d32;font-weight:900}
-
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:15px;
-padding:20px;
-}
-
-.card{
-border:1px solid #eee;
-border-radius:14px;
-overflow:hidden;
-background:#fff;
-}
-
-.card img{
-width:100%;
-height:150px;
-object-fit:cover;
-}
-
-.info{padding:10px}
-
-button{
-background:#2e7d32;
-color:#fff;
-border:none;
-padding:8px;
-width:100%;
-border-radius:10px;
-cursor:pointer;
-}
-
-.cartBox{
-position:fixed;
-bottom:20px;
-right:20px;
-background:#2e7d32;
-color:#fff;
-padding:14px 18px;
-border-radius:50px;
-cursor:pointer;
-}
-
-.modal{
-position:fixed;
-top:0;left:0;
-width:100%;height:100%;
-background:rgba(0,0,0,.5);
-display:none;
-justify-content:center;
-align-items:center;
-}
-
-.box{
-background:#fff;
-padding:20px;
-border-radius:14px;
-width:300px;
-}
-
-input{
-width:100%;
-padding:10px;
-margin:6px 0;
-border:1px solid #ddd;
-border-radius:10px;
-}
-</style>
-
+<title>Products</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header>
-<div class="logo">BSJ ORDER</div>
+<div class="logo">PRODUCTS</div>
 <nav>
 <a href="index.html">Home</a>
-<a href="features.html">Features</a>
-<a href="about.html">About</a>
+<a href="track.html">Track</a>
 </nav>
 </header>
 
-<div class="grid" id="list"></div>
+<div class="grid" id="grid"></div>
 
-<div class="cartBox" onclick="openOrder()">🛒 Checkout (<span id="count">0</span>)</div>
-
-<!-- ORDER MODAL -->
-<div class="modal" id="modal">
-<div class="box">
-<h3>Place Order</h3>
-
-<input id="name" placeholder="Your name">
-<input id="phone" placeholder="Phone number">
-<input id="address" placeholder="Address">
-
-<button onclick="submitOrder()">Confirm Order</button>
-<button onclick="closeOrder()" style="margin-top:6px;background:#999">Close</button>
-
-</div>
-</div>
-
-<script>
-const products=[
-{name:"Green Bowl",img:"https://images.unsplash.com/photo-1551892374",price:6},
-{name:"Smoothie",img:"https://images.unsplash.com/photo-1553530666",price:4},
-{name:"Chicken Meal",img:"https://images.unsplash.com/photo-1604908177522",price:9},
-{name:"Avocado Toast",img:"https://images.unsplash.com/photo-1551183053",price:5},
-{name:"Fruit Mix",img:"https://images.unsplash.com/photo-1547516508",price:5},
-{name:"Protein Bowl",img:"https://images.unsplash.com/photo-1601312371429",price:10}
-];
-
-let cart=[];
-
-function render(){
-document.getElementById("list").innerHTML=
-products.map((p,i)=>`
-<div class="card">
-<img src="${p.img}">
-<div class="info">
-<h3>${p.name}</h3>
-<p>$${p.price}</p>
-<button onclick="add(${i})">Add to Cart</button>
-</div>
-</div>
-`).join("");
-}
-
-function add(i){
-cart.push(products[i]);
-document.getElementById("count").innerText=cart.length;
-alert(products[i].name + " added to cart");
-}
-
-function openOrder(){
-if(cart.length===0){
-alert("Cart is empty");
-return;
-}
-document.getElementById("modal").style.display="flex";
-}
-
-function closeOrder(){
-document.getElementById("modal").style.display="none";
-}
-
-function submitOrder(){
-let n=document.getElementById("name").value;
-let p=document.getElementById("phone").value;
-let a=document.getElementById("address").value;
-
-if(!n||!p||!a){
-alert("Fill all fields");
-return;
-}
-
-let order={
-name:n,
-phone:p,
-address:a,
-items:cart
-};
-
-localStorage.setItem("bsj_order",JSON.stringify(order));
-
-alert("Order placed successfully 🚀");
-
-cart=[];
-document.getElementById("count").innerText=0;
-closeOrder();
-}
-
-render();
-</script>
+<script src="products.js"></script>
 
 </body>
 </html>
