@@ -1,208 +1,112 @@
 <!DOCTYPE html>
-<html lang="uz">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Shop | Nightfall Team</title>
-
+<title>BZA Daily Healthy PRO</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-
-body{
- background:#050505;
- color:#eee;
- font-family:Consolas,monospace;
- min-height:100vh;
- overflow-x:hidden;
-}
-
-/* TOP */
-.top{
- position:fixed;
- top:0;left:0;
- width:100%;
- padding:12px 25px;
- display:flex;
- justify-content:space-between;
- align-items:center;
- background:rgba(0,0,0,.75);
- border-bottom:1px solid #1c1c1c;
- backdrop-filter:blur(6px);
- z-index:10;
-}
-
-.top a{
- color:#ccc;
- text-decoration:none;
-}
-.top a:hover{color:#fff}
-
-/* SHOP */
-.shop{
- padding:120px 30px 120px;
- display:grid;
- grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
- gap:28px;
-}
-
-/* CARD */
-.card{
- background:#0c0c0c;
- border:1px solid #1f1f1f;
- padding:25px;
- border-radius:12px;
- display:flex;
- flex-direction:column;
- justify-content:space-between;
- transition:.35s ease;
-}
-
-.card:hover{
- transform:translateY(-8px);
- border-color:#444;
- box-shadow:0 10px 30px #000;
-}
-
-.card h2{
- font-size:17px;
- margin-bottom:10px;
- color:#fff;
-}
-
-.card p{
- font-size:13px;
- opacity:.7;
- line-height:1.6;
- margin-bottom:20px;
-}
-
-.price{
- font-size:18px;
- letter-spacing:1px;
- margin-bottom:15px;
- color:#fff;
-}
-
-/* <!---
- ["Private Mentorship","","Sum - Kelishiladi!"],
- ["Linux Mastery","Linux komandalar va xavfsizlik.","$15"],
- ["Web Security","XSS, SQLi, CSRF.","$20"],
- ["Pentest Toolkit","Kerakli hacking tool’lar.","$18"],
- ["Network Hacking","Wi-Fi va tarmoq hujumlari.","$22"],
- ["CTF Training","CTF mashg‘ulotlari.","$12"],
- ["OSINT Pro","Ma’lumot yig‘ish.","$14"],
- ["Dark Web Guide","Xavfsiz foydalanish.","$30"]
- ---> */
-.buy{
- padding:12px;
- background:#000;
- border:1px solid #333;
- color:#eee;
- cursor:pointer;
- letter-spacing:2px;
- transition:.3s;
-}
-.buy:hover{
- background:#111;
- border-color:#777;
-}
-
-/* FOOTER LED */
-.footer{
- position:fixed;
- bottom:18px;
- width:100%;
- overflow:hidden;
- pointer-events:none;
-}
-
-.led{
- display:inline-block;
- white-space:nowrap;
- padding-left:100%;
- font-size:13px;
- letter-spacing:6px;
- color:#fff;
- animation:move 18s linear infinite;
- text-shadow:0 0 8px #fff;
-}
-
-@keyframes move{
- from{transform:translateX(0)}
- to{transform:translateX(-100%)}
-}
-
-/* MOUSE TRAIL */
-.trail{
- position:fixed;
- width:6px;
- height:6px;
- border-radius:50%;
- background:rgba(255,255,255,.9);
- pointer-events:none;
- animation:fade .8s linear forwards;
-}
-
-@keyframes fade{
- to{
-  opacity:0;
-  transform:scale(2);
- }
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+body{background:#f4f7f4;color:#111}
+header{position:sticky;top:0;background:#fff;display:flex;justify-content:space-between;align-items:center;padding:14px 20px;box-shadow:0 4px 14px rgba(0,0,0,.08);z-index:10}
+.logo{font-size:22px;font-weight:900;color:#2e7d32}
+nav button{margin-left:8px;padding:8px 12px;border:none;border-radius:10px;cursor:pointer;background:#2e7d32;color:#fff}
+.search input{padding:10px;border-radius:10px;border:1px solid #ddd;width:200px}
+.hero{padding:30px;display:grid;grid-template-columns:2fr 1fr;gap:20px}
+.banner{background:linear-gradient(135deg,#2e7d32,#66bb6a);color:#fff;padding:30px;border-radius:20px}
+.section{padding:20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px}
+.card{background:#fff;border-radius:15px;padding:12px;box-shadow:0 6px 14px rgba(0,0,0,.06)}
+.img{height:100px;background:linear-gradient(135deg,#dcedc8,#a5d6a7);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:36px}
+.title{font-weight:700;margin:8px 0}
+.row{display:flex;justify-content:space-between;align-items:center}
+button.add{background:#111;color:#fff;border:none;padding:6px 10px;border-radius:8px;cursor:pointer}
+.drawer{position:fixed;right:-380px;top:0;width:340px;height:100%;background:#fff;box-shadow:-8px 0 20px rgba(0,0,0,.15);padding:16px;transition:.3s;overflow:auto;z-index:20}
+.drawer.open{right:0}
+.item{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #eee}
+.qty button{width:24px;height:24px;border:none;border-radius:6px;cursor:pointer}
+.checkout{margin-top:15px;width:100%;padding:10px;background:#2e7d32;color:#fff;border:none;border-radius:10px;font-weight:700;cursor:pointer}
+.modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);display:none;justify-content:center;align-items:center}
+.box{background:#fff;padding:20px;border-radius:15px;width:300px}
+input{width:100%;padding:10px;margin:6px 0;border-radius:8px;border:1px solid #ddd}
+.hidden{display:none}
 </style>
 </head>
 <body>
 
-<div class="top">
- <div>🛒 Nightfall Shop</div>
- <a href="index.html">← Back</a>
-</div>
+<header>
+<div class="logo">BZA PRO</div>
+<div class="search"><input id="search" placeholder="Search..."></div>
+<nav>
+<button onclick="openLogin()">Login</button>
+<button onclick="toggleCart()">Cart (<span id="count">0</span>)</button>
+</nav>
+</header>
 
-<div class="shop">
+<section class="hero">
+<div class="banner">
+<h1>Healthy Food Delivery PRO</h1>
+<p>Fast • Fresh • Smart system</p>
+</div>
+<div class="card">
+<h3>Admin Panel</h3>
+<p>Manage orders & users (demo)</p>
+</div>
+</section>
+
+<section class="section">
+<div class="grid" id="products"></div>
+</section>
+
+<aside class="drawer" id="drawer">
+<h2>Cart</h2>
+<div id="cart"></div>
+<h3>Total: $<span id="total">0</span></h3>
+<button class="checkout" onclick="checkout()">Checkout</button>
+</aside>
+
+<div class="modal" id="loginModal">
+<div class="box">
+<h3>Login</h3>
+<input placeholder="Username" id="user">
+<input placeholder="Password" type="password" id="pass">
+<button onclick="login()">Enter</button>
+<button onclick="closeLogin()">Close</button>
+</div>
+</div>
 
 <script>
 const products=[
- ["Sms Bomber ","Bu +998 Nomer la uchun Sms bomber (For Ethical)","Sum - Kelishiladi!"],
- ["Sms Bomber Telegram bot",".","Sum - Kelishiladi!"],
-
+{id:1,n:"Green Bowl",p:8,e:"🥗"},
+{id:2,n:"Smoothie",p:6,e:"🥤"},
+{id:3,n:"Protein Box",p:10,e:"🍱"},
+{id:4,n:"Fruit Mix",p:7,e:"🍓"},
+{id:5,n:"Chicken Meal",p:12,e:"🍗"},
+{id:6,n:"Avocado Toast",p:9,e:"🥑"}
 ];
-document.write(products.map(p=>`
-<div class="card">
- <div>
-  <h2>${p[0]}</h2>
-  <p>${p[1]}</p>
- </div>
- <div>
-  <div class="price">${p[2]}</div>
-  <button class="buy" onclick="buy('${p[0]}')">BUY</button>
- </div>
-</div>
-`).join(""));
-</script>
+let cart=[];
+let logged=false;
 
-</div>
+function render(list=products){
+productsEl.innerHTML=list.map(p=>`
+<div class='card'>
+<div class='img'>${p.e}</div>
+<div class='title'>${p.n}</div>
+<div class='row'><div>$${p.p}</div><button class='add' onclick='add(${p.id})'>Add</button></div>
+</div>`).join('')}
 
-<div class="footer">
- <div class="led">N I G H T F A L L&nbsp;&nbsp;T E A M&nbsp;&nbsp;—&nbsp;&nbsp;</div>
-</div>
+function add(id){let i=cart.find(x=>x.id===id);if(i)i.q++;else{let p=products.find(x=>x.id===id);cart.push({...p,q:1})}draw()}
+function draw(){count.textContent=cart.reduce((a,b)=>a+b.q,0);cartEl.innerHTML=cart.map(i=>`<div class='item'><div>${i.n}</div><div class='qty'><button onclick='chg(${i.id},-1)'>-</button>${i.q}<button onclick='chg(${i.id},1)'>+</button></div></div>`).join('');total.textContent=cart.reduce((a,b)=>a+b.p*b.q,0)}
+function chg(id,v){let i=cart.find(x=>x.id===id);i.q+=v;cart=cart.filter(x=>x.q>0);draw()}
+function toggleCart(){drawer.classList.toggle('open')}
+function checkout(){alert(logged?"Order placed 🚀":"Login first!")}
 
-<script>
-function buy(product){
- const msg=encodeURIComponent(
-  `Hello, I want to buy:\nProduct: ${product}\nFrom: Nightfall Shop`
- );
- window.open(`https://t.me/Nightfallmxx?text=${msg}`,"_blank");
-}
+function openLogin(){loginModal.style.display='flex'}
+function closeLogin(){loginModal.style.display='none'}
+function login(){logged=true;closeLogin();alert("Welcome Admin/User")}
 
-/* MOUSE TRAIL */
-document.addEventListener("mousemove",e=>{
- const t=document.createElement("div");
- t.className="trail";
- t.style.left=e.clientX+"px";
- t.style.top=e.clientY+"px";
- document.body.appendChild(t);
- setTimeout(()=>t.remove(),800);
-});
+search.oninput=e=>render(products.filter(p=>p.n.toLowerCase().includes(e.target.value.toLowerCase())))
+
+render();draw();
 </script>
 
 </body>
