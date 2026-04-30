@@ -1,24 +1,37 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Track Order</title>
-<link rel="stylesheet" href="style.css">
+let map=L.map('map').setView([41.2995,69.2401],13);
 
-<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-</head>
-<body>
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+attribution:'BSJ'
+}).addTo(map);
 
-<header>
-<div class="logo">DELIVERY TRACK</div>
-<a href="index.html">Home</a>
-</header>
+let start=[41.31,69.24];
+let end=[41.28,69.27];
 
-<div id="map"></div>
+L.marker(start).addTo(map).bindPopup("Restaurant");
+L.marker(end).addTo(map).bindPopup("You");
 
-<h3 id="status" style="text-align:center">Preparing...</h3>
+let carIcon=L.icon({
+iconUrl:"https://cdn-icons-png.flaticon.com/512/744/744465.png",
+iconSize:[40,40]
+});
 
-<script src="track.js"></script>
-</body>
-</html>
+let car=L.marker(start,{icon:carIcon}).addTo(map);
+
+let i=0;
+
+let interval=setInterval(()=>{
+i++;
+
+let lat=start[0]+(end[0]-start[0])*i/100;
+let lng=start[1]+(end[1]-start[1])*i/100;
+
+car.setLatLng([lat,lng]);
+
+if(i==30) status.innerText="Cooking food...";
+if(i==70) status.innerText="On the way...";
+if(i==100){
+status.innerText="Delivered 🚀 BAAA!";
+clearInterval(interval);
+}
+
+},100);
