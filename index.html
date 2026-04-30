@@ -1,236 +1,38 @@
 <!DOCTYPE html>
-<html lang="uz">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nightfall Team Xakers website</title>
-
+<title>BSJ Healthy AI</title>
 <style>
-*{
- margin:0;
- padding:0;
- box-sizing:border-box;
-}
-
-body{
- background:#050505;
- color:#fff;
- font-family:Consolas,monospace;
- overflow:hidden;
-}
-
-/* ===== BACKGROUND CANVAS ===== */
-canvas{
- position:fixed;
- inset:0;
- z-index:-1;
-}
-
-/* ===== TOP BAR ===== */
-.top{
- position:fixed;
- top:0;
- left:0;
- width:100%;
- padding:10px 20px;
- display:flex;
- justify-content:space-between;
- align-items:center;
- border-bottom:1px solid #222;
- background:rgba(0,0,0,.65);
- backdrop-filter:blur(4px);
- z-index:10;
-}
-
-.clock{
- font-size:13px;
- opacity:.85;
- letter-spacing:1px;
-}
-
-/* ===== CENTER ===== */
-.center{
- height:100vh;
- display:flex;
- justify-content:center;
- align-items:center;
- flex-direction:column;
- text-align:center;
-}
-
-/* ===== START BUTTON ===== */
-.start{
- padding:16px 42px;
- border:1px solid #444;
- background:#0d0d0d;
- color:#fff;
- font-size:15px;
- letter-spacing:2px;
- cursor:pointer;
- transition:.3s;
-}
-
-.start:hover{
- background:#1a1a1a;
- transform:scale(1.06);
-}
-
-/* ===== MENU ===== */
-.menu{
- position:fixed;
- top:0;
- right:-270px;
- width:270px;
- height:100vh;
- background:#000;
- border-left:1px solid #333;
- padding:70px 25px;
- transition:.4s ease;
- z-index:9;
-}
-
-.menu.active{
- right:0;
-}
-
-.menu a{
- display:block;
- margin-bottom:22px;
- color:#fff;
- text-decoration:none;
- letter-spacing:1px;
- opacity:.75;
- transition:.3s;
-}
-
-.menu a:hover{
- opacity:1;
- padding-left:5px;
-}
-
-/* ===== HINT ===== */
-.hint{
- margin-top:20px;
- font-size:12px;
- opacity:.5;
-}
-
-/* ===== MOBILE FIX ===== */
-@media(max-width:768px){
- body{overflow:auto;}
-}
+body{margin:0;font-family:Arial;background:#fff}
+header{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;box-shadow:0 4px 10px rgba(0,0,0,.08)}
+.logo{color:#2e7d32;font-weight:900;font-size:22px}
+nav a{margin:0 10px;text-decoration:none;color:#111;font-weight:600}
+.hero{text-align:center;padding:90px}
+.hero h1{font-size:46px;color:#2e7d32}
+.hero p{opacity:.7}
+.btn{background:#2e7d32;color:#fff;padding:10px 14px;border-radius:10px;text-decoration:none}
 </style>
 </head>
 <body>
 
-<!-- BACKGROUND -->
-<canvas id="bg"></canvas>
+<header>
+<div class="logo">BSJ</div>
+<nav>
+<a href="index.html">Home</a>
+<a href="products.html">Products</a>
+<a href="features.html">Features</a>
+<a href="about.html">About</a>
+</nav>
+</header>
 
-<!-- MUSIC -->
-<audio id="bgMusic" loop>
- <source src="song.mp3" type="audio/mpeg">
-</audio>
-
-<!-- TOP -->
-<div class="top">
- <div>HACKER PLATFORM</div>
- <div class="clock" id="clock"></div>
+<div class="hero">
+<h1>Healthy AI Food System</h1>
+<p>Smart • Fast • Modern Delivery</p>
+<br>
+<a class="btn" href="products.html">Start Order</a>
 </div>
-
-<!-- MENU -->
-<div class="menu" id="menu">
- <a href="lesson.html">Lesson</a>
- <a href="shop.html">Shop</a>
- <a href="planlesson.html">Plan lesson</a>
- <a href="news.html">News</a>
- <a href="about.html">About</a>
- <a href="prepering.html">Prepering Lesson</a>
-</div>
-
-<!-- CENTER -->
-<div class="center">
- <button class="start" onclick="toggleMenu()">Start Learing</button>
- <div class="hint">Click to enter</div>
-</div>
-
-<script>
-/* ===== FULLSCREEN (PC ONLY) ===== */
-if (window.innerWidth > 900) {
- document.addEventListener("click", () => {
-  if (!document.fullscreenElement) {
-   document.documentElement.requestFullscreen().catch(()=>{});
-  }
- }, { once:true });
-}
-
-/* ===== MENU + MUSIC ===== */
-let musicStarted = false;
-
-function toggleMenu(){
- const menu = document.getElementById("menu");
- const music = document.getElementById("bgMusic");
-
- menu.classList.toggle("active");
-
- if(!musicStarted){
-  music.volume = 0.6; // 0.0 - 1.0
-  music.play();
-  musicStarted = true;
- }
-}
-
-/* ===== CLOCK ===== */
-function updateClock(){
- const d = new Date();
- const days = ["Yakshanba","Dushanba","Seshanba","Chorshanba","Payshanba","Juma","Shanba"];
- const months = ["Yanvar","Fevral","Mart","Aprel","May","Iyun","Iyul","Avgust","Sentabr","Oktabr","Noyabr","Dekabr"];
-
- document.getElementById("clock").textContent =
-  `${days[d.getDay()]}, ${String(d.getDate()).padStart(2,"0")} ${months[d.getMonth()]} ${d.getFullYear()} | ` +
-  `${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}:${String(d.getSeconds()).padStart(2,"0")}`;
-}
-setInterval(updateClock,1000);
-updateClock();
-
-/* ===== PARTICLES ===== */
-const canvas = document.getElementById("bg");
-const ctx = canvas.getContext("2d");
-
-function resize(){
- canvas.width = innerWidth;
- canvas.height = innerHeight;
-}
-resize();
-addEventListener("resize", resize);
-
-let particles = [];
-
-addEventListener("mousemove", e => {
- for(let i=0;i<2;i++){
-  particles.push({
-   x:e.clientX,
-   y:e.clientY,
-   vx:(Math.random()-.5)*1.2,
-   vy:(Math.random()-.5)*1.2,
-   life:50
-  });
- }
-});
-
-function animate(){
- ctx.clearRect(0,0,canvas.width,canvas.height);
- particles.forEach((p,i)=>{
-  p.x+=p.vx;
-  p.y+=p.vy;
-  p.life--;
-  ctx.fillStyle="rgba(255,255,255,.6)";
-  ctx.fillRect(p.x,p.y,2,2);
-  if(p.life<=0) particles.splice(i,1);
- });
- requestAnimationFrame(animate);
-}
-animate();
-</script>
 
 </body>
 </html>
