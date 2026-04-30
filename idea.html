@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BSJ Daily Healthy AI PRO</title>
+
+<style>
+:root{
+--bg:#f4f7f4;
+--card:#ffffff;
+--text:#111;
+--primary:#2e7d32;
+--shadow:0 6px 16px rgba(0,0,0,.08);
+}
+
+body.dark{
+--bg:#0f1110;
+--card:#1c1f1d;
+--text:#fff;
+--primary:#66bb6a;
+--shadow:0 6px 18px rgba(0,0,0,.4);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+body{background:var(--bg);color:var(--text);transition:.3s}
+
+header{
+position:sticky;top:0;background:var(--card);
+display:flex;justify-content:space-between;align-items:center;
+padding:14px 18px;box-shadow:var(--shadow);z-index:10
+}
+
+.logo{font-size:24px;font-weight:900;color:var(--primary)}
+
+nav button{
+margin-left:6px;padding:8px 10px;border:none;border-radius:10px;
+cursor:pointer;background:var(--primary);color:#fff;font-size:12px
+}
+
+.search input{
+padding:10px;border-radius:10px;border:1px solid #ccc;
+width:180px
+}
+
+.hero{
+padding:25px;display:grid;grid-template-columns:2fr 1fr;gap:15px
+}
+
+.banner{
+background:linear-gradient(135deg,#2e7d32,#66bb6a);
+color:#fff;padding:25px;border-radius:18px
+}
+
+.section{padding:20px}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+gap:12px
+}
+
+.card{
+background:var(--card);
+border-radius:14px;
+padding:12px;
+box-shadow:var(--shadow)
+}
+
+.img{
+height:90px;background:linear-gradient(135deg,#dcedc8,#a5d6a7);
+border-radius:12px;display:flex;align-items:center;
+justify-content:center;font-size:34px
+}
+
+.title{font-weight:700;margin:6px 0}
+.row{display:flex;justify-content:space-between;align-items:center}
+
+button.add{
+background:#111;color:#fff;border:none;padding:6px 10px;
+border-radius:8px;cursor:pointer
+}
+
+.drawer{
+position:fixed;right:-380px;top:0;width:330px;height:100%;
+background:var(--card);box-shadow:-8px 0 20px rgba(0,0,0,.15);
+padding:14px;transition:.3s;overflow:auto;z-index:20
+}
+.drawer.open{right:0}
+
+.item{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #eee}
+.qty button{width:24px;height:24px;border:none;border-radius:6px;cursor:pointer}
+
+.checkout{
+margin-top:12px;width:100%;padding:10px;
+background:var(--primary);color:#fff;border:none;
+border-radius:10px;font-weight:700;cursor:pointer
+}
+
+.modal,.settings,.aiBox{
+position:fixed;top:0;left:0;width:100%;height:100%;
+background:rgba(0,0,0,.5);display:none;
+justify-content:center;align-items:center
+}
+
+.box{
+background:var(--card);padding:18px;border-radius:14px;width:300px
+}
+
+input{
+width:100%;padding:10px;margin:6px 0;
+border-radius:8px;border:1px solid #ccc
+}
+
+.small{font-size:12px;color:gray}
+
+</style>
+</head>
+<body>
+
+<header>
+<div class="logo">BSJ</div>
+
+<div class="search">
+<input id="search" placeholder="Search food...">
+</div>
+
+<nav>
+<button onclick="toggleTheme()">🌙/☀️</button>
+<button onclick="toggleMusic()">🎵</button>
+<button onclick="voiceSearch()">🎤</button>
+<button onclick="toggleCart()">Cart (<span id="count">0</span>)</button>
+</nav>
+</header>
+
+<section class="hero">
+<div class="banner">
+<h1>BSJ AI Healthy Delivery</h1>
+<p>Smart Food • AI • Fast Delivery • Dark/Light Mode</p>
+<button onclick="aiSuggest()">AI Suggest</button>
+</div>
+<div class="card">
+<h3>Location</h3>
+<p id="loc">Not allowed</p>
+<button onclick="getLocation()">Allow GPS</button>
+</div>
+</section>
+
+<section class="section">
+<div class="grid" id="products"></div>
+</section>
+
+<aside class="drawer" id="drawer">
+<h2>Your Cart</h2>
+<div id="cart"></div>
+<h3>Total: $<span id="total">0</span></h3>
+<button class="checkout" onclick="checkout()">Order Now</button>
+</aside>
+
+<!-- AI BOX -->
+<div class="aiBox" id="aiBox">
+<div class="box">
+<h3>AI Suggestion</h3>
+<p id="aiText"></p>
+<button onclick="closeAI()">OK</button>
+</div>
+</div>
+
+<!-- MUSIC -->
+<audio id="music" loop>
+<source src="https://cdn.pixabay.com/download/audio/2022/10/30/audio_8b7a0f.mp3?filename=relaxing-ambient-ambient-12015.mp3" type="audio/mp3">
+</audio>
+
+<script>
+const products=[
+{id:1,n:"Green Bowl",p:8,e:"🥗"},
+{id:2,n:"Smoothie",p:6,e:"🥤"},
+{id:3,n:"Protein Box",p:10,e:"🍱"},
+{id:4,n:"Fruit Mix",p:7,e:"🍓"},
+{id:5,n:"Chicken Meal",p:12,e:"🍗"},
+{id:6,n:"Avocado Toast",p:9,e:"🥑"}
+];
+
+let cart=[];
+let musicOn=false;
+
+function render(list=products){
+productsEl.innerHTML=list.map(p=>`
+<div class='card'>
+<div class='img'>${p.e}</div>
+<div class='title'>${p.n}</div>
+<div class='row'>
+<div>$${p.p}</div>
+<button class='add' onclick='add(${p.id})'>Add</button>
+</div>
+</div>`).join('')}
+
+function add(id){let i=cart.find(x=>x.id===id);if(i)i.q++;else{let p=products.find(x=>x.id===id);cart.push({...p,q:1})}draw()}
+
+function draw(){
+count.textContent=cart.reduce((a,b)=>a+b.q,0);
+cartEl.innerHTML=cart.map(i=>`
+<div class='item'>
+<div>${i.n}</div>
+<div class='qty'>
+<button onclick='chg(${i.id},-1)'>-</button>${i.q}<button onclick='chg(${i.id},1)'>+</button>
+</div>
+</div>`).join('');
+total.textContent=cart.reduce((a,b)=>a+b.p*b.q,0)
+}
+
+function chg(id,v){let i=cart.find(x=>x.id===id);i.q+=v;cart=cart.filter(x=>x.q>0);draw()}
+
+function toggleCart(){drawer.classList.toggle('open')}
+
+function checkout(){speak("Order confirmed by BSJ AI system");alert("Order placed 🚀")}
+
+function getLocation(){
+navigator.geolocation.getCurrentPosition(p=>{
+loc.textContent=p.coords.latitude.toFixed(3)+","+p.coords.longitude.toFixed(3)
+})}
+
+function toggleTheme(){document.body.classList.toggle('dark')}
+
+function toggleMusic(){
+let m=document.getElementById('music');
+if(!musicOn){m.play();musicOn=true}else{m.pause();musicOn=false}
+}
+
+function voiceSearch(){
+let rec=new (window.SpeechRecognition||window.webkitSpeechRecognition)();
+rec.lang='en-US';rec.start();
+rec.onresult=e=>{
+search.value=e.results[0][0].transcript;
+render(products.filter(p=>p.n.toLowerCase().includes(search.value.toLowerCase())));
+}
+}
+
+function aiSuggest(){
+let pick=products[Math.floor(Math.random()*products.length)].n;
+aiText.textContent="AI suggests: "+pick;
+aiBox.style.display='flex';
+}
+
+function closeAI(){aiBox.style.display='none'}
+
+function speak(text){let s=new SpeechSynthesisUtterance(text);speechSynthesis.speak(s)}
+
+search.oninput=e=>render(products.filter(p=>p.n.toLowerCase().includes(e.target.value.toLowerCase())))
+
+render();draw();
+</script>
+
+</body>
+</html>
