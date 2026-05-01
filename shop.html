@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>BSJ Shop</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+<div class="logo">BSJ SHOP</div>
+<button onclick="goTrack()">Track Order</button>
+</header>
+
+<div class="container">
+<h1>Order Confirmation</h1>
+
+<div id="orderBox"></div>
+
+<h2>Total: $<span id="total">0</span></h2>
+
+<button class="mainBtn" onclick="confirmOrder()">Confirm Order</button>
+</div>
+
+<audio id="music">
+<source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_8f49f8d1d5.mp3?filename=corporate-motivation-11282.mp3">
+</audio>
+
+<script src="app.js"></script>
+</body>
+</html>
