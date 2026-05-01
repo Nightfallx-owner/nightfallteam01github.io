@@ -1,3 +1,4 @@
+```html id="q8m4tx"
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -119,17 +120,17 @@ top:calc(50% - 48px);
 font-size:68px;
 z-index:10;
 transition:left .12s linear;
-transform:scaleX(-1); /* oldiga yuradi */
+transform:scaleX(-1);
 }
 
 .panel{
 position:absolute;
 left:20px;
 bottom:20px;
-background:rgba(255,255,255,.95);
+background:rgba(255,255,255,.96);
 padding:16px;
 border-radius:18px;
-width:320px;
+width:330px;
 box-shadow:var(--shadow);
 }
 
@@ -173,6 +174,12 @@ font-weight:900;
 display:none;
 }
 
+.stars span{
+font-size:28px;
+cursor:pointer;
+color:#f5b301;
+}
+
 @media(max-width:700px){
 .panel{
 width:calc(100% - 40px);
@@ -200,93 +207,129 @@ font-size:56px;
 <div class="line"></div>
 
 <div class="store">🍴 Restaurant</div>
-<div class="home">🏠 You</div>
+<div class="home">🏠 Home</div>
 
-<div class="car" id="car">🚚</div>
+<div class="car" id="car">🚛</div>
 
 <div class="arrived" id="arrived">
-Delivered 🚀 Enjoy your meal
+🎉 Delivered Successfully
 </div>
 
 <div class="panel">
-<div class="status" id="status">Preparing order...</div>
-<div class="small" id="info">AI Driver system started.</div>
+
+<div class="status" id="status">Preparing your fresh order...</div>
+
+<div class="small" id="info">
+Our kitchen team is carefully packing your meal.
+</div>
 
 <div class="progress">
 <div class="bar" id="bar"></div>
 </div>
+
+<div style="margin-top:14px" class="small">
+Estimated wait time: 0.5 min
 </div>
 
+<div style="margin-top:12px;font-weight:700">
+Rate your delivery
+</div>
+
+<div class="stars" id="stars" style="margin-top:6px">
+<span onclick="rate(1)">☆</span>
+<span onclick="rate(2)">☆</span>
+<span onclick="rate(3)">☆</span>
+<span onclick="rate(4)">☆</span>
+<span onclick="rate(5)">☆</span>
+</div>
+
+<div class="small" id="rateText" style="margin-top:6px">
+No rating selected yet
+</div>
+
+</div>
 </div>
 
 <script>
-let pos = 30;
-let max = window.innerWidth - 150;
-let timer = null;
+let pos=30;
+let max=window.innerWidth-150;
+let timer=null;
 
 function speak(text){
 try{
-let s = new SpeechSynthesisUtterance(text);
-s.lang = "en-US";
+speechSynthesis.cancel();
+let s=new SpeechSynthesisUtterance(text);
+s.lang="en-US";
+s.rate=1;
+s.pitch=1.1;
 speechSynthesis.speak(s);
 }catch(e){}
 }
 
 function updateStatus(percent){
-if(percent < 15){
-status.textContent = "Preparing order...";
-info.textContent = "Kitchen is packing your food.";
+
+if(percent<15){
+status.textContent="Preparing your delicious order...";
+info.textContent="Chef is packing everything fresh for you.";
 }
-else if(percent < 35){
-status.textContent = "Driver picked up order";
-info.textContent = "Courier left restaurant.";
+
+else if(percent<35){
+status.textContent="Courier picked up your order";
+info.textContent="Driver has left the restaurant safely.";
 }
-else if(percent < 70){
-status.textContent = "Driver on the way";
-info.textContent = "Traffic is clear.";
+
+else if(percent<70){
+status.textContent="Your order is on the way";
+info.textContent="Courier is driving to your address now.";
 }
-else if(percent < 95){
-status.textContent = "Almost arrived";
-info.textContent = "Courier is near your location.";
+
+else if(percent<95){
+status.textContent="Almost at your door";
+info.textContent="Please be ready. Arrival in moments.";
 }
+
 else{
-status.textContent = "Delivered";
-info.textContent = "Thank you for choosing BSJ.";
+status.textContent="Delivered successfully";
+info.textContent="Enjoy your meal and have a great day!";
 }
+
 }
 
 function startTrack(){
-pos = 30;
-arrived.style.display = "none";
-car.style.left = pos + "px";
-bar.style.width = "0%";
 
-speak("Your order has been confirmed.");
+pos=30;
+arrived.style.display="none";
+car.style.left=pos+"px";
+bar.style.width="0%";
 
-timer = setInterval(()=>{
+speak("Hello. Your order has been confirmed.");
 
-if(pos >= max){
+timer=setInterval(()=>{
+
+if(pos>=max){
 clearInterval(timer);
-status.textContent = "Delivered";
-info.textContent = "Order completed successfully.";
-bar.style.width = "100%";
-arrived.style.display = "block";
-speak("Your order has arrived.");
+status.textContent="Delivered successfully";
+info.textContent="Thank you for choosing BSJ Delivery.";
+bar.style.width="100%";
+arrived.style.display="block";
+speak("Your order has arrived. Enjoy your meal.");
 return;
 }
 
-pos += 4;
-car.style.left = pos + "px";
+pos+=4;
+car.style.left=pos+"px";
 
-let percent = Math.min(100, Math.round((pos / max) * 100));
-bar.style.width = percent + "%";
+let percent=Math.min(100,Math.round((pos/max)*100));
+bar.style.width=percent+"%";
+
 updateStatus(percent);
 
 },120);
 
-setTimeout(()=>speak("Driver picked up your order."),2500);
-setTimeout(()=>speak("Driver is on the way."),6000);
-setTimeout(()=>speak("Driver is almost there."),9500);
+setTimeout(()=>speak("Your courier picked up the order."),2500);
+setTimeout(()=>speak("Your courier is on the way."),6000);
+setTimeout(()=>speak("Your courier is almost there."),9500);
+
 }
 
 function restartTrack(){
@@ -295,8 +338,30 @@ speechSynthesis.cancel();
 startTrack();
 }
 
+function rate(n){
+
+let stars=document.querySelectorAll("#stars span");
+
+stars.forEach((s,i)=>{
+s.textContent=i<n ? "★" : "☆";
+});
+
+let txt=[
+"",
+"Poor service",
+"Average service",
+"Good service",
+"Very good service",
+"Excellent service"
+];
+
+rateText.textContent=txt[n];
+speak("Thank you for rating us " + n + " stars");
+
+}
+
 window.addEventListener("resize",()=>{
-max = window.innerWidth - 150;
+max=window.innerWidth-150;
 });
 
 startTrack();
@@ -304,3 +369,4 @@ startTrack();
 
 </body>
 </html>
+```
