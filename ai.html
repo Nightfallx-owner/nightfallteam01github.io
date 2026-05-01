@@ -12,6 +12,7 @@ background:#050816;
 color:white;
 display:flex;
 height:100vh;
+overflow:hidden;
 }
 
 /* CHAT */
@@ -70,17 +71,18 @@ border-radius:10px;
 cursor:pointer;
 }
 
-/* AI SIDE */
+/* RIGHT SIDE */
 .side{
 flex:1;
 display:flex;
+flex-direction:column;
 justify-content:center;
 align-items:center;
 position:relative;
 }
 
 .girl{
-width:300px;
+width:260px;
 animation:idle 3s infinite;
 }
 
@@ -120,28 +122,58 @@ left:20px;
 font-size:14px;
 opacity:.7;
 }
+
+/* PRODUCTS PAGE */
+.products{
+display:none;
+width:100%;
+padding:20px;
+overflow:auto;
+}
+
+.card{
+background:#111827;
+padding:15px;
+margin:10px;
+border-radius:10px;
+}
 </style>
 </head>
 
 <body>
 
-<div class="chat">
-<div class="header">= AI FOOD Info </div>
+<!-- CHAT -->
+<div class="chat" id="chatBox">
+<div class="header">🍔 AI FOOD GIRL</div>
 
 <div class="messages" id="chat"></div>
 
 <div class="input">
-<input id="input" placeholder="Write food name...">
+<input id="input" placeholder="Write food or /products">
 <button onclick="send()">Send</button>
 </div>
 </div>
 
-<div class="side">
-<div id="girl" class="girl">
-<img src="https://www.google.com/imgres?q=robot%20girl%20for%20frontend&imgurl=https%3A%2F%2Fwww.1999.co.jp%2Fitbig130%2F11302498b.jpg&imgrefurl=https%3A%2F%2Fwww.1999.co.jp%2Feng%2F11302498%3Fsrsltid%3DAfmBOoqXVaXXJpbIBKIAGJaA4StzJBc85e2aHaGs8FbTOWOUhGYgpXme&docid=QuEozD6rBuNTZM&tbnid=MAJNOTnh2zye5M&vet=12ahUKEwj60diospiUAxVAg_0HHXQNNss4ChCc8A56BAhUEAE..i&w=750&h=1000&hcb=2&itg=1&ved=2ahUKEwj60diospiUAxVAg_0HHXQNNss4ChCc8A56BAhUEAE" width="100%">
+<!-- RIGHT SIDE -->
+<div class="side" id="side">
+
+<img class="girl" id="girl"
+src="https://i.imgur.com/5bX8Y9L.png">
+
 <div class="mouth"></div>
-</div>
 <div class="status" id="status">AI ready...</div>
+
+<!-- PRODUCTS PAGE -->
+<div class="products" id="products">
+<h2>🍟 Products Menu</h2>
+
+<div class="card">🍔 Burger — $5</div>
+<div class="card">🍕 Pizza — $8</div>
+<div class="card">🥤 Cola — $2</div>
+<div class="card">🍟 Fries — $3</div>
+
+</div>
+
 </div>
 
 <script>
@@ -150,33 +182,21 @@ const chat=document.getElementById("chat");
 const input=document.getElementById("input");
 const girl=document.getElementById("girl");
 const statusBox=document.getElementById("status");
+const products=document.getElementById("products");
+const chatBox=document.getElementById("chatBox");
 
-/* FOOD AI */
+/* AI logic */
 function ai(text){
-text=text.toLowerCase();
 
-if(text.includes("salad"))
-return "🥗 Salad — vitaminlarga  boy, weight  loss uchun  ideal  food.";
+if(text.includes("salad")) return "🥗 Salad healthy food.";
+if(text.includes("burger")) return "🍔 Burger tasty but not too healthy.";
+if(text.includes("pizza")) return "🍕 Pizza — very popular food.";
+if(text.includes("chicken")) return "🍗 Chicken — protein source.";
 
-if(text.includes("burger"))
-return "🍔 Burger — tez energiya beradi, lekin ko‘p yesa healthy emas.";
-
-if(text.includes("smoothie"))
-return "🥤 Smoothie — meva + vitamin, juda healthy drink.";
-
-if(text.includes("chicken"))
-return "🍗 Chicken — protein manbai, gym uchun juda yaxshi.";
-
-if(text.includes("avocado"))
-return "🥑 Avocado — healthy fat, skin va energy uchun foydali.";
-
-if(text.includes("rice"))
-return "🍛 Rice — asosiy energy source, sportchilar uchun yaxshi.";
-
-return "🤔 Bu food haqida aniq malumot yo‘q. Salad, burger, smoothie deb yozib ko‘r.";
+return "🤔 Unknown food. Try burger, pizza, salad.";
 }
 
-/* add message */
+/* add msg */
 function add(text,type){
 let d=document.createElement("div");
 d.className="msg "+type;
@@ -186,11 +206,11 @@ chat.scrollTop=chat.scrollHeight;
 return d;
 }
 
-/* typing */
+/* typing effect */
 function type(el,text,i=0){
 if(i<text.length){
 el.innerText+=text[i];
-setTimeout(()=>type(el,text,i+1),20);
+setTimeout(()=>type(el,text,i+1),25);
 }else{
 girl.classList.remove("talking");
 statusBox.innerText="AI ready...";
@@ -204,6 +224,12 @@ let s=new SpeechSynthesisUtterance(text);
 speechSynthesis.speak(s);
 }
 
+/* page switch */
+function openProducts(){
+chatBox.style.display="none";
+products.style.display="block";
+}
+
 /* send */
 function send(){
 let t=input.value.trim();
@@ -212,10 +238,15 @@ if(!t)return;
 add(t,"user");
 input.value="";
 
+/* /products command */
+if(t=="/products"){
+openProducts();
+return;
+}
+
 let box=add("","ai");
 
 setTimeout(()=>{
-
 let res=ai(t);
 
 girl.classList.add("talking");
@@ -227,8 +258,8 @@ speak(res);
 },400);
 }
 
-/* welcome */
-add("Salom 👋 Food haqida so‘rashing mumkin!", "ai");
+/* start */
+add("Salom 👋 Food yoz yoki /products yoz!", "ai");
 
 </script>
 
