@@ -1,25 +1,306 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Track</title>
-<link rel="stylesheet" href="style.css">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>BSJ Track Order</title>
 
-<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<style>
+:root{
+--bg:#f5f7f5;
+--card:#ffffff;
+--text:#111;
+--primary:#2e7d32;
+--shadow:0 8px 22px rgba(0,0,0,.08);
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:var(--bg);
+color:var(--text);
+overflow:hidden;
+}
+
+header{
+position:fixed;
+top:0;
+left:0;
+right:0;
+height:70px;
+background:var(--card);
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:0 18px;
+box-shadow:var(--shadow);
+z-index:50;
+}
+
+.logo{
+font-size:24px;
+font-weight:900;
+color:var(--primary);
+}
+
+button{
+border:none;
+cursor:pointer;
+padding:10px 14px;
+border-radius:10px;
+background:var(--primary);
+color:#fff;
+font-weight:700;
+}
+
+.map{
+position:fixed;
+inset:70px 0 0 0;
+background:
+linear-gradient(90deg,#dadada 0 8%,#ececec 8% 16%,#dadada 16% 24%,#ececec 24% 32%,#dadada 32% 40%,#ececec 40% 48%,#dadada 48% 56%,#ececec 56% 64%,#dadada 64% 72%,#ececec 72% 80%,#dadada 80% 88%,#ececec 88% 100%);
+overflow:hidden;
+}
+
+.street{
+position:absolute;
+left:0;
+top:50%;
+width:100%;
+height:130px;
+background:#2d2d2d;
+transform:translateY(-50%);
+}
+
+.line{
+position:absolute;
+left:0;
+top:50%;
+width:100%;
+height:6px;
+transform:translateY(-50%);
+background:repeating-linear-gradient(
+90deg,
+#fff 0 35px,
+transparent 35px 70px
+);
+}
+
+.store{
+position:absolute;
+left:50px;
+top:calc(50% - 170px);
+background:#fff;
+padding:14px;
+border-radius:16px;
+box-shadow:var(--shadow);
+font-weight:800;
+}
+
+.home{
+position:absolute;
+right:50px;
+top:calc(50% - 170px);
+background:#fff;
+padding:14px;
+border-radius:16px;
+box-shadow:var(--shadow);
+font-weight:800;
+}
+
+.car{
+position:absolute;
+left:30px;
+top:calc(50% - 48px);
+font-size:68px;
+z-index:10;
+transition:left .12s linear;
+transform:scaleX(-1); /* oldiga yuradi */
+}
+
+.panel{
+position:absolute;
+left:20px;
+bottom:20px;
+background:rgba(255,255,255,.95);
+padding:16px;
+border-radius:18px;
+width:320px;
+box-shadow:var(--shadow);
+}
+
+.status{
+font-weight:800;
+margin-bottom:10px;
+font-size:18px;
+}
+
+.small{
+font-size:13px;
+opacity:.7;
+line-height:1.5;
+}
+
+.progress{
+height:10px;
+background:#ddd;
+border-radius:999px;
+overflow:hidden;
+margin-top:12px;
+}
+
+.bar{
+height:100%;
+width:0%;
+background:var(--primary);
+transition:.12s linear;
+}
+
+.arrived{
+position:absolute;
+top:90px;
+left:50%;
+transform:translateX(-50%);
+background:#fff;
+padding:16px 22px;
+border-radius:16px;
+box-shadow:var(--shadow);
+font-weight:900;
+display:none;
+}
+
+@media(max-width:700px){
+.panel{
+width:calc(100% - 40px);
+}
+.store,.home{
+font-size:13px;
+padding:10px;
+}
+.car{
+font-size:56px;
+}
+}
+</style>
 </head>
 <body>
 
 <header>
-<div class="logo">TRACK ORDER</div>
-<a href="index.html">Home</a>
+<div class="logo">BSJ TRACK</div>
+<button onclick="restartTrack()">Restart</button>
 </header>
 
-<div id="map"></div>
+<div class="map">
 
+<div class="street"></div>
+<div class="line"></div>
+
+<div class="store">🍴 Restaurant</div>
+<div class="home">🏠 You</div>
+
+<div class="car" id="car">🚚</div>
+
+<div class="arrived" id="arrived">
+Delivered 🚀 Enjoy your meal
+</div>
+
+<div class="panel">
 <div class="status" id="status">Preparing order...</div>
+<div class="small" id="info">AI Driver system started.</div>
 
-<script src="track.js"></script>
+<div class="progress">
+<div class="bar" id="bar"></div>
+</div>
+</div>
+
+</div>
+
+<script>
+let pos = 30;
+let max = window.innerWidth - 150;
+let timer = null;
+
+function speak(text){
+try{
+let s = new SpeechSynthesisUtterance(text);
+s.lang = "en-US";
+speechSynthesis.speak(s);
+}catch(e){}
+}
+
+function updateStatus(percent){
+if(percent < 15){
+status.textContent = "Preparing order...";
+info.textContent = "Kitchen is packing your food.";
+}
+else if(percent < 35){
+status.textContent = "Driver picked up order";
+info.textContent = "Courier left restaurant.";
+}
+else if(percent < 70){
+status.textContent = "Driver on the way";
+info.textContent = "Traffic is clear.";
+}
+else if(percent < 95){
+status.textContent = "Almost arrived";
+info.textContent = "Courier is near your location.";
+}
+else{
+status.textContent = "Delivered";
+info.textContent = "Thank you for choosing BSJ.";
+}
+}
+
+function startTrack(){
+pos = 30;
+arrived.style.display = "none";
+car.style.left = pos + "px";
+bar.style.width = "0%";
+
+speak("Your order has been confirmed.");
+
+timer = setInterval(()=>{
+
+if(pos >= max){
+clearInterval(timer);
+status.textContent = "Delivered";
+info.textContent = "Order completed successfully.";
+bar.style.width = "100%";
+arrived.style.display = "block";
+speak("Your order has arrived.");
+return;
+}
+
+pos += 4;
+car.style.left = pos + "px";
+
+let percent = Math.min(100, Math.round((pos / max) * 100));
+bar.style.width = percent + "%";
+updateStatus(percent);
+
+},120);
+
+setTimeout(()=>speak("Driver picked up your order."),2500);
+setTimeout(()=>speak("Driver is on the way."),6000);
+setTimeout(()=>speak("Driver is almost there."),9500);
+}
+
+function restartTrack(){
+clearInterval(timer);
+speechSynthesis.cancel();
+startTrack();
+}
+
+window.addEventListener("resize",()=>{
+max = window.innerWidth - 150;
+});
+
+startTrack();
+</script>
 
 </body>
 </html>
