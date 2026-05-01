@@ -2,16 +2,16 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>BSJ Daily Healthy AI PRO</title>
 
 <style>
 :root{
---bg:#f4f7f4;
+--bg:#f5f7f5;
 --card:#ffffff;
 --text:#111;
 --primary:#2e7d32;
---shadow:0 6px 16px rgba(0,0,0,.08);
+--shadow:0 8px 20px rgba(0,0,0,.08);
 }
 
 body.dark{
@@ -19,101 +19,229 @@ body.dark{
 --card:#1c1f1d;
 --text:#fff;
 --primary:#66bb6a;
---shadow:0 6px 18px rgba(0,0,0,.4);
+--shadow:0 8px 22px rgba(0,0,0,.35);
 }
 
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
-body{background:var(--bg);color:var(--text);transition:.3s}
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:var(--bg);
+color:var(--text);
+transition:.25s;
+}
 
 header{
-position:sticky;top:0;background:var(--card);
-display:flex;justify-content:space-between;align-items:center;
-padding:14px 18px;box-shadow:var(--shadow);z-index:10
+position:sticky;
+top:0;
+z-index:50;
+background:var(--card);
+padding:14px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:10px;
+flex-wrap:wrap;
+box-shadow:var(--shadow);
 }
 
-.logo{font-size:24px;font-weight:900;color:var(--primary)}
-
-nav button{
-margin-left:6px;padding:8px 10px;border:none;border-radius:10px;
-cursor:pointer;background:var(--primary);color:#fff;font-size:12px
+.logo{
+font-size:26px;
+font-weight:900;
+color:var(--primary);
 }
 
-.search input{
-padding:10px;border-radius:10px;border:1px solid #ccc;
-width:180px
+.right{
+display:flex;
+gap:8px;
+flex-wrap:wrap;
+}
+
+input.search{
+padding:10px;
+border-radius:10px;
+border:1px solid #ccc;
+width:180px;
+outline:none;
+}
+
+button{
+border:none;
+cursor:pointer;
+border-radius:10px;
+padding:10px 12px;
+font-weight:700;
+background:var(--primary);
+color:#fff;
 }
 
 .hero{
-padding:25px;display:grid;grid-template-columns:2fr 1fr;gap:15px
+padding:24px;
+display:grid;
+grid-template-columns:2fr 1fr;
+gap:15px;
 }
 
 .banner{
 background:linear-gradient(135deg,#2e7d32,#66bb6a);
-color:#fff;padding:25px;border-radius:18px
+color:#fff;
+padding:24px;
+border-radius:18px;
 }
 
-.section{padding:20px}
+.side{
+background:var(--card);
+border-radius:18px;
+padding:18px;
+box-shadow:var(--shadow);
+}
+
+.section{
+padding:20px;
+}
 
 .grid{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-gap:12px
+grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+gap:14px;
 }
 
 .card{
 background:var(--card);
-border-radius:14px;
+border-radius:16px;
+overflow:hidden;
+box-shadow:var(--shadow);
+transition:.2s;
+}
+
+.card:hover{
+transform:translateY(-4px);
+}
+
+.card img{
+width:100%;
+height:150px;
+object-fit:cover;
+background:#eee;
+}
+
+.info{
 padding:12px;
-box-shadow:var(--shadow)
 }
 
-.img{
-height:90px;background:linear-gradient(135deg,#dcedc8,#a5d6a7);
-border-radius:12px;display:flex;align-items:center;
-justify-content:center;font-size:34px
+.title{
+font-size:18px;
+font-weight:800;
+margin-bottom:6px;
 }
 
-.title{font-weight:700;margin:6px 0}
-.row{display:flex;justify-content:space-between;align-items:center}
+.meta{
+font-size:13px;
+opacity:.75;
+margin-bottom:8px;
+}
 
-button.add{
-background:#111;color:#fff;border:none;padding:6px 10px;
-border-radius:8px;cursor:pointer
+.row{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:8px;
+margin-top:10px;
+}
+
+.price{
+font-weight:900;
+color:var(--primary);
 }
 
 .drawer{
-position:fixed;right:-380px;top:0;width:330px;height:100%;
-background:var(--card);box-shadow:-8px 0 20px rgba(0,0,0,.15);
-padding:14px;transition:.3s;overflow:auto;z-index:20
+position:fixed;
+right:-390px;
+top:0;
+width:350px;
+max-width:100%;
+height:100%;
+background:var(--card);
+box-shadow:-8px 0 22px rgba(0,0,0,.18);
+transition:.3s;
+padding:18px;
+overflow:auto;
+z-index:90;
 }
-.drawer.open{right:0}
 
-.item{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #eee}
-.qty button{width:24px;height:24px;border:none;border-radius:6px;cursor:pointer}
-
-.checkout{
-margin-top:12px;width:100%;padding:10px;
-background:var(--primary);color:#fff;border:none;
-border-radius:10px;font-weight:700;cursor:pointer
+.drawer.open{
+right:0;
 }
 
-.modal,.settings,.aiBox{
-position:fixed;top:0;left:0;width:100%;height:100%;
-background:rgba(0,0,0,.5);display:none;
-justify-content:center;align-items:center
+.item{
+padding:10px 0;
+border-bottom:1px solid #ddd;
+display:flex;
+justify-content:space-between;
+gap:8px;
+}
+
+.small{
+font-size:12px;
+opacity:.7;
+}
+
+.total{
+margin-top:14px;
+font-size:18px;
+font-weight:900;
+}
+
+.overlay,
+.modal{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.55);
+display:none;
+justify-content:center;
+align-items:center;
+z-index:100;
+padding:16px;
 }
 
 .box{
-background:var(--card);padding:18px;border-radius:14px;width:300px
+background:var(--card);
+border-radius:18px;
+padding:18px;
+width:420px;
+max-width:100%;
+max-height:90vh;
+overflow:auto;
+box-shadow:var(--shadow);
 }
 
-input{
-width:100%;padding:10px;margin:6px 0;
-border-radius:8px;border:1px solid #ccc
+.box img{
+width:100%;
+height:220px;
+object-fit:cover;
+border-radius:14px;
+margin-bottom:12px;
 }
 
-.small{font-size:12px;color:gray}
+.history{
+margin-top:10px;
+}
 
+.history div{
+padding:8px 0;
+border-bottom:1px solid #ddd;
+font-size:14px;
+}
+
+@media(max-width:900px){
+.hero{
+grid-template-columns:1fr;
+}
+}
 </style>
 </head>
 <body>
@@ -121,28 +249,25 @@ border-radius:8px;border:1px solid #ccc
 <header>
 <div class="logo">BSJ</div>
 
-<div class="search">
-<input id="search" placeholder="Search food...">
-</div>
-
-<nav>
-<button onclick="toggleTheme()">🌙/☀️</button>
-<button onclick="toggleMusic()">🎵</button>
-<button onclick="voiceSearch()">🎤</button>
+<div class="right">
+<input class="search" id="search" placeholder="Search food...">
+<button onclick="toggleTheme()">🌙</button>
 <button onclick="toggleCart()">Cart (<span id="count">0</span>)</button>
-</nav>
+<button onclick="showHistory()">History</button>
+</div>
 </header>
 
 <section class="hero">
 <div class="banner">
-<h1>BSJ AI Healthy Delivery</h1>
-<p>Smart Food • AI • Fast Delivery • Dark/Light Mode</p>
-<button onclick="aiSuggest()">AI Suggest</button>
+<h1>Healthy Food Delivery</h1>
+<p>Calories • Nutrition • Fast Order • Smart UI</p>
+<br>
+<button onclick="randomSuggest()">AI Suggest</button>
 </div>
-<div class="card">
-<h3>Location</h3>
-<p id="loc">Not allowed</p>
-<button onclick="getLocation()">Allow GPS</button>
+
+<div class="side">
+<h3>Daily Tip</h3>
+<p id="tip">Drink water and eat balanced meals.</p>
 </div>
 </section>
 
@@ -150,105 +275,256 @@ border-radius:8px;border:1px solid #ccc
 <div class="grid" id="products"></div>
 </section>
 
-<aside class="drawer" id="drawer">
+<!-- CART -->
+<div class="drawer" id="drawer">
 <h2>Your Cart</h2>
 <div id="cart"></div>
-<h3>Total: $<span id="total">0</span></h3>
-<button class="checkout" onclick="checkout()">Order Now</button>
-</aside>
+<div class="total">Total: $<span id="total">0</span></div>
+<br>
+<button onclick="checkout()">Order Now</button>
+</div>
 
-<!-- AI BOX -->
-<div class="aiBox" id="aiBox">
+<!-- PRODUCT VIEW -->
+<div class="modal" id="viewModal">
 <div class="box">
-<h3>AI Suggestion</h3>
-<p id="aiText"></p>
-<button onclick="closeAI()">OK</button>
+<img id="viewImg">
+<h2 id="viewTitle"></h2>
+<p id="viewDesc"></p>
+<br>
+<p><b>Calories:</b> <span id="viewCal"></span></p>
+<p><b>Protein:</b> <span id="viewProtein"></span></p>
+<p><b>Carbs:</b> <span id="viewCarbs"></span></p>
+<p><b>Fat:</b> <span id="viewFat"></span></p>
+<br>
+<button onclick="closeView()">Close</button>
 </div>
 </div>
 
-<!-- MUSIC -->
-<audio id="music" loop>
-<source src="https://cdn.pixabay.com/download/audio/2022/10/30/audio_8b7a0f.mp3?filename=relaxing-ambient-ambient-12015.mp3" type="audio/mp3">
-</audio>
+<!-- HISTORY -->
+<div class="overlay" id="historyModal">
+<div class="box">
+<h2>Order History</h2>
+<div class="history" id="historyList"></div>
+<br>
+<button onclick="closeHistory()">Close</button>
+</div>
+</div>
 
 <script>
-const products=[
-{id:1,n:"Green Bowl",p:8,e:"🥗"},
-{id:2,n:"Smoothie",p:6,e:"🥤"},
-{id:3,n:"Protein Box",p:10,e:"🍱"},
-{id:4,n:"Fruit Mix",p:7,e:"🍓"},
-{id:5,n:"Chicken Meal",p:12,e:"🍗"},
-{id:6,n:"Avocado Toast",p:9,e:"🥑"}
+const products = [
+{
+id:1,
+name:"Chicken Salad",
+price:8,
+cal:320,
+protein:"28g",
+carbs:"14g",
+fat:"11g",
+img:"https://images.unsplash.com/photo-1546793665-c74683f339c1?auto=format&fit=crop&w=800&q=80",
+desc:"Fresh chicken with greens and healthy dressing."
+},
+{
+id:2,
+name:"Protein Bowl",
+price:10,
+cal:450,
+protein:"35g",
+carbs:"30g",
+fat:"14g",
+img:"https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=800&q=80",
+desc:"Rice, chicken, avocado and vegetables."
+},
+{
+id:3,
+name:"Fruit Mix",
+price:7,
+cal:240,
+protein:"4g",
+carbs:"52g",
+fat:"1g",
+img:"https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?auto=format&fit=crop&w=800&q=80",
+desc:"Mixed seasonal fruits full of vitamins."
+},
+{
+id:4,
+name:"Smoothie",
+price:6,
+cal:210,
+protein:"9g",
+carbs:"36g",
+fat:"3g",
+img:"https://images.unsplash.com/photo-1502741338009-cac2772e18bc?auto=format&fit=crop&w=800&q=80",
+desc:"Banana berry smoothie energy drink."
+},
+{
+id:5,
+name:"Avocado Toast",
+price:9,
+cal:380,
+protein:"12g",
+carbs:"33g",
+fat:"18g",
+img:"https://images.unsplash.com/photo-1525351484163-7529414344d8?auto=format&fit=crop&w=800&q=80",
+desc:"Whole grain toast with avocado."
+},
+{
+id:6,
+name:"Chicken Meal",
+price:12,
+cal:520,
+protein:"42g",
+carbs:"28g",
+fat:"18g",
+img:"https://images.unsplash.com/photo-1604908177522-402f994d58a6?auto=format&fit=crop&w=800&q=80",
+desc:"Healthy grilled chicken meal plate."
+}
 ];
 
-let cart=[];
-let musicOn=false;
+let cart = JSON.parse(localStorage.getItem("bsj_cart") || "[]");
 
-function render(list=products){
-productsEl.innerHTML=list.map(p=>`
-<div class='card'>
-<div class='img'>${p.e}</div>
-<div class='title'>${p.n}</div>
-<div class='row'>
-<div>$${p.p}</div>
-<button class='add' onclick='add(${p.id})'>Add</button>
+function render(list = products){
+productsEl.innerHTML = list.map(p => `
+<div class="card">
+<img src="${p.img}">
+<div class="info">
+<div class="title">${p.name}</div>
+<div class="meta">${p.cal} kcal • ${p.protein} protein</div>
+
+<div class="row">
+<div class="price">$${p.price}</div>
+<button onclick="viewProduct(${p.id})">View</button>
 </div>
-</div>`).join('')}
 
-function add(id){let i=cart.find(x=>x.id===id);if(i)i.q++;else{let p=products.find(x=>x.id===id);cart.push({...p,q:1})}draw()}
-
-function draw(){
-count.textContent=cart.reduce((a,b)=>a+b.q,0);
-cartEl.innerHTML=cart.map(i=>`
-<div class='item'>
-<div>${i.n}</div>
-<div class='qty'>
-<button onclick='chg(${i.id},-1)'>-</button>${i.q}<button onclick='chg(${i.id},1)'>+</button>
+<div class="row">
+<button onclick="addCart(${p.id})">Add to Cart</button>
 </div>
-</div>`).join('');
-total.textContent=cart.reduce((a,b)=>a+b.p*b.q,0)
+</div>
+</div>
+`).join("");
 }
 
-function chg(id,v){let i=cart.find(x=>x.id===id);i.q+=v;cart=cart.filter(x=>x.q>0);draw()}
-
-function toggleCart(){drawer.classList.toggle('open')}
-
-function checkout(){speak("Order confirmed by BSJ AI system");alert("Order placed 🚀")}
-
-function getLocation(){
-navigator.geolocation.getCurrentPosition(p=>{
-loc.textContent=p.coords.latitude.toFixed(3)+","+p.coords.longitude.toFixed(3)
-})}
-
-function toggleTheme(){document.body.classList.toggle('dark')}
-
-function toggleMusic(){
-let m=document.getElementById('music');
-if(!musicOn){m.play();musicOn=true}else{m.pause();musicOn=false}
+function addCart(id){
+const item = cart.find(x => x.id === id);
+if(item){
+item.qty++;
+}else{
+cart.push({id, qty:1});
+}
+saveCart();
+drawCart();
 }
 
-function voiceSearch(){
-let rec=new (window.SpeechRecognition||window.webkitSpeechRecognition)();
-rec.lang='en-US';rec.start();
-rec.onresult=e=>{
-search.value=e.results[0][0].transcript;
-render(products.filter(p=>p.n.toLowerCase().includes(search.value.toLowerCase())));
-}
+function saveCart(){
+localStorage.setItem("bsj_cart", JSON.stringify(cart));
 }
 
-function aiSuggest(){
-let pick=products[Math.floor(Math.random()*products.length)].n;
-aiText.textContent="AI suggests: "+pick;
-aiBox.style.display='flex';
+function drawCart(){
+count.textContent = cart.reduce((a,b)=>a+b.qty,0);
+
+cartEl.innerHTML = cart.map(i=>{
+const p = products.find(x=>x.id===i.id);
+return `
+<div class="item">
+<div>
+<b>${p.name}</b>
+<div class="small">${i.qty} x $${p.price}</div>
+</div>
+<div>$${p.price*i.qty}</div>
+</div>`;
+}).join("");
+
+total.textContent = cart.reduce((a,b)=>{
+const p = products.find(x=>x.id===b.id);
+return a + p.price*b.qty;
+},0);
 }
 
-function closeAI(){aiBox.style.display='none'}
+function toggleCart(){
+drawer.classList.toggle("open");
+}
 
-function speak(text){let s=new SpeechSynthesisUtterance(text);speechSynthesis.speak(s)}
+function viewProduct(id){
+const p = products.find(x=>x.id===id);
 
-search.oninput=e=>render(products.filter(p=>p.n.toLowerCase().includes(e.target.value.toLowerCase())))
+viewImg.src = p.img;
+viewTitle.textContent = p.name;
+viewDesc.textContent = p.desc;
+viewCal.textContent = p.cal + " kcal";
+viewProtein.textContent = p.protein;
+viewCarbs.textContent = p.carbs;
+viewFat.textContent = p.fat;
 
-render();draw();
+viewModal.style.display = "flex";
+}
+
+function closeView(){
+viewModal.style.display = "none";
+}
+
+function checkout(){
+if(cart.length===0){
+alert("Cart empty");
+return;
+}
+
+const now = new Date().toLocaleString();
+
+let history = JSON.parse(localStorage.getItem("bsj_history") || "[]");
+
+history.unshift({
+time: now,
+items: cart.map(i=>{
+const p = products.find(x=>x.id===i.id);
+return p.name + " x" + i.qty;
+}).join(", "),
+total: total.textContent
+});
+
+localStorage.setItem("bsj_history", JSON.stringify(history));
+
+cart = [];
+saveCart();
+drawCart();
+
+alert("Order placed successfully 🚀");
+drawer.classList.remove("open");
+}
+
+function showHistory(){
+const history = JSON.parse(localStorage.getItem("bsj_history") || "[]");
+
+historyList.innerHTML = history.length
+? history.map(h=>`
+<div>
+<b>${h.time}</b><br>
+${h.items}<br>
+Total: $${h.total}
+</div>`).join("")
+: "<p>No orders yet.</p>";
+
+historyModal.style.display="flex";
+}
+
+function closeHistory(){
+historyModal.style.display="none";
+}
+
+function toggleTheme(){
+document.body.classList.toggle("dark");
+}
+
+search.oninput = e=>{
+const q = e.target.value.toLowerCase();
+render(products.filter(p=>p.name.toLowerCase().includes(q)));
+}
+
+function randomSuggest(){
+const p = products[Math.floor(Math.random()*products.length)];
+alert("AI Suggests: " + p.name);
+}
+
+render();
+drawCart();
 </script>
 
 </body>
