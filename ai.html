@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BSJ AI Chat Assistant</title>
+
+<style>
+body{
+margin:0;
+font-family:Arial, sans-serif;
+background:#0f1110;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+
+.chat{
+width:360px;
+height:520px;
+background:#1c1f1d;
+border-radius:20px;
+display:flex;
+flex-direction:column;
+overflow:hidden;
+box-shadow:0 10px 30px rgba(0,0,0,0.5);
+}
+
+.header{
+background:#2e7d32;
+color:white;
+padding:15px;
+text-align:center;
+font-weight:bold;
+}
+
+.messages{
+flex:1;
+padding:10px;
+overflow-y:auto;
+color:white;
+font-size:14px;
+}
+
+.msg{
+margin:8px 0;
+padding:10px;
+border-radius:12px;
+max-width:80%;
+word-wrap:break-word;
+}
+
+.user{
+background:#2e7d32;
+margin-left:auto;
+text-align:right;
+}
+
+.ai{
+background:#333;
+margin-right:auto;
+}
+
+.input-area{
+display:flex;
+padding:10px;
+background:#111;
+}
+
+input{
+flex:1;
+padding:10px;
+border:none;
+border-radius:10px;
+outline:none;
+}
+
+button{
+margin-left:8px;
+padding:10px 14px;
+border:none;
+border-radius:10px;
+background:#2e7d32;
+color:white;
+cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="chat">
+<div class="header">🤖 BSJ AI Assistant</div>
+
+<div class="messages" id="chat"></div>
+
+<div class="input-area">
+<input id="input" placeholder="Type message...">
+<button onclick="send()">Send</button>
+</div>
+</div>
+
+<script>
+const chat = document.getElementById("chat");
+const input = document.getElementById("input");
+
+// add message
+function addMessage(text, type){
+let div = document.createElement("div");
+div.classList.add("msg", type);
+div.innerText = text;
+chat.appendChild(div);
+chat.scrollTop = chat.scrollHeight;
+}
+
+// AI logic
+function getResponse(text){
+text = text.toLowerCase();
+
+if(text.includes("salom")){
+return "Salom 👋! Men BSJ AI assistantman.";
+}
+
+if(text.includes("food")){
+return "🥗 Healthy food: Green Bowl, Smoothie, Protein Box.";
+}
+
+if(text.includes("order")){
+return "🛒 Order qilish uchun Products sahifaga o‘ting.";
+}
+
+if(text.includes("help")){
+return "🤖 Men sizga food, order va info bo‘yicha yordam beraman.";
+}
+
+if(text.includes("name")){
+return "Mening ismim BSJ AI Assistant 🤖";
+}
+
+return "🤔 Kechirasiz, tushunmadim. Boshqa qilib yozing.";
+}
+
+// send message
+function send(){
+let text = input.value.trim();
+if(text === "") return;
+
+addMessage(text, "user");
+input.value = "";
+
+setTimeout(()=>{
+addMessage(getResponse(text), "ai");
+},500);
+}
+
+// welcome message
+addMessage("Salom! Men BSJ AI 🤖. Nima yordam kerak?", "ai");
+</script>
+
+</body>
+</html>
