@@ -2,70 +2,54 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BSJ AI Chat Assistant</title>
+<title>AI Food Girl</title>
 
 <style>
 body{
 margin:0;
-font-family:Arial, sans-serif;
-background:#0f1110;
+font-family:Arial;
+background:#050816;
+color:white;
 display:flex;
-justify-content:center;
-align-items:center;
 height:100vh;
 }
 
+/* CHAT */
 .chat{
-width:360px;
-height:520px;
-background:#1c1f1d;
-border-radius:20px;
+width:40%;
+background:#0f172a;
 display:flex;
 flex-direction:column;
-overflow:hidden;
-box-shadow:0 10px 30px rgba(0,0,0,0.5);
 }
 
 .header{
-background:#2e7d32;
-color:white;
-padding:15px;
-text-align:center;
+background:#0ea5e9;
+padding:14px;
 font-weight:bold;
+text-align:center;
 }
 
 .messages{
 flex:1;
 padding:10px;
-overflow-y:auto;
-color:white;
-font-size:14px;
+overflow:auto;
 }
 
 .msg{
-margin:8px 0;
+margin:6px 0;
 padding:10px;
-border-radius:12px;
-max-width:80%;
-word-wrap:break-word;
+border-radius:10px;
+max-width:85%;
 }
 
-.user{
-background:#2e7d32;
-margin-left:auto;
-text-align:right;
-}
+.user{background:#22c55e;color:black;margin-left:auto}
+.ai{background:#1e293b}
 
-.ai{
-background:#333;
-margin-right:auto;
-}
-
-.input-area{
+/* input */
+.input{
 display:flex;
 padding:10px;
-background:#111;
+background:#0b1220;
 }
 
 input{
@@ -73,17 +57,68 @@ flex:1;
 padding:10px;
 border:none;
 border-radius:10px;
-outline:none;
+background:#111827;
+color:white;
 }
 
 button{
 margin-left:8px;
-padding:10px 14px;
+padding:10px;
 border:none;
+background:#0ea5e9;
 border-radius:10px;
-background:#2e7d32;
-color:white;
 cursor:pointer;
+}
+
+/* AI SIDE */
+.side{
+flex:1;
+display:flex;
+justify-content:center;
+align-items:center;
+position:relative;
+}
+
+.girl{
+width:300px;
+animation:idle 3s infinite;
+}
+
+@keyframes idle{
+0%,100%{transform:translateY(0)}
+50%{transform:translateY(-10px)}
+}
+
+.talking{
+animation:talk .2s infinite alternate;
+}
+
+@keyframes talk{
+from{transform:translateY(-5px)}
+to{transform:translateY(5px)}
+}
+
+.mouth{
+position:absolute;
+bottom:90px;
+left:50%;
+transform:translateX(-50%);
+width:25px;
+height:10px;
+background:pink;
+border-radius:10px;
+}
+
+.talking .mouth{
+height:18px;
+}
+
+.status{
+position:absolute;
+bottom:20px;
+left:20px;
+font-size:14px;
+opacity:.7;
 }
 </style>
 </head>
@@ -91,71 +126,110 @@ cursor:pointer;
 <body>
 
 <div class="chat">
-<div class="header">🤖 BSJ AI Assistant</div>
+<div class="header">🤖 AI FOOD GIRL</div>
 
 <div class="messages" id="chat"></div>
 
-<div class="input-area">
-<input id="input" placeholder="Type message...">
+<div class="input">
+<input id="input" placeholder="Write food name...">
 <button onclick="send()">Send</button>
 </div>
 </div>
 
+<div class="side">
+<div id="girl" class="girl">
+<img src="https://i.imgur.com/3ZQ3Z9b.png" width="100%">
+<div class="mouth"></div>
+</div>
+<div class="status" id="status">AI ready...</div>
+</div>
+
 <script>
-const chat = document.getElementById("chat");
-const input = document.getElementById("input");
 
-// add message
-function addMessage(text, type){
-let div = document.createElement("div");
-div.classList.add("msg", type);
-div.innerText = text;
-chat.appendChild(div);
-chat.scrollTop = chat.scrollHeight;
+const chat=document.getElementById("chat");
+const input=document.getElementById("input");
+const girl=document.getElementById("girl");
+const statusBox=document.getElementById("status");
+
+/* FOOD AI */
+function ai(text){
+text=text.toLowerCase();
+
+if(text.includes("salad"))
+return "🥗 Salad — vitaminlarga boy, weight loss uchun ideal food.";
+
+if(text.includes("burger"))
+return "🍔 Burger — tez energiya beradi, lekin ko‘p yesa healthy emas.";
+
+if(text.includes("smoothie"))
+return "🥤 Smoothie — meva + vitamin, juda healthy drink.";
+
+if(text.includes("chicken"))
+return "🍗 Chicken — protein manbai, gym uchun juda yaxshi.";
+
+if(text.includes("avocado"))
+return "🥑 Avocado — healthy fat, skin va energy uchun foydali.";
+
+if(text.includes("rice"))
+return "🍛 Rice — asosiy energy source, sportchilar uchun yaxshi.";
+
+return "🤔 Bu food haqida aniq malumot yo‘q. Salad, burger, smoothie deb yozib ko‘r.";
 }
 
-// AI logic
-function getResponse(text){
-text = text.toLowerCase();
-
-if(text.includes("salom")){
-return "Salom 👋! Men BSJ AI assistantman.";
+/* add message */
+function add(text,type){
+let d=document.createElement("div");
+d.className="msg "+type;
+d.innerText=text;
+chat.appendChild(d);
+chat.scrollTop=chat.scrollHeight;
+return d;
 }
 
-if(text.includes("food")){
-return "🥗 Healthy food: Green Bowl, Smoothie, Protein Box.";
+/* typing */
+function type(el,text,i=0){
+if(i<text.length){
+el.innerText+=text[i];
+setTimeout(()=>type(el,text,i+1),20);
+}else{
+girl.classList.remove("talking");
+statusBox.innerText="AI ready...";
+}
 }
 
-if(text.includes("order")){
-return "🛒 Order qilish uchun Products sahifaga o‘ting.";
+/* voice */
+function speak(text){
+speechSynthesis.cancel();
+let s=new SpeechSynthesisUtterance(text);
+speechSynthesis.speak(s);
 }
 
-if(text.includes("help")){
-return "🤖 Men sizga food, order va info bo‘yicha yordam beraman.";
-}
-
-if(text.includes("name")){
-return "Mening ismim BSJ AI Assistant 🤖";
-}
-
-return "🤔 Kechirasiz, tushunmadim. Boshqa qilib yozing.";
-}
-
-// send message
+/* send */
 function send(){
-let text = input.value.trim();
-if(text === "") return;
+let t=input.value.trim();
+if(!t)return;
 
-addMessage(text, "user");
-input.value = "";
+add(t,"user");
+input.value="";
+
+let box=add("","ai");
 
 setTimeout(()=>{
-addMessage(getResponse(text), "ai");
-},500);
+
+let res=ai(t);
+
+girl.classList.add("talking");
+statusBox.innerText="AI speaking...";
+
+type(box,res);
+speak(res);
+
+},400);
 }
 
-// welcome message
-addMessage("Salom! Men BSJ AI 🤖. Nima yordam kerak?", "ai");
+/* welcome */
+add("Salom 👋 Food haqida so‘rashing mumkin!", "ai");
+
 </script>
 
 </body>
