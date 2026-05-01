@@ -2,31 +2,125 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>BSJ Shop</title>
-<link rel="stylesheet" href="style.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BZA Daily Healthy (GitHub Ready)</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+body{background:#f4f7f4;color:#111}
+header{position:sticky;top:0;background:#fff;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;box-shadow:0 4px 14px rgba(0,0,0,.08);z-index:10}
+.logo{font-size:24px;font-weight:900;color:#2e7d32}
+.search input{width:300px;max-width:100%;padding:10px 14px;border:1px solid #ddd;border-radius:12px}
+.cartBtn{background:#2e7d32;color:#fff;border:none;padding:10px 16px;border-radius:12px;cursor:pointer}
+.hero{padding:40px;display:grid;grid-template-columns:2fr 1fr;gap:20px}
+.banner{background:linear-gradient(135deg,#2e7d32,#66bb6a);color:#fff;padding:40px;border-radius:24px}
+.banner h1{font-size:42px;margin-bottom:10px}
+.section{padding:30px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
+.card{background:#fff;border-radius:18px;padding:16px;box-shadow:0 6px 16px rgba(0,0,0,.06)}
+.img{height:120px;background:linear-gradient(135deg,#dcedc8,#a5d6a7);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:40px}
+.title{font-weight:700;margin:10px 0}
+.row{display:flex;justify-content:space-between;align-items:center}
+.price{font-weight:800}
+button.add{background:#111;color:#fff;border:none;padding:8px 12px;border-radius:10px;cursor:pointer}
+.drawer{position:fixed;right:-420px;top:0;width:360px;height:100%;background:#fff;box-shadow:-8px 0 20px rgba(0,0,0,.15);padding:20px;transition:.3s;overflow:auto;z-index:20}
+.drawer.open{right:0}
+.item{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #eee}
+.qty button{width:26px;height:26px;border:none;border-radius:6px;cursor:pointer}
+.checkout{margin-top:20px;width:100%;padding:12px;background:#2e7d32;color:#fff;border:none;border-radius:12px;cursor:pointer;font-weight:700}
+.muted{color:#666;font-size:14px}
+@media(max-width:800px){.hero{grid-template-columns:1fr}.search input{display:none}}
+</style>
 </head>
 <body>
 
 <header>
-<div class="logo">BSJ SHOP</div>
-<button onclick="goTrack()">Track Order</button>
+<div class="logo">BZA Healthy</div>
+<div class="search"><input id="search" placeholder="Search healthy food..."></div>
+<button class="cartBtn" onclick="toggleCart()">Cart (<span id="count">0</span>)</button>
 </header>
 
-<div class="container">
-<h1>Order Confirmation</h1>
-
-<div id="orderBox"></div>
-
-<h2>Total: $<span id="total">0</span></h2>
-
-<button class="mainBtn" onclick="confirmOrder()">Confirm Order</button>
+<section class="hero">
+<div class="banner">
+<h1>Healthy Food Delivery</h1>
+<p>Fresh meals, fast delivery, strong body.</p>
 </div>
+<div class="card">
+<h3>Info</h3>
+<p class="muted">Tashkent Delivery • 20-30 min</p>
+</div>
+</section>
 
-<audio id="music">
-<source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_8f49f8d1d5.mp3?filename=corporate-motivation-11282.mp3">
-</audio>
+<section class="section">
+<div class="grid" id="products"></div>
+</section>
 
-<script src="app.js"></script>
+<aside class="drawer" id="drawer">
+<h2>Your Cart</h2>
+<div id="cart"></div>
+<h3>Total: $<span id="total">0</span></h3>
+<button class="checkout" onclick="checkout()">Checkout</button>
+</aside>
+
+<script>
+const products=[
+{id:1,n:"Green Bowl",p:8,e:"🥗"},
+{id:2,n:"Smoothie",p:6,e:"🥤"},
+{id:3,n:"Protein Box",p:10,e:"🍱"},
+{id:4,n:"Fruit Mix",p:7,e:"🍓"},
+{id:5,n:"Chicken Meal",p:12,e:"🍗"},
+{id:6,n:"Avocado Toast",p:9,e:"🥑"}
+];
+
+let cart=[];
+
+function render(list=products){
+productsEl.innerHTML=list.map(p=>`
+<div class='card'>
+<div class='img'>${p.e}</div>
+<div class='title'>${p.n}</div>
+<div class='row'>
+<div class='price'>$${p.p}</div>
+<button class='add' onclick='add(${p.id})'>Add</button>
+</div>
+</div>`).join('');
+}
+
+function add(id){
+let item=cart.find(i=>i.id===id);
+if(item)item.q++;else{let p=products.find(x=>x.id===id);cart.push({...p,q:1})}
+draw();
+}
+
+function draw(){
+count.textContent=cart.reduce((a,b)=>a+b.q,0);
+cartEl.innerHTML=cart.map(i=>`
+<div class='item'>
+<div>${i.n}<div class='muted'>$${i.p}</div></div>
+<div class='qty'>
+<button onclick='change(${i.id},-1)'>-</button> ${i.q} <button onclick='change(${i.id},1)'>+</button>
+</div>
+</div>`).join('');
+
+total.textContent=cart.reduce((a,b)=>a+b.p*b.q,0);
+}
+
+function change(id,v){
+let item=cart.find(i=>i.id===id);
+item.q+=v;
+cart=cart.filter(i=>i.q>0);
+draw();
+}
+
+function toggleCart(){drawer.classList.toggle('open')}
+function checkout(){alert('Order placed successfully 🚀')}
+
+search.oninput=e=>{
+let q=e.target.value.toLowerCase();
+render(products.filter(p=>p.n.toLowerCase().includes(q)));
+}
+
+render();draw();
+</script>
+
 </body>
 </html>
