@@ -3,175 +3,234 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BZA Daily Healthy Delivery</title>
+<title>BZA Food Shop</title>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
 body{background:#f6f7f8;color:#111}
-header{position:sticky;top:0;background:#fff;padding:16px 24px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 4px 12px rgba(0,0,0,.08);z-index:10}
-.brand{font-weight:800;font-size:26px;color:#2e7d32}
-.search{flex:1;margin:0 20px}
-.search input{width:100%;padding:12px 14px;border:1px solid #ddd;border-radius:14px}
-.cartBtn{background:#2e7d32;color:#fff;border:none;padding:12px 18px;border-radius:14px;cursor:pointer}
-.hero{padding:32px;display:grid;grid-template-columns:2fr 1fr;gap:20px}
-.banner{background:linear-gradient(135deg,#2e7d32,#66bb6a);color:#fff;padding:36px;border-radius:28px}
-.banner h1{font-size:44px;margin-bottom:10px}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;padding:0 32px 32px}
-.card{background:#fff;border-radius:22px;padding:16px;box-shadow:0 8px 18px rgba(0,0,0,.06)}
-.img{height:140px;border-radius:18px;background:linear-gradient(135deg,#dcedc8,#a5d6a7);display:flex;align-items:center;justify-content:center;font-size:52px}
-.title{font-weight:700;margin:12px 0}
+
+header{
+position:sticky;top:0;background:#fff;
+display:flex;justify-content:space-between;align-items:center;
+padding:15px 20px;box-shadow:0 4px 12px rgba(0,0,0,.08);z-index:10
+}
+
+.brand{font-size:22px;font-weight:800;color:#2e7d32}
+
+.search input{
+padding:10px;border-radius:10px;border:1px solid #ddd;width:250px
+}
+
+.cartBtn{
+background:#2e7d32;color:#fff;padding:10px 14px;
+border:none;border-radius:10px;cursor:pointer
+}
+
+.cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:15px;padding:20px
+}
+
+.card{
+background:#fff;border-radius:18px;
+padding:15px;box-shadow:0 5px 15px rgba(0,0,0,.08);
+cursor:pointer;transition:.2s
+}
+.card:hover{transform:scale(1.03)}
+
+.img{
+font-size:40px;text-align:center;padding:10px 0
+}
+
+.title{font-weight:700;margin:10px 0}
+
+.small{font-size:13px;color:#666}
+
 .row{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
-.price{font-weight:800}
-.add{border:none;background:#111;color:#fff;padding:10px 14px;border-radius:12px;cursor:pointer}
-.drawer{position:fixed;right:-420px;top:0;width:400px;max-width:100%;height:100%;background:#fff;box-shadow:-8px 0 20px rgba(0,0,0,.12);transition:.3s;padding:20px;z-index:20;overflow:auto}
+
+.add{background:#111;color:#fff;padding:6px 10px;border:none;border-radius:8px;cursor:pointer}
+.like{background:#ff4757;color:#fff;padding:6px 10px;border:none;border-radius:8px;cursor:pointer}
+
+.drawer{
+position:fixed;right:-350px;top:0;width:320px;height:100%;
+background:#fff;box-shadow:-5px 0 20px rgba(0,0,0,.2);
+padding:20px;transition:.3s;overflow:auto
+}
 .drawer.open{right:0}
-.item{display:flex;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1px solid #eee}
-.qty button{width:28px;height:28px;border:none;border-radius:8px;cursor:pointer}
-.checkout{margin-top:16px;width:100%;padding:14px;border:none;background:#2e7d32;color:#fff;border-radius:14px;font-weight:700;cursor:pointer}
-.muted{color:#666;font-size:14px}
-.badge{display:inline-block;background:#fff;color:#2e7d32;padding:6px 10px;border-radius:999px;font-weight:700;margin-bottom:12px}
-@media(max-width:900px){.hero{grid-template-columns:1fr}.search{display:none}}
+
+.item{padding:10px 0;border-bottom:1px solid #eee}
+
+.modal{
+position:fixed;top:0;left:0;width:100%;height:100%;
+background:rgba(0,0,0,.6);
+display:none;justify-content:center;align-items:center
+}
+
+.box{
+background:#fff;padding:20px;border-radius:15px;width:300px;text-align:center
+}
 </style>
 </head>
 
 <body>
 
 <header>
-<div class="brand">BZA Food</div>
-<div class="search"><input id="search" placeholder="Search healthy meals..."></div>
+<div class="brand">🥗 BZA FOOD</div>
+
+<div class="search">
+<input id="search" placeholder="Search food...">
+</div>
+
 <button class="cartBtn" onclick="toggleCart()">Cart (<span id="count">0</span>)</button>
 </header>
 
-<section class="hero">
-<div class="banner">
-<div class="badge">20 min delivery</div>
-<h1>Healthy food at your door</h1>
-<p>Fresh bowls, smoothies, protein meals and fast delivery.</p>
-</div>
+<!-- PRODUCTS -->
+<div class="cards" id="products"></div>
 
-<div class="card">
-<h3>Your Address</h3>
-<p class="muted">Tashkent, Uzbekistan</p><br>
-<h3>Promo</h3>
-<p class="muted">Use code BZA10 for 10% off</p>
-</div>
-</section>
-
-<section class="cards" id="products"></section>
-
-<aside class="drawer" id="drawer">
-<h2>Your Cart</h2>
+<!-- CART -->
+<div class="drawer" id="drawer">
+<h2>🛒 Cart</h2>
 <div id="cartItems"></div>
-<h3 style="margin-top:14px">Total: $<span id="total">0</span></h3>
-<button class="checkout" onclick="checkout()">Checkout</button>
-</aside>
+<h3>Total: $<span id="total">0</span></h3>
+<button onclick="checkout()" class="cartBtn" style="width:100%;margin-top:10px">Checkout</button>
+</div>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+<div class="box">
+<div id="mEmoji" style="font-size:50px"></div>
+<h2 id="mName"></h2>
+<p class="small" id="mDesc"></p>
+<p>🔥 <span id="mCal"></span> kcal</p>
+<p>⭐ <span id="mRate"></span></p>
+<h3>$<span id="mPrice"></span></h3>
+<br>
+<button onclick="modal.style.display='none'" class="cartBtn">Close</button>
+</div>
+</div>
 
 <script>
 
+/* ===== 50 PRODUCTS ===== */
 const data = [
-{id:1,n:'Green Bowl',p:8,e:'🥗'},
-{id:2,n:'Berry Smoothie',p:6,e:'🥤'},
-{id:3,n:'Protein Box',p:11,e:'🍱'},
-{id:4,n:'Fruit Mix',p:7,e:'🍓'},
-{id:5,n:'Chicken Fit',p:12,e:'🍗'},
-{id:6,n:'Avocado Toast',p:9,e:'🥑'},
+{id:1,n:'Green Bowl',p:8,e:'🥗',d:'Fresh veggie healthy bowl',cal:250,rate:4.5,likes:0},
+{id:2,n:'Berry Smoothie',p:6,e:'🥤',d:'Antioxidant berry drink',cal:180,rate:4.7,likes:0},
+{id:3,n:'Protein Box',p:11,e:'🍱',d:'High protein gym meal',cal:400,rate:4.8,likes:0},
+{id:4,n:'Fruit Mix',p:7,e:'🍓',d:'Fresh mixed fruits',cal:220,rate:4.4,likes:0},
+{id:5,n:'Chicken Fit',p:12,e:'🍗',d:'Grilled chicken meal',cal:350,rate:4.9,likes:0},
+{id:6,n:'Avocado Toast',p:9,e:'🥑',d:'Healthy fats toast',cal:300,rate:4.6,likes:0},
+{id:7,n:'Mango Smoothie',p:6,e:'🥭',d:'Sweet mango drink',cal:190,rate:4.3,likes:0},
+{id:8,n:'Iced Coffee',p:5,e:'☕',d:'Cold energy coffee',cal:120,rate:4.2,likes:0},
+{id:9,n:'Lemon Water',p:4,e:'🍋',d:'Detox drink',cal:50,rate:4.1,likes:0},
+{id:10,n:'Protein Shake',p:7,e:'🥛',d:'Gym protein shake',cal:300,rate:4.8,likes:0},
+{id:11,n:'Vegan Salad',p:8,e:'🥗',d:'Pure vegan food',cal:200,rate:4.6,likes:0},
+{id:12,n:'Oatmeal Bowl',p:6,e:'🥣',d:'Healthy breakfast bowl',cal:280,rate:4.5,likes:0},
+{id:13,n:'Grilled Salmon',p:14,e:'🐟',d:'Omega 3 fish meal',cal:420,rate:4.9,likes:0},
+{id:14,n:'Beef Steak',p:15,e:'🥩',d:'Juicy steak meat',cal:500,rate:4.8,likes:0},
+{id:15,n:'Banana Smoothie',p:5,e:'🍌',d:'Energy banana drink',cal:210,rate:4.4,likes:0},
+{id:16,n:'Orange Juice',p:4,e:'🍊',d:'Vitamin C juice',cal:140,rate:4.3,likes:0},
+{id:17,n:'Strawberry Shake',p:6,e:'🍓',d:'Sweet strawberry shake',cal:230,rate:4.5,likes:0},
+{id:18,n:'Energy Drink',p:5,e:'⚡',d:'Fast energy boost',cal:160,rate:4.1,likes:0},
+{id:19,n:'Herbal Tea',p:3,e:'🍵',d:'Relaxing tea',cal:20,rate:4.0,likes:0},
+{id:20,n:'Chicken Wrap',p:9,e:'🌯',d:'Protein wrap meal',cal:380,rate:4.7,likes:0},
 
-{id:7,n:'Mango Smoothie',p:6,e:'🥭'},
-{id:8,n:'Iced Coffee',p:5,e:'☕'},
-{id:9,n:'Lemon Water',p:4,e:'🍋'},
-{id:10,n:'Protein Shake',p:7,e:'🥛'},
-{id:11,n:'Vegan Salad',p:8,e:'🥗'},
-{id:12,n:'Oatmeal Bowl',p:6,e:'🥣'},
-{id:13,n:'Grilled Salmon',p:14,e:'🐟'},
-{id:14,n:'Beef Steak',p:15,e:'🥩'},
-{id:15,n:'Banana Smoothie',p:5,e:'🍌'},
-{id:16,n:'Orange Juice',p:4,e:'🍊'},
-{id:17,n:'Strawberry Shake',p:6,e:'🍓'},
-{id:18,n:'Natural Energy Drink',p:5,e:'⚡'},
-{id:19,n:'Herbal Tea',p:3,e:'🍵'},
-{id:20,n:'Chicken Wrap',p:9,e:'🌯'},
-{id:21,n:'Veggie Sandwich',p:7,e:'🥪'},
-{id:22,n:'Pineapple Juice',p:5,e:'🍍'},
-{id:23,n:'Protein Bar',p:4,e:'🍫'},
-{id:24,n:'Greek Yogurt',p:6,e:'🥛'},
-{id:25,n:'Spicy Chicken Bowl',p:10,e:'🌶️🍗'},
-{id:26,n:'Detox Smoothie Bowl',p:8,e:'🥝'},
+{id:21,n:'Veg Sandwich',p:7,e:'🥪',d:'Healthy sandwich',cal:260,rate:4.4,likes:0},
+{id:22,n:'Pineapple Juice',p:5,e:'🍍',d:'Tropical juice',cal:150,rate:4.3,likes:0},
+{id:23,n:'Protein Bar',p:4,e:'🍫',d:'Fitness snack',cal:200,rate:4.5,likes:0},
+{id:24,n:'Greek Yogurt',p:6,e:'🥛',d:'Healthy yogurt',cal:180,rate:4.6,likes:0},
+{id:25,n:'Spicy Bowl',p:10,e:'🌶️🍗',d:'Spicy chicken bowl',cal:410,rate:4.8,likes:0},
 
-// +10 NEW
-{id:27,n:'Tropical Bowl',p:9,e:'🥥'},
-{id:28,n:'Mint Water',p:4,e:'🍃'},
-{id:29,n:'Fitness Pancakes',p:8,e:'🥞'},
-{id:30,n:'Chicken Rice Bowl',p:10,e:'🍛'},
-{id:31,n:'Blueberry Yogurt',p:6,e:'🫐'},
-{id:32,n:'Spicy Wrap',p:9,e:'🌯'},
-{id:33,n:'Energy Smoothie',p:7,e:'⚡'},
-{id:34,n:'Veggie Soup',p:5,e:'🥣'},
-{id:35,n:'Protein Coffee',p:6,e:'☕💪'},
-{id:36,n:'Healthy Burger',p:11,e:'🍔'}
+{id:26,n:'Detox Bowl',p:8,e:'🥝',d:'Clean detox food',cal:240,rate:4.5,likes:0},
+{id:27,n:'Tropical Bowl',p:9,e:'🥥',d:'Island fruits bowl',cal:270,rate:4.4,likes:0},
+{id:28,n:'Mint Water',p:4,e:'🍃',d:'Fresh water drink',cal:30,rate:4.2,likes:0},
+{id:29,n:'Fitness Pancakes',p:8,e:'🥞',d:'Protein pancakes',cal:320,rate:4.6,likes:0},
+{id:30,n:'Chicken Rice',p:10,e:'🍛',d:'Chicken rice bowl',cal:430,rate:4.7,likes:0},
+
+{id:31,n:'Blueberry Yogurt',p:6,e:'🫐',d:'Berry yogurt mix',cal:210,rate:4.5,likes:0},
+{id:32,n:'Spicy Wrap',p:9,e:'🌯',d:'Hot spicy wrap',cal:390,rate:4.6,likes:0},
+{id:33,n:'Energy Smoothie',p:7,e:'⚡',d:'Power drink',cal:260,rate:4.5,likes:0},
+{id:34,n:'Veg Soup',p:5,e:'🥣',d:'Light soup meal',cal:170,rate:4.3,likes:0},
+{id:35,n:'Protein Coffee',p:6,e:'☕💪',d:'Coffee + protein',cal:190,rate:4.6,likes:0},
+
+{id:36,n:'Healthy Burger',p:11,e:'🍔',d:'Low fat burger',cal:450,rate:4.7,likes:0},
+{id:37,n:'Chicken Nuggets',p:9,e:'🍗',d:'Crispy nuggets',cal:380,rate:4.5,likes:0},
+{id:38,n:'Fruit Bowl XL',p:8,e:'🍇',d:'Big fruit bowl',cal:240,rate:4.4,likes:0},
+{id:39,n:'Ice Tea',p:4,e:'🧊🍵',d:'Cold tea drink',cal:90,rate:4.2,likes:0},
+{id:40,n:'Chocolate Protein',p:6,e:'🍫',d:'Sweet protein bar',cal:220,rate:4.6,likes:0},
+
+{id:41,n:'Egg Sandwich',p:7,e:'🥪',d:'Egg protein sandwich',cal:280,rate:4.5,likes:0},
+{id:42,n:'Shrimp Bowl',p:12,e:'🍤',d:'Seafood bowl',cal:400,rate:4.8,likes:0},
+{id:43,n:'Cucumber Water',p:3,e:'🥒',d:'Cooling drink',cal:20,rate:4.1,likes:0},
+{id:44,n:'Apple Juice',p:4,e:'🍎',d:'Fresh apple juice',cal:130,rate:4.3,likes:0},
+{id:45,n:'Chicken Salad',p:9,e:'🥗',d:'Protein salad',cal:310,rate:4.7,likes:0},
+{id:46,n:'Protein Pizza',p:13,e:'🍕',d:'Healthy pizza',cal:520,rate:4.8,likes:0},
+{id:47,n:'Veg Wrap XL',p:8,e:'🌯',d:'Big veggie wrap',cal:350,rate:4.5,likes:0},
+{id:48,n:'Fruit Juice Mix',p:5,e:'🍹',d:'Mixed juice',cal:180,rate:4.4,likes:0},
+{id:49,n:'Fitness Bowl Pro',p:10,e:'🥗',d:'Pro fitness meal',cal:420,rate:4.9,likes:0},
+{id:50,n:'Energy Bowl Max',p:11,e:'⚡🥗',d:'Maximum energy food',cal:480,rate:5.0,likes:0},
 ];
 
 let cart=[];
 
+/* ===== RENDER ===== */
 function render(list=data){
 products.innerHTML=list.map(x=>`
-<div class="card">
+<div class="card" onclick="openModal(${x.id})">
 <div class="img">${x.e}</div>
 <div class="title">${x.n}</div>
-<div class="muted">Fresh & healthy</div>
+<div class="small">🔥 ${x.cal} kcal ⭐ ${x.rate}</div>
+
 <div class="row">
 <div class="price">$${x.p}</div>
-<button class="add" onclick="add(${x.id})">Add</button>
+<button class="add" onclick="event.stopPropagation();add(${x.id})">Add</button>
 </div>
 </div>
 `).join('')
 }
 
+/* ===== CART ===== */
 function add(id){
-let item=cart.find(i=>i.id===id);
-if(item)item.q++;
+let i=cart.find(x=>x.id===id);
+if(i)i.q++;
 else{
 let p=data.find(x=>x.id===id);
-cart.push({...p,q:1})
+cart.push({...p,q:1});
 }
-draw()
+draw();
 }
 
 function draw(){
 count.textContent=cart.reduce((a,b)=>a+b.q,0);
 cartItems.innerHTML=cart.map(i=>`
-<div class="item">
-<div><b>${i.n}</b><div class="muted">$${i.p}</div></div>
-<div class="qty">
-<button onclick="chg(${i.id},-1)">-</button>
-${i.q}
-<button onclick="chg(${i.id},1)">+</button>
-</div>
-</div>
+<div class="item">${i.n} x${i.q}</div>
 `).join('');
-
-total.textContent=cart.reduce((a,b)=>a+b.p*b.q,0)
+total.textContent=cart.reduce((a,b)=>a+b.p*b.q,0);
 }
 
-function chg(id,v){
-let i=cart.find(x=>x.id===id);
-if(!i)return;
-i.q+=v;
-cart=cart.filter(x=>x.q>0);
-draw()
+/* ===== MODAL ===== */
+function openModal(id){
+let i=data.find(x=>x.id===id);
+mEmoji.textContent=i.e;
+mName.textContent=i.n;
+mDesc.textContent=i.d;
+mCal.textContent=i.cal;
+mRate.textContent=i.rate;
+mPrice.textContent=i.p;
+modal.style.display="flex";
 }
 
+/* ===== CART TOGGLE ===== */
 function toggleCart(){
-drawer.classList.toggle('open')
+drawer.classList.toggle("open");
 }
 
+/* ===== CHECKOUT ===== */
 function checkout(){
-if(cart.length===0){
-alert("Cart bo'sh!");
-return;
-}
 window.location.href="https://nightfallx-owner.github.io/nightfallteam01github.io/tarck.html";
 }
 
+/* ===== SEARCH ===== */
 search.oninput=e=>{
 let q=e.target.value.toLowerCase();
 render(data.filter(x=>x.n.toLowerCase().includes(q)))
