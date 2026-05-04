@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Secure Payment</title>
+
+<style>
+body{
+font-family:Arial;
+background:#0b0f1a;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+color:#fff;
+}
+
+.box{
+background:#111827;
+padding:25px;
+border-radius:20px;
+width:320px;
+box-shadow:0 10px 30px #0008;
+}
+
+h2{color:#00d4ff}
+
+input{
+width:100%;
+padding:10px;
+margin:8px 0;
+border-radius:10px;
+border:none;
+outline:none;
+}
+
+button{
+width:100%;
+padding:12px;
+border:none;
+border-radius:10px;
+background:#00d4ff;
+color:#000;
+font-weight:bold;
+cursor:pointer;
+}
+
+.small{font-size:12px;color:#aaa;text-align:center;margin-top:10px}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+<h2>💳 Stripe Payment</h2>
+
+<input placeholder="Card Number">
+<input placeholder="MM/YY">
+<input placeholder="CVV">
+<input placeholder="Card Holder Name">
+
+<button onclick="pay()">Pay Now</button>
+
+<div class="small">🔒 Secure encrypted payment (demo)</div>
+</div>
+
+<script>
+function pay(){
+
+// fake order id
+let orderId = Date.now();
+localStorage.setItem("orderId", orderId);
+
+// redirect to tracking page
+window.location.href="tarck.html";
+}
+</script>
+
+</body>
+</html>
