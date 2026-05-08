@@ -1,372 +1,127 @@
-```html id="q8m4tx"
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>BSJ Track Order</title>
-
 <style>
-:root{
---bg:#f5f7f5;
---card:#ffffff;
---text:#111;
---primary:#2e7d32;
---shadow:0 8px 22px rgba(0,0,0,.08);
-}
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,sans-serif;
-}
-
+/* 🌿 GREEN + WHITE THEME */
 body{
-background:var(--bg);
-color:var(--text);
-overflow:hidden;
+background:#f3fff4 !important;
 }
 
+/* HEADER */
 header{
-position:fixed;
-top:0;
-left:0;
-right:0;
-height:70px;
-background:var(--card);
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:0 18px;
-box-shadow:var(--shadow);
-z-index:50;
+background:#ffffff !important;
+border-bottom:2px solid #d8f5dc;
 }
 
 .logo{
-font-size:24px;
-font-weight:900;
-color:var(--primary);
+color:#2e7d32 !important;
 }
 
-button{
-border:none;
-cursor:pointer;
-padding:10px 14px;
-border-radius:10px;
-background:var(--primary);
-color:#fff;
-font-weight:700;
-}
-
+/* MAP */
 .map{
-position:fixed;
-inset:70px 0 0 0;
-background:
-linear-gradient(90deg,#dadada 0 8%,#ececec 8% 16%,#dadada 16% 24%,#ececec 24% 32%,#dadada 32% 40%,#ececec 40% 48%,#dadada 48% 56%,#ececec 56% 64%,#dadada 64% 72%,#ececec 72% 80%,#dadada 80% 88%,#ececec 88% 100%);
-overflow:hidden;
+background:linear-gradient(180deg,#f6fff7,#e8f5e9) !important;
 }
 
-.street{
-position:absolute;
-left:0;
-top:50%;
-width:100%;
-height:130px;
-background:#2d2d2d;
-transform:translateY(-50%);
+/* ROAD */
+.road{
+background:#2d2d2d !important;
 }
 
-.line{
-position:absolute;
-left:0;
-top:50%;
-width:100%;
-height:6px;
-transform:translateY(-50%);
-background:repeating-linear-gradient(
-90deg,
-#fff 0 35px,
-transparent 35px 70px
-);
+/* STORE + HOME */
+.store,.home{
+background:#ffffff !important;
+color:#2e7d32 !important;
+border:2px solid #dff5e3;
 }
 
-.store{
-position:absolute;
-left:50px;
-top:calc(50% - 170px);
-background:#fff;
-padding:14px;
-border-radius:16px;
-box-shadow:var(--shadow);
-font-weight:800;
-}
-
-.home{
-position:absolute;
-right:50px;
-top:calc(50% - 170px);
-background:#fff;
-padding:14px;
-border-radius:16px;
-box-shadow:var(--shadow);
-font-weight:800;
-}
-
-.car{
-position:absolute;
-left:30px;
-top:calc(50% - 48px);
-font-size:68px;
-z-index:10;
-transition:left .12s linear;
-transform:scaleX(-1);
-}
-
+/* PANEL */
 .panel{
-position:absolute;
-left:20px;
-bottom:20px;
-background:rgba(255,255,255,.96);
-padding:16px;
-border-radius:18px;
-width:330px;
-box-shadow:var(--shadow);
+background:#ffffff !important;
+color:#111 !important;
+border:2px solid #dff5e3;
 }
 
-.status{
-font-weight:800;
-margin-bottom:10px;
-font-size:18px;
-}
-
-.small{
-font-size:13px;
-opacity:.7;
-line-height:1.5;
-}
-
+/* PROGRESS */
 .progress{
-height:10px;
-background:#ddd;
-border-radius:999px;
-overflow:hidden;
-margin-top:12px;
+background:#d8ead9 !important;
 }
 
 .bar{
-height:100%;
-width:0%;
-background:var(--primary);
-transition:.12s linear;
+background:#2e7d32 !important;
 }
 
+/* ARRIVED */
 .arrived{
-position:absolute;
-top:90px;
-left:50%;
-transform:translateX(-50%);
-background:#fff;
-padding:16px 22px;
-border-radius:16px;
-box-shadow:var(--shadow);
-font-weight:900;
-display:none;
+background:#ffffff !important;
+color:#2e7d32 !important;
+border:2px solid #dff5e3;
 }
 
-.stars span{
-font-size:28px;
-cursor:pointer;
-color:#f5b301;
+/* BUTTON */
+button{
+background:#2e7d32 !important;
+color:#fff !important;
 }
 
-@media(max-width:700px){
-.panel{
-width:calc(100% - 40px);
-}
-.store,.home{
-font-size:13px;
-padding:10px;
-}
+/* 🚚 CAR LIGHTS */
 .car{
-font-size:56px;
+position:absolute;
+filter:
+drop-shadow(0 0 12px #ffffff)
+drop-shadow(0 0 24px #a5ffb2)
+drop-shadow(0 0 45px #7cff95);
+}
+
+/* 💡 FRONT LIGHT */
+.car::after{
+content:"";
+position:absolute;
+right:-25px;
+top:28px;
+width:90px;
+height:20px;
+background:linear-gradient(
+90deg,
+rgba(255,255,255,.95),
+rgba(124,255,149,.55),
+transparent
+);
+filter:blur(10px);
+transform:rotate(-2deg);
+animation:lightMove .8s infinite alternate;
+}
+
+/* ✨ LIGHT FLICKER */
+@keyframes lightMove{
+from{
+opacity:.7;
+transform:translateX(0) rotate(-2deg);
+}
+to{
+opacity:1;
+transform:translateX(8px) rotate(-1deg);
 }
 }
+
+/* 🌧 RAIN GREEN LIGHT */
+.drop{
+background:linear-gradient(
+transparent,
+#b8ffcb
+) !important;
+opacity:.35;
+}
+
+/* 🎉 FINAL SCREEN */
+.successBox{
+background:#ffffff !important;
+color:#2e7d32 !important;
+border:2px solid #dff5e3;
+}
+
+.finalStars{
+color:#2e7d32 !important;
+text-shadow:
+0 0 12px #8cff9d,
+0 0 25px #8cff9d;
+}
+
 </style>
-</head>
-<body>
-
-<header>
-<div class="logo">BSJ TRACK</div>
-<button onclick="restartTrack()">Restart</button>
-</header>
-
-<div class="map">
-
-<div class="street"></div>
-<div class="line"></div>
-
-<div class="store">🍴 Restaurant</div>
-<div class="home">🏠 Home</div>
-
-<div class="car" id="car">🚛</div>
-
-<div class="arrived" id="arrived">
-🎉 Delivered Successfully
-</div>
-
-<div class="panel">
-
-<div class="status" id="status">Preparing your fresh order...</div>
-
-<div class="small" id="info">
-Our kitchen team is carefully packing your meal.
-</div>
-
-<div class="progress">
-<div class="bar" id="bar"></div>
-</div>
-
-<div style="margin-top:14px" class="small">
-Estimated wait time: 0.5 min
-</div>
-
-<div style="margin-top:12px;font-weight:700">
-Rate your delivery
-</div>
-
-<div class="stars" id="stars" style="margin-top:6px">
-<span onclick="rate(1)">☆</span>
-<span onclick="rate(2)">☆</span>
-<span onclick="rate(3)">☆</span>
-<span onclick="rate(4)">☆</span>
-<span onclick="rate(5)">☆</span>
-</div>
-
-<div class="small" id="rateText" style="margin-top:6px">
-No rating selected yet
-</div>
-
-</div>
-</div>
-
-<script>
-let pos=30;
-let max=window.innerWidth-150;
-let timer=null;
-
-function speak(text){
-try{
-speechSynthesis.cancel();
-let s=new SpeechSynthesisUtterance(text);
-s.lang="en-US";
-s.rate=1;
-s.pitch=1.1;
-speechSynthesis.speak(s);
-}catch(e){}
-}
-
-function updateStatus(percent){
-
-if(percent<15){
-status.textContent="Preparing your delicious order...";
-info.textContent="Chef is packing everything fresh for you.";
-}
-
-else if(percent<35){
-status.textContent="Courier picked up your order";
-info.textContent="Driver has left the restaurant safely.";
-}
-
-else if(percent<70){
-status.textContent="Your order is on the way";
-info.textContent="Courier is driving to your address now.";
-}
-
-else if(percent<95){
-status.textContent="Almost at your door";
-info.textContent="Please be ready. Arrival in moments.";
-}
-
-else{
-status.textContent="Delivered successfully";
-info.textContent="Enjoy your meal and have a great day!";
-}
-
-}
-
-function startTrack(){
-
-pos=30;
-arrived.style.display="none";
-car.style.left=pos+"px";
-bar.style.width="0%";
-
-speak("Hello. Your order has been confirmed.");
-
-timer=setInterval(()=>{
-
-if(pos>=max){
-clearInterval(timer);
-status.textContent="Delivered successfully";
-info.textContent="Thank you for choosing BSJ Delivery.";
-bar.style.width="100%";
-arrived.style.display="block";
-speak("Your order has arrived. Enjoy your meal.");
-return;
-}
-
-pos+=4;
-car.style.left=pos+"px";
-
-let percent=Math.min(100,Math.round((pos/max)*100));
-bar.style.width=percent+"%";
-
-updateStatus(percent);
-
-},120);
-
-setTimeout(()=>speak("Your courier picked up the order."),2500);
-setTimeout(()=>speak("Your courier is on the way."),6000);
-setTimeout(()=>speak("Your courier is almost there."),9500);
-
-}
-
-function restartTrack(){
-clearInterval(timer);
-speechSynthesis.cancel();
-startTrack();
-}
-
-function rate(n){
-
-let stars=document.querySelectorAll("#stars span");
-
-stars.forEach((s,i)=>{
-s.textContent=i<n ? "★" : "☆";
-});
-
-let txt=[
-"",
-"Poor service",
-"Average service",
-"Good service",
-"Very good service",
-"Excellent service"
-];
-
-rateText.textContent=txt[n];
-speak("Thank you for rating us " + n + " stars");
-
-}
-
-window.addEventListener("resize",()=>{
-max=window.innerWidth-150;
-});
-
-startTrack();
-</script>
-
-</body>
-</html>
-```
