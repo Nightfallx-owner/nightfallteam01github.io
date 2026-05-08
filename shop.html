@@ -2,24 +2,41 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>BITE</title>
+<title>BITE SHOP v12</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-body{margin:0;font-family:Arial;background:#f4f6f8}
+body{
+margin:0;
+font-family:Arial;
+background:#f4f6f8;
+}
 
+/* HEADER */
 header{
-position:sticky;top:0;
+position:sticky;
+top:0;
 background:#fff;
 display:flex;
 justify-content:space-between;
-padding:15px;
+align-items:center;
+padding:12px 15px;
 box-shadow:0 4px 12px rgba(0,0,0,.08);
 z-index:10;
 }
 
-.brand{font-weight:800;color:#2e7d32}
+.brand{
+font-weight:800;
+color:#2e7d32;
+}
 
+.timeBox{
+font-size:13px;
+color:#444;
+text-align:right;
+}
+
+/* GRID */
 .cards{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
@@ -32,9 +49,19 @@ background:#fff;
 border-radius:15px;
 overflow:hidden;
 box-shadow:0 6px 15px rgba(0,0,0,.08);
+transition:.2s;
 }
 
-img{width:100%;height:140px;object-fit:cover}
+.card:hover{
+transform:scale(1.03);
+}
+
+img{
+width:100%;
+height:140px;
+object-fit:cover;
+background:#eee;
+}
 
 .content{padding:10px}
 
@@ -50,9 +77,13 @@ cursor:pointer;
 width:100%;
 }
 
-.add{background:#111;color:#fff;margin-top:5px}
+.add{
+background:#111;
+color:#fff;
+margin-top:5px;
+}
 
-/* CART BAR */
+/* CART */
 .cartBar{
 position:fixed;
 bottom:0;
@@ -79,22 +110,27 @@ cursor:pointer;
 <body>
 
 <header>
-<div class="brand">One bite And Take more energy</div>
+<div class="brand">🥗 BITE FOOD SHOP</div>
+
+<div class="timeBox">
+<div id="date"></div>
+<div id="time"></div>
+</div>
 </header>
 
 <div class="cards" id="list"></div>
 
-<!-- CART BAR -->
+<!-- CART -->
 <div class="cartBar">
-<div>🛒<span id="count">0</span></div>
-<div>💰Total: $<span id="total">0</span></div>
+<div>🛒 <span id="count">0</span></div>
+<div>💰 $<span id="total">0</span></div>
 <button class="cartBtn" onclick="checkout()">CHECKOUT</button>
 </div>
 
 <script>
 
-/* ===== PRODUCTS ===== */
-const data=[
+/* ===== FIXED 40 PRODUCTS (WORKING IMAGES) ===== */
+const data = [
 {id:1,n:"Chicken Bowl",p:10,img:"https://images.unsplash.com/photo-1604908177522-0404f2e7f0d2"},
 {id:2,n:"Burger",p:11,img:"https://images.unsplash.com/photo-1550547660-d9450f859349"},
 {id:3,n:"Pizza",p:12,img:"https://images.unsplash.com/photo-1548365328-8b849e7f0b1f"},
@@ -105,9 +141,54 @@ const data=[
 {id:8,n:"Fruit Bowl",p:8,img:"https://images.unsplash.com/photo-1610832958506-aa56368176cf"},
 {id:9,n:"Sushi",p:12,img:"https://images.unsplash.com/photo-1562158070-3c5b2b8c6f6c"},
 {id:10,n:"Pancakes",p:8,img:"https://images.unsplash.com/photo-1528207776546-365bb710ee93"},
+
+{id:11,n:"Chicken Wrap",p:9,img:"https://images.unsplash.com/photo-1606756790138-261d2b21cd75"},
+{id:12,n:"Taco",p:7,img:"https://images.unsplash.com/photo-1552332386-f8dd00dc2f85"},
+{id:13,n:"Hot Dog",p:6,img:"https://images.unsplash.com/photo-1612392061786-8b1d0f7d2f6d"},
+{id:14,n:"Fries",p:5,img:"https://images.unsplash.com/photo-1576107232684-1279f390859f"},
+{id:15,n:"Milkshake",p:6,img:"https://images.unsplash.com/photo-1572490122747-3968b75cc699"},
+{id:16,n:"Ice Tea",p:4,img:"https://images.unsplash.com/photo-1497534446932-c925b458314e"},
+{id:17,n:"Donut",p:3,img:"https://images.unsplash.com/photo-1551024601-bec78aea704b"},
+{id:18,n:"Cake",p:6,img:"https://images.unsplash.com/photo-1578985545062-69928b1d9587"},
+{id:19,n:"Chicken Rice",p:10,img:"https://images.unsplash.com/photo-1604908177522-0404f2e7f0d2"},
+{id:20,n:"Shrimp Bowl",p:12,img:"https://images.unsplash.com/photo-1565299624946-b28f40a0ae38"},
+
+{id:21,n:"Apple Juice",p:4,img:"https://images.unsplash.com/photo-1601004890684-d8cbf643f5f2"},
+{id:22,n:"Orange Juice",p:4,img:"https://images.unsplash.com/photo-1613478223719-2ab802602423"},
+{id:23,n:"Energy Drink",p:5,img:"https://images.unsplash.com/photo-1622543925917-763c34d1b8f3"},
+{id:24,n:"Veg Sandwich",p:7,img:"https://images.unsplash.com/photo-1550507992-eb63ffee0847"},
+{id:25,n:"Yogurt Bowl",p:6,img:"https://images.unsplash.com/photo-1584270354949-1f2b4d0c7d4b"},
+{id:26,n:"Avocado Toast",p:9,img:"https://images.unsplash.com/photo-1603048297172-c92544798d5a"},
+{id:27,n:"Oatmeal",p:6,img:"https://images.unsplash.com/photo-1584270354949-1f2b4d0c7d4b"},
+{id:28,n:"Smoothie",p:6,img:"https://images.unsplash.com/photo-1553530666-ba11a7da3888"},
+{id:29,n:"Protein Bar",p:4,img:"https://images.unsplash.com/photo-1593095948071-474c5cc1b9c5"},
+{id:30,n:"Green Juice",p:5,img:"https://images.unsplash.com/photo-1524594227084-7d3f5b5b8b8a"},
+
+{id:31,n:"BBQ Chicken",p:12,img:"https://images.unsplash.com/photo-1604908177522-0404f2e7f0d2"},
+{id:32,n:"Fish Bowl",p:13,img:"https://images.unsplash.com/photo-1467003909585-2f8a72700288"},
+{id:33,n:"Ramen",p:11,img:"https://images.unsplash.com/photo-1569718212165-3a8278d5f624"},
+{id:34,n:"Nuggets",p:9,img:"https://images.unsplash.com/photo-1562967916-eb82221dfb92"},
+{id:35,n:"Soda",p:3,img:"https://images.unsplash.com/photo-1551024709-8f23befc6f87"},
+{id:36,n:"Burger XL",p:13,img:"https://images.unsplash.com/photo-1550547660-d9450f859349"},
+{id:37,n:"Cheese Pasta",p:10,img:"https://images.unsplash.com/photo-1555949258-eb67b1ef0ceb"},
+{id:38,n:"Fruit Mix",p:7,img:"https://images.unsplash.com/photo-1610832958506-aa56368176cf"},
+{id:39,n:"Energy Bowl",p:10,img:"https://images.unsplash.com/photo-1550989460-0adf9ea622e2"},
+{id:40,n:"Healthy Bowl",p:11,img:"https://images.unsplash.com/photo-1604908177522-0404f2e7f0d2"},
 ];
 
 let cart=[];
+
+/* ===== CLOCK ===== */
+function updateTime(){
+let d=new Date();
+document.getElementById("date").textContent=
+d.toDateString();
+
+document.getElementById("time").textContent=
+d.toLocaleTimeString();
+}
+setInterval(updateTime,1000);
+updateTime();
 
 /* ===== RENDER ===== */
 const list=document.getElementById("list");
@@ -115,36 +196,33 @@ const list=document.getElementById("list");
 function render(){
 list.innerHTML=data.map(x=>`
 <div class="card">
-<img src="${x.img}">
+<img src="${x.img}" onerror="this.src='https://via.placeholder.com/400x300?text=Food'">
 <div class="content">
 <div class="title">${x.n}</div>
 <div class="price">$${x.p}</div>
-<button class="add" onclick="add(${x.id})">+ Add to Cart</button>
+<button class="add" onclick="add(${x.id})">+ Add</button>
 </div>
 </div>
 `).join("")
 }
 render();
 
-/* ===== ADD TO CART ===== */
+/* ===== CART ===== */
 function add(id){
 let item=data.find(x=>x.id===id);
-
 let exist=cart.find(x=>x.id===id);
-if(exist){
-exist.q++;
-}else{
-cart.push({...item,q:1});
-}
+
+if(exist) exist.q++;
+else cart.push({...item,q:1});
+
 update();
 }
 
-/* ===== UPDATE CART ===== */
 function update(){
-document.getElementById("count").textContent =
+document.getElementById("count").textContent=
 cart.reduce((a,b)=>a+b.q,0);
 
-document.getElementById("total").textContent =
+document.getElementById("total").textContent=
 cart.reduce((a,b)=>a+b.p*b.q,0);
 }
 
