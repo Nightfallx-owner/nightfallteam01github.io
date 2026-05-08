@@ -2,78 +2,158 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Secure Payment</title>
+<title>Payments</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 body{
 font-family:Arial;
-background:#0b0f1a;
+background:#f2f8f4;
 display:flex;
 justify-content:center;
 align-items:center;
 height:100vh;
-color:#fff;
+margin:0;
 }
 
+/* BOX */
 .box{
-background:#111827;
+background:#fff;
 padding:25px;
-border-radius:20px;
+border-radius:18px;
 width:320px;
-box-shadow:0 10px 30px #0008;
+box-shadow:0 10px 25px rgba(0,0,0,0.08);
+border:2px solid #e6f5ea;
 }
 
-h2{color:#00d4ff}
+/* TITLE */
+h2{
+color:#2e7d32;
+text-align:center;
+margin-bottom:15px;
+}
 
+/* INPUT */
 input{
 width:100%;
 padding:10px;
 margin:8px 0;
 border-radius:10px;
-border:none;
+border:1px solid #d7eadc;
 outline:none;
+transition:.2s;
 }
 
+input:focus{
+border-color:#2e7d32;
+box-shadow:0 0 5px #2e7d3233;
+}
+
+/* BUTTON */
 button{
 width:100%;
 padding:12px;
 border:none;
 border-radius:10px;
-background:#00d4ff;
-color:#000;
+background:#2e7d32;
+color:#fff;
 font-weight:bold;
 cursor:pointer;
+transition:.2s;
 }
 
-.small{font-size:12px;color:#aaa;text-align:center;margin-top:10px}
+button:hover{
+background:#256428;
+}
+
+/* MESSAGE */
+.error{
+color:#d32f2f;
+font-size:12px;
+text-align:center;
+margin-top:5px;
+}
+
+.ok{
+color:#2e7d32;
+font-size:12px;
+text-align:center;
+margin-top:5px;
+}
+
+.small{
+font-size:12px;
+color:#777;
+text-align:center;
+margin-top:10px;
+}
 </style>
 </head>
 
 <body>
 
 <div class="box">
-<h2>💳 Stripe Payment</h2>
+<h2>Secure Payment</h2>
 
-<input placeholder="Card Number">
-<input placeholder="MM/YY">
-<input placeholder="CVV">
-<input placeholder="Card Holder Name">
+<input id="card" placeholder="Card Number (16 digits)">
+<input id="date" placeholder="MM/YY">
+<input id="cvv" placeholder="CVV (3 digits)">
+<input id="name" placeholder="Card Holder Name">
+
+<div id="msg"></div>
 
 <button onclick="pay()">Pay Now</button>
 
-<div class="small">🔒 Secure encrypted payment (demo)</div>
+<div class="small"></div>
 </div>
 
 <script>
+
 function pay(){
 
-// fake order id
-let orderId = Date.now();
+let card=document.getElementById("card").value.trim();
+let date=document.getElementById("date").value.trim();
+let cvv=document.getElementById("cvv").value.trim();
+let name=document.getElementById("name").value.trim();
+let msg=document.getElementById("msg");
+
+msg.innerHTML="";
+
+/* VALIDATION */
+if(card.length!==16 || isNaN(card)){
+msg.innerHTML="<div class='error'>❌ Invalid card number</div>";
+return;
+}
+
+if(!date.includes("/")){
+msg.innerHTML="<div class='error'>❌ Invalid date (MM/YY)</div>";
+return;
+}
+
+if(cvv.length!==3 || isNaN(cvv)){
+msg.innerHTML="<div class='error'>❌ Invalid CVV</div>";
+return;
+}
+
+if(name.length<3){
+msg.innerHTML="<div class='error'>❌ Enter valid name</div>";
+return;
+}
+
+/* SUCCESS */
+msg.innerHTML="<div class='ok'>✅ Payment successful!</div>";
+
+let orderId = "ORD-" + Math.floor(Math.random()*999999);
 localStorage.setItem("orderId", orderId);
 
-// redirect to tracking page
-window.location.href="tarck.html";
+/* REDIRECT */
+setTimeout(()=>{
+window.location.href =
+"https://nightfallx-owner.github.io/nightfallteam01github.io/tarck.html";
+},1200);
+
 }
+
 </script>
 
 </body>
