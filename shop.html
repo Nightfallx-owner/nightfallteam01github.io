@@ -2,42 +2,27 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>SHOP v10 PRO</title>
+<title>BITE</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-body{
-margin:0;
-font-family:Arial;
-background:#f4f6f8;
-}
+body{margin:0;font-family:Arial;background:#f4f6f8}
 
-/* HEADER */
 header{
-position:sticky;
-top:0;
+position:sticky;top:0;
 background:#fff;
 display:flex;
 justify-content:space-between;
-align-items:center;
-padding:12px;
+padding:15px;
 box-shadow:0 4px 12px rgba(0,0,0,.08);
 z-index:10;
 }
 
 .brand{font-weight:800;color:#2e7d32}
 
-/* INPUT */
-input,select{
-padding:8px;
-border:1px solid #ddd;
-border-radius:8px;
-}
-
-/* GRID */
 .cards{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
 gap:15px;
 padding:20px;
 }
@@ -46,34 +31,26 @@ padding:20px;
 background:#fff;
 border-radius:15px;
 overflow:hidden;
-box-shadow:0 4px 12px rgba(0,0,0,.08);
+box-shadow:0 6px 15px rgba(0,0,0,.08);
 }
 
-img{
-width:100%;
-height:150px;
-object-fit:cover;
-}
+img{width:100%;height:140px;object-fit:cover}
 
 .content{padding:10px}
 
 .title{font-weight:700}
 
-.desc{font-size:12px;color:#666;margin:5px 0}
-
-.price{color:#2e7d32;font-weight:bold}
-
-.row{display:flex;justify-content:space-between;align-items:center}
+.price{color:#2e7d32;font-weight:bold;margin:5px 0}
 
 button{
 border:none;
-padding:6px 8px;
+padding:8px;
 border-radius:8px;
 cursor:pointer;
+width:100%;
 }
 
-.add{background:#111;color:#fff}
-.like{background:#ff4757;color:#fff}
+.add{background:#111;color:#fff;margin-top:5px}
 
 /* CART BAR */
 .cartBar{
@@ -85,6 +62,16 @@ color:#fff;
 display:flex;
 justify-content:space-between;
 padding:12px;
+align-items:center;
+}
+
+.cartBtn{
+background:#2e7d32;
+color:#fff;
+padding:8px 12px;
+border:none;
+border-radius:8px;
+cursor:pointer;
 }
 </style>
 </head>
@@ -92,118 +79,84 @@ padding:12px;
 <body>
 
 <header>
-<div class="brand">🥗 SHOP v10 PRO</div>
-
-<input id="search" placeholder="Search food...">
-
-<select id="filter">
-<option value="all">All</option>
-<option value="food">Food</option>
-<option value="drink">Drink</option>
-</select>
+<div class="brand">One bite And Take more energy</div>
 </header>
 
 <div class="cards" id="list"></div>
 
 <!-- CART BAR -->
 <div class="cartBar">
-<div>Cart: <span id="count">0</span></div>
-<div>Total: $<span id="total">0</span></div>
-<button onclick="goPay()">PAY</button>
+<div>🛒<span id="count">0</span></div>
+<div>💰Total: $<span id="total">0</span></div>
+<button class="cartBtn" onclick="checkout()">CHECKOUT</button>
 </div>
 
 <script>
 
-/* ===== 50 REAL PRODUCTS ===== */
+/* ===== PRODUCTS ===== */
 const data=[
-{id:1,n:"Chicken Bowl",p:10,t:"food",d:"Grilled chicken rice bowl",img:"https://source.unsplash.com/400x300/?chicken"},
-{id:2,n:"Berry Smoothie",p:6,t:"drink",d:"Fresh berry drink",img:"https://source.unsplash.com/400x300/?smoothie"},
-{id:3,n:"Burger",p:11,t:"food",d:"Juicy burger",img:"https://source.unsplash.com/400x300/?burger"},
-{id:4,n:"Pizza",p:12,t:"food",d:"Cheese pizza",img:"https://source.unsplash.com/400x300/?pizza"},
-{id:5,n:"Salad",p:8,t:"food",d:"Healthy salad",img:"https://source.unsplash.com/400x300/?salad"},
-{id:6,n:"Ice Coffee",p:5,t:"drink",d:"Cold coffee",img:"https://source.unsplash.com/400x300/?coffee"},
-{id:7,n:"Protein Shake",p:7,t:"drink",d:"Gym shake",img:"https://source.unsplash.com/400x300/?protein"},
-{id:8,n:"Steak",p:15,t:"food",d:"Grilled steak",img:"https://source.unsplash.com/400x300/?steak"},
-{id:9,n:"Oatmeal",p:6,t:"food",d:"Healthy breakfast",img:"https://source.unsplash.com/400x300/?oatmeal"},
-{id:10,n:"Wrap",p:9,t:"food",d:"Chicken wrap",img:"https://source.unsplash.com/400x300/?wrap"},
-
-{id:11,n:"Rice Bowl",p:10,t:"food",d:"Chicken rice bowl",img:"https://source.unsplash.com/400x300/?rice"},
-{id:12,n:"Fruit Bowl",p:8,t:"food",d:"Mixed fruits",img:"https://source.unsplash.com/400x300/?fruit"},
-{id:13,n:"Orange Juice",p:4,t:"drink",d:"Fresh juice",img:"https://source.unsplash.com/400x300/?orange"},
-{id:14,n:"Apple Juice",p:4,t:"drink",d:"Apple juice",img:"https://source.unsplash.com/400x300/?apple"},
-{id:15,n:"Energy Drink",p:5,t:"drink",d:"Energy boost",img:"https://source.unsplash.com/400x300/?energy"},
-{id:16,n:"Chocolate Shake",p:6,t:"drink",d:"Chocolate drink",img:"https://source.unsplash.com/400x300/?chocolate"},
-{id:17,n:"Avocado Toast",p:9,t:"food",d:"Healthy toast",img:"https://source.unsplash.com/400x300/?avocado"},
-{id:18,n:"Nuggets",p:9,t:"food",d:"Crispy nuggets",img:"https://source.unsplash.com/400x300/?nuggets"},
-{id:19,n:"Yogurt Bowl",p:6,t:"food",d:"Healthy yogurt",img:"https://source.unsplash.com/400x300/?yogurt"},
-{id:20,n:"Detox Bowl",p:8,t:"food",d:"Clean food",img:"https://source.unsplash.com/400x300/?detox"},
-
-{id:21,n:"Shrimp Bowl",p:12,t:"food",d:"Seafood bowl",img:"https://source.unsplash.com/400x300/?shrimp"},
-{id:22,n:"Pancakes",p:8,t:"food",d:"Breakfast pancakes",img:"https://source.unsplash.com/400x300/?pancakes"},
-{id:23,n:"Taco",p:7,t:"food",d:"Mexican taco",img:"https://source.unsplash.com/400x300/?taco"},
-{id:24,n:"Hot Dog",p:6,t:"food",d:"Hot dog",img:"https://source.unsplash.com/400x300/?hotdog"},
-{id:25,n:"Fries",p:5,t:"food",d:"Crispy fries",img:"https://source.unsplash.com/400x300/?fries"},
-{id:26,n:"Milkshake",p:6,t:"drink",d:"Milkshake",img:"https://source.unsplash.com/400x300/?milkshake"},
-{id:27,n:"Coke",p:3,t:"drink",d:"Soft drink",img:"https://source.unsplash.com/400x300/?cola"},
-{id:28,n:"Green Juice",p:5,t:"drink",d:"Healthy juice",img:"https://source.unsplash.com/400x300/?juice"},
-{id:29,n:"Sushi",p:12,t:"food",d:"Japanese sushi",img:"https://source.unsplash.com/400x300/?sushi"},
-{id:30,n:"Ramen",p:11,t:"food",d:"Hot noodles",img:"https://source.unsplash.com/400x300/?ramen"},
+{id:1,n:"Chicken Bowl",p:10,img:"https://images.unsplash.com/photo-1604908177522-0404f2e7f0d2"},
+{id:2,n:"Burger",p:11,img:"https://images.unsplash.com/photo-1550547660-d9450f859349"},
+{id:3,n:"Pizza",p:12,img:"https://images.unsplash.com/photo-1548365328-8b849e7f0b1f"},
+{id:4,n:"Salad",p:8,img:"https://images.unsplash.com/photo-1551892374-ecf8754cf8b0"},
+{id:5,n:"Ice Coffee",p:5,img:"https://images.unsplash.com/photo-1511920170033-f8396924c348"},
+{id:6,n:"Protein Shake",p:7,img:"https://images.unsplash.com/photo-1579722821273-0f6c7d44362f"},
+{id:7,n:"Steak",p:15,img:"https://images.unsplash.com/photo-1558030006-450675393462"},
+{id:8,n:"Fruit Bowl",p:8,img:"https://images.unsplash.com/photo-1610832958506-aa56368176cf"},
+{id:9,n:"Sushi",p:12,img:"https://images.unsplash.com/photo-1562158070-3c5b2b8c6f6c"},
+{id:10,n:"Pancakes",p:8,img:"https://images.unsplash.com/photo-1528207776546-365bb710ee93"},
 ];
 
 let cart=[];
 
 /* ===== RENDER ===== */
-function render(list=data){
-list.innerHTML=list.map(x=>`
+const list=document.getElementById("list");
+
+function render(){
+list.innerHTML=data.map(x=>`
 <div class="card">
 <img src="${x.img}">
 <div class="content">
 <div class="title">${x.n}</div>
-<div class="desc">${x.d}</div>
 <div class="price">$${x.p}</div>
-
-<div class="row">
-<button class="add" onclick="add(${x.id})">+ Add</button>
-<button class="like" onclick="alert('❤️ ${x.n}')">❤️</button>
-</div>
-
+<button class="add" onclick="add(${x.id})">+ Add to Cart</button>
 </div>
 </div>
-`).join('')
+`).join("")
 }
-
 render();
 
-/* ===== CART ===== */
+/* ===== ADD TO CART ===== */
 function add(id){
-let p=data.find(x=>x.id==id);
-let f=cart.find(x=>x.id==id);
-if(f) f.q++;
-else cart.push({...p,q:1});
+let item=data.find(x=>x.id===id);
+
+let exist=cart.find(x=>x.id===id);
+if(exist){
+exist.q++;
+}else{
+cart.push({...item,q:1});
+}
 update();
 }
 
+/* ===== UPDATE CART ===== */
 function update(){
-count.textContent=cart.reduce((a,b)=>a+b.q,0);
-total.textContent=cart.reduce((a,b)=>a+b.p*b.q,0);
+document.getElementById("count").textContent =
+cart.reduce((a,b)=>a+b.q,0);
+
+document.getElementById("total").textContent =
+cart.reduce((a,b)=>a+b.p*b.q,0);
 }
 
-/* ===== SEARCH ===== */
-search.oninput=e=>{
-let q=e.target.value.toLowerCase();
-render(data.filter(x=>x.n.toLowerCase().includes(q)))
+/* ===== CHECKOUT ===== */
+function checkout(){
+if(cart.length===0){
+alert("Cart empty ❌");
+return;
 }
 
-/* ===== FILTER ===== */
-filter.onchange=e=>{
-if(e.target.value=="all") render(data)
-else render(data.filter(x=>x.t==e.target.value))
-}
-
-/* ===== PAYMENT ===== */
-function goPay(){
 localStorage.setItem("cart",JSON.stringify(cart));
-window.location.href="payment.html";
+window.location.href="https://nightfallx-owner.github.io/nightfallteam01github.io/pay.html";
 }
 
 </script>
