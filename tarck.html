@@ -1,127 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Delivery Track</title>
+
 <style>
 
-/* 🌿 GREEN + WHITE THEME */
+:root{
+--green:#2e7d32;
+--light:#f3fff4;
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
 body{
-background:#f3fff4 !important;
+background:var(--light);
+overflow:hidden;
 }
 
 /* HEADER */
 header{
-background:#ffffff !important;
-border-bottom:2px solid #d8f5dc;
+position:fixed;
+top:0;
+left:0;
+right:0;
+height:70px;
+background:#fff;
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:0 20px;
+box-shadow:0 8px 20px rgba(0,0,0,.08);
+z-index:100;
 }
 
 .logo{
-color:#2e7d32 !important;
+font-size:24px;
+font-weight:900;
+color:var(--green);
+}
+
+button{
+border:none;
+padding:10px 16px;
+border-radius:12px;
+background:var(--green);
+color:#fff;
+font-weight:700;
+cursor:pointer;
 }
 
 /* MAP */
 .map{
-background:linear-gradient(180deg,#f6fff7,#e8f5e9) !important;
+position:fixed;
+inset:70px 0 0 0;
+background:linear-gradient(180deg,#f6fff7,#e8f5e9);
+overflow:hidden;
 }
 
 /* ROAD */
 .road{
-background:#2d2d2d !important;
+position:absolute;
+top:50%;
+left:0;
+width:100%;
+height:130px;
+background:#2d2d2d;
+transform:translateY(-50%);
+}
+
+.line{
+position:absolute;
+top:50%;
+left:0;
+width:100%;
+height:6px;
+
+background:repeating-linear-gradient(
+90deg,
+#fff 0 35px,
+transparent 35px 70px
+);
+
+transform:translateY(-50%);
+
+animation:moveLine 1s linear infinite;
+}
+
+@keyframes moveLine{
+from{background-position:0}
+to{background-position:70px}
 }
 
 /* STORE + HOME */
 .store,.home{
-background:#ffffff !important;
-color:#2e7d32 !important;
+position:absolute;
+background:#fff;
+padding:12px;
+border-radius:16px;
+font-weight:800;
+color:var(--green);
 border:2px solid #dff5e3;
+box-shadow:0 8px 20px rgba(0,0,0,.08);
+animation:float 2s ease-in-out infinite;
+}
+
+.store{
+left:40px;
+top:calc(50% - 170px);
+}
+
+.home{
+right:40px;
+top:calc(50% - 170px);
+}
+
+@keyframes float{
+0%,100%{
+transform:translateY(0);
+}
+50%{
+transform:translateY(-5px);
+}
+}
+
+/* CAR */
+.car{
+position:absolute;
+left:30px;
+top:calc(50% - 55px);
+font-size:65px;
+transform:scaleX(-1);
+transition:left .25s linear;
+z-index:20;
 }
 
 /* PANEL */
 .panel{
-background:#ffffff !important;
-color:#111 !important;
+position:absolute;
+left:20px;
+bottom:20px;
+background:#fff;
+padding:16px;
+width:320px;
+border-radius:20px;
+box-shadow:0 8px 25px rgba(0,0,0,.08);
 border:2px solid #dff5e3;
+}
+
+.status{
+font-weight:800;
+font-size:18px;
+color:var(--green);
+}
+
+.small{
+font-size:13px;
+margin-top:6px;
+opacity:.7;
 }
 
 /* PROGRESS */
 .progress{
-background:#d8ead9 !important;
+height:10px;
+background:#d8ead9;
+border-radius:999px;
+overflow:hidden;
+margin-top:14px;
 }
 
 .bar{
-background:#2e7d32 !important;
+height:100%;
+width:0%;
+background:var(--green);
+transition:.2s;
 }
 
 /* ARRIVED */
 .arrived{
-background:#ffffff !important;
-color:#2e7d32 !important;
+position:absolute;
+top:100px;
+left:50%;
+transform:translateX(-50%) scale(.8);
+
+background:#fff;
+padding:16px 22px;
+border-radius:18px;
+font-weight:900;
+color:var(--green);
+
 border:2px solid #dff5e3;
+
+opacity:0;
+transition:.5s;
 }
 
-/* BUTTON */
-button{
-background:#2e7d32 !important;
-color:#fff !important;
-}
-
-/* 🚚 CAR LIGHTS */
-.car{
-position:absolute;
-filter:
-drop-shadow(0 0 12px #ffffff)
-drop-shadow(0 0 24px #a5ffb2)
-drop-shadow(0 0 45px #7cff95);
-}
-
-/* 💡 FRONT LIGHT */
-.car::after{
-content:"";
-position:absolute;
-right:-25px;
-top:28px;
-width:90px;
-height:20px;
-background:linear-gradient(
-90deg,
-rgba(255,255,255,.95),
-rgba(124,255,149,.55),
-transparent
-);
-filter:blur(10px);
-transform:rotate(-2deg);
-animation:lightMove .8s infinite alternate;
-}
-
-/* ✨ LIGHT FLICKER */
-@keyframes lightMove{
-from{
-opacity:.7;
-transform:translateX(0) rotate(-2deg);
-}
-to{
+.arrived.show{
 opacity:1;
-transform:translateX(8px) rotate(-1deg);
-}
+transform:translateX(-50%) scale(1);
 }
 
-/* 🌧 RAIN GREEN LIGHT */
+/* 🌧 RAIN */
+.rain{
+position:fixed;
+inset:0;
+pointer-events:none;
+overflow:hidden;
+z-index:999;
+}
+
 .drop{
+position:absolute;
+bottom:100%;
+width:2px;
+height:80px;
+
 background:linear-gradient(
 transparent,
 #b8ffcb
-) !important;
+);
+
 opacity:.35;
+
+animation:rain linear infinite;
 }
 
-/* 🎉 FINAL SCREEN */
+@keyframes rain{
+to{
+transform:translateY(120vh);
+}
+}
+
+/* FINAL */
+.finalScreen{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.55);
+display:none;
+justify-content:center;
+align-items:center;
+z-index:99999;
+}
+
 .successBox{
-background:#ffffff !important;
-color:#2e7d32 !important;
+background:#fff;
+color:var(--green);
+padding:30px;
+width:320px;
+border-radius:25px;
+text-align:center;
 border:2px solid #dff5e3;
+box-shadow:0 20px 50px rgba(0,0,0,.2);
+
+animation:popup .6s ease;
+position:relative;
+overflow:hidden;
+}
+
+@keyframes popup{
+from{
+opacity:0;
+transform:scale(.6) translateY(60px);
+}
+to{
+opacity:1;
+transform:scale(1) translateY(0);
+}
+}
+
+.bigIcon{
+font-size:75px;
+animation:bounce 1s infinite;
+}
+
+@keyframes bounce{
+0%,100%{
+transform:translateY(0);
+}
+50%{
+transform:translateY(-10px);
+}
 }
 
 .finalStars{
-color:#2e7d32 !important;
-text-shadow:
-0 0 12px #8cff9d,
-0 0 25px #8cff9d;
+font-size:35px;
+margin:15px 0;
+color:var(--green);
+}
+
+.floatFood{
+position:absolute;
+left:0;
+right:0;
+bottom:-5px;
+font-size:30px;
+opacity:.15;
+animation:foodMove 6s linear infinite;
+}
+
+@keyframes foodMove{
+0%{
+transform:translateX(-100px);
+}
+100%{
+transform:translateX(120px);
+}
+}
+
+/* MOBILE */
+@media(max-width:700px){
+
+.panel{
+width:calc(100% - 40px);
+}
+
+.store,.home{
+font-size:13px;
+}
+
+.car{
+font-size:55px;
+}
+
 }
 
 </style>
+</head>
+
+<body>
+
+<header>
+
+<div class="logo">
+🚚 GREEN TRACK
+</div>
+
+<button onclick="restartTrack()">
+Restart
+</button>
+
+</header>
+
+<div class="map">
+
+<div class="road"></div>
+<div class="line"></div>
+
+<div class="store">
+ Restaurant
+</div>
+
+<div class="home">
+🏠 Home
+</div>
+
+<div class="car" id="car">
+🚚
+</div>
+
+<div class="arrived" id="arrived">
+ Delivered Successfully
+</div>
+
+<div class="panel">
+
+<div class="status" id="status">
+Preparing your order...
+</div>
+
+<div class="small" id="info">
+
+</div>
+
+<div class="progress">
+<div class="bar" id="bar"></div>
+</div>
+
+<div class="small" style="margin-top:12px">
+Estimated delivery: 1–2 min
+</div>
+
+</div>
+
+</div>
+
+<!-- 🌧 RAIN -->
+<div class="rain" id="rain"></div>
+
+<!-- 🎉 FINAL -->
+<div class="finalScreen" id="finalScreen">
+
+<div class="successBox">
+
+<div class="bigIcon">
+🎉
+</div>
+
+<h1>ORDER DELIVERED</h1>
+
+<p style="margin-top:10px">
+Your food arrived 🚚
+</p>
+
+<div class="finalStars">
+★ ★ ★ ★ ★
+</div>
+
+<div class="floatFood">
+
+</div>
+
+<button onclick="closeFinal()">
+Good
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+/* 🌧 CREATE RAIN */
+const rain=document.getElementById("rain");
+
+for(let i=0;i<140;i++){
+
+let d=document.createElement("div");
+
+d.className="drop";
+
+d.style.left=Math.random()*100+"vw";
+
+d.style.animationDuration=
+(.5+Math.random())+"s";
+
+d.style.animationDelay=
+Math.random()*2+"s";
+
+rain.appendChild(d);
+
+}
+
+/* TRACK */
+let pos=30;
+let max=window.innerWidth-150;
+let timer;
+
+/* VOICE */
+function speak(t){
+
+try{
+
+speechSynthesis.cancel();
+
+let s=
+new SpeechSynthesisUtterance(t);
+
+speechSynthesis.speak(s);
+
+}catch(e){}
+
+}
+
+/* STATUS */
+function updateStatus(p){
+
+if(p<25){
+
+status.textContent=
+"Preparing your order";
+
+info.textContent=
+"Cooking fresh healthy food";
+
+}
+
+else if(p<55){
+
+status.textContent=
+"Courier picked up";
+
+info.textContent=
+"Driver left restaurant safely";
+
+}
+
+else if(p<80){
+
+status.textContent=
+"Order on the way";
+
+info.textContent=
+"Courier driving through rain";
+
+}
+
+else{
+
+status.textContent=
+"Almost arrived";
+
+info.textContent=
+"Please be ready for delivery";
+
+}
+
+}
+
+/* START */
+function startTrack(){
+
+pos=30;
+
+car.style.left=pos+"px";
+
+bar.style.width="0%";
+
+arrived.classList.remove("show");
+
+speak("Order confirmed");
+
+timer=setInterval(()=>{
+
+if(pos>=max){
+
+clearInterval(timer);
+
+bar.style.width="100%";
+
+arrived.classList.add("show");
+
+speak("Your order arrived");
+
+setTimeout(()=>{
+showFinal();
+},1200);
+
+return;
+
+}
+
+pos+=2;
+
+car.style.left=pos+"px";
+
+let percent=
+Math.round((pos/max)*100);
+
+bar.style.width=
+percent+"%";
+
+updateStatus(percent);
+
+},140);
+
+}
+
+/* FINAL */
+function showFinal(){
+
+document.getElementById(
+"finalScreen"
+).style.display="flex";
+
+try{
+
+let audio=
+new Audio(
+"https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3"
+);
+
+audio.volume=.4;
+
+audio.play();
+
+}catch(e){}
+
+speak(
+"Order completed successfully"
+);
+
+}
+
+/* CLOSE */
+function closeFinal(){
+
+document.getElementById(
+"finalScreen"
+).style.display="none";
+
+}
+
+/* RESTART */
+function restartTrack(){
+
+clearInterval(timer);
+
+speechSynthesis.cancel();
+
+startTrack();
+
+}
+
+window.addEventListener("resize",()=>{
+
+max=window.innerWidth-150;
+
+});
+
+startTrack();
+
+</script>
+
+</body>
+</html>
