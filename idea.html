@@ -2,422 +2,147 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>BSJ Food AI Premium</title>
-
+<title>Healthy Food Quiz</title>
 <style>
-:root{
---bg:#f5f7f5;
---card:#ffffff;
---text:#111;
---primary:#2e7d32;
---shadow:0 8px 22px rgba(0,0,0,.08);
-}
-
-body.dark{
---bg:#0f1110;
---card:#1c1f1d;
---text:#fff;
---primary:#66bb6a;
---shadow:0 8px 24px rgba(0,0,0,.35);
-}
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,sans-serif;
-}
-
 body{
-background:var(--bg);
-color:var(--text);
-transition:.25s;
+    font-family: Arial, sans-serif;
+    background:#f2f7f3;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    margin:0;
 }
 
-header{
-position:sticky;
-top:0;
-z-index:50;
-background:var(--card);
-padding:14px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-gap:10px;
-flex-wrap:wrap;
-box-shadow:var(--shadow);
+.quiz-box{
+    background:white;
+    padding:25px;
+    border-radius:12px;
+    width:400px;
+    box-shadow:0 0 15px rgba(0,0,0,0.1);
+    text-align:center;
 }
 
-.logo{
-font-size:26px;
-font-weight:900;
-color:var(--primary);
-}
-
-.right{
-display:flex;
-gap:8px;
-flex-wrap:wrap;
+h2{
+    color:#2e7d32;
 }
 
 button{
-border:none;
-cursor:pointer;
-border-radius:10px;
-padding:10px 12px;
-font-weight:700;
-background:var(--primary);
-color:#fff;
+    margin-top:10px;
+    padding:10px 15px;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+    background:#2e7d32;
+    color:white;
 }
 
-.search{
-padding:10px;
-border-radius:10px;
-border:1px solid #ccc;
-width:180px;
-outline:none;
+button:hover{
+    background:#1b5e20;
 }
 
-.hero{
-padding:24px;
-display:grid;
-grid-template-columns:2fr 1fr;
-gap:15px;
+.option{
+    display:block;
+    margin:8px 0;
+    padding:8px;
+    background:#e8f5e9;
+    border-radius:6px;
+    cursor:pointer;
 }
 
-.banner{
-background:linear-gradient(135deg,#2e7d32,#66bb6a);
-color:#fff;
-padding:24px;
-border-radius:18px;
+.option:hover{
+    background:#c8e6c9;
 }
 
-.side{
-background:var(--card);
-padding:18px;
-border-radius:18px;
-box-shadow:var(--shadow);
-}
-
-.section{
-padding:20px;
-}
-
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:14px;
-}
-
-.card{
-background:var(--card);
-border-radius:16px;
-overflow:hidden;
-box-shadow:var(--shadow);
-}
-
-.card img{
-width:100%;
-height:150px;
-object-fit:cover;
-}
-
-.info{
-padding:12px;
-}
-
-.title{
-font-size:18px;
-font-weight:800;
-margin-bottom:8px;
-}
-
-.meta{
-font-size:13px;
-opacity:.7;
-margin-bottom:10px;
-}
-
-.row{
-display:flex;
-justify-content:space-between;
-gap:8px;
-margin-top:8px;
-}
-
-.drawer{
-position:fixed;
-right:-390px;
-top:0;
-width:350px;
-height:100%;
-background:var(--card);
-box-shadow:-8px 0 22px rgba(0,0,0,.18);
-padding:18px;
-transition:.3s;
-overflow:auto;
-z-index:90;
-}
-
-.drawer.open{
-right:0;
-}
-
-.item{
-padding:10px 0;
-border-bottom:1px solid #ddd;
-display:flex;
-justify-content:space-between;
-}
-
-.total{
-margin-top:14px;
-font-size:18px;
-font-weight:900;
-}
-
-.shop{
-position:fixed;
-inset:0;
-background:#111;
-display:none;
-z-index:150;
-overflow:hidden;
-}
-
-#map{
-position:absolute;
-inset:0;
-background:
-linear-gradient(90deg,#1f1f1f 0 10%,#2c2c2c 10% 20%,#1f1f1f 20% 30%,#2c2c2c 30% 40%,#1f1f1f 40% 50%,#2c2c2c 50% 60%,#1f1f1f 60% 70%,#2c2c2c 70% 80%,#1f1f1f 80% 90%,#2c2c2c 90%);
-opacity:.6;
-}
-
-.roadLine{
-position:absolute;
-left:0;
-top:50%;
-width:100%;
-height:6px;
-background:repeating-linear-gradient(90deg,#fff 0 30px,transparent 30px 60px);
-transform:translateY(-50%);
-}
-
-.car{
-position:absolute;
-top:46%;
-left:-80px;
-font-size:60px;
-animation:drive 10s linear forwards;
-}
-
-@keyframes drive{
-0%{left:-80px}
-100%{left:105%}
-}
-
-.status{
-position:absolute;
-top:20px;
-left:20px;
-background:rgba(255,255,255,.92);
-padding:14px;
-border-radius:14px;
-font-weight:800;
-color:#111;
-max-width:320px;
-}
-
-.finish{
-position:absolute;
-bottom:25px;
-left:50%;
-transform:translateX(-50%);
-background:#fff;
-padding:14px 18px;
-border-radius:14px;
-display:none;
-font-weight:900;
-}
-
-@media(max-width:900px){
-.hero{
-grid-template-columns:1fr;
-}
+#result{
+    margin-top:10px;
+    font-weight:bold;
 }
 </style>
 </head>
 <body>
 
-<header>
-<div class="logo">BSJ</div>
-
-<div class="right">
-<input class="search" id="search" placeholder="Search food...">
-<button onclick="toggleTheme()">🌙</button>
-<button onclick="toggleCart()">Cart (<span id="count">0</span>)</button>
+<div class="quiz-box">
+    <h2>Healthy Food Quiz</h2>
+    <div id="question">Loading...</div>
+    <div id="options"></div>
+    <div id="result"></div>
+    <button onclick="nextQuestion()">Next Question</button>
 </div>
-</header>
-
-<section class="hero">
-<div class="banner">
-<h1>BSJ Premium Food AI</h1>
-<p>Fast delivery • Smart AI • Live Shop Route</p>
-<br>
-<button onclick="aiTalk('Welcome to BSJ premium food system')">AI Talk</button>
-</div>
-
-<div class="side">
-<h3>Today Offer</h3>
-<p>Healthy combo -20%</p>
-</div>
-</section>
-
-<section class="section">
-<div class="grid" id="products"></div>
-</section>
-
-<!-- CART -->
-<div class="drawer" id="drawer">
-<h2>Your Cart</h2>
-<div id="cart"></div>
-<div class="total">Total: $<span id="total">0</span></div>
-<br>
-<button onclick="checkout()">Order Now</button>
-</div>
-
-<!-- LIVE SHOP -->
-<div class="shop" id="shop">
-<div id="map"></div>
-<div class="roadLine"></div>
-<div class="car">🚚</div>
-
-<div class="status" id="status">
-AI: Order received. Preparing your meal.
-</div>
-
-<div class="finish" id="finish">
-Delivered 🚀 Thank you for choosing BSJ
-</div>
-</div>
-
-<!-- MUSIC -->
-<audio id="music">
-<source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_8f49f8d1d5.mp3?filename=corporate-motivation-11282.mp3" type="audio/mp3">
-</audio>
 
 <script>
-const products=[
-{id:1,name:"Chicken Salad",price:8,kcal:320,img:"https://images.unsplash.com/photo-1546793665-c74683f339c1?auto=format&fit=crop&w=900&q=80"},
-{id:2,name:"Protein Bowl",price:10,kcal:450,img:"https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=900&q=80"},
-{id:3,name:"Smoothie",price:6,kcal:210,img:"https://images.unsplash.com/photo-1502741338009-cac2772e18bc?auto=format&fit=crop&w=900&q=80"},
-{id:4,name:"Fruit Mix",price:7,kcal:240,img:"https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?auto=format&fit=crop&w=900&q=80"},
-{id:5,name:"Avocado Toast",price:9,kcal:380,img:"https://images.unsplash.com/photo-1525351484163-7529414344d8?auto=format&fit=crop&w=900&q=80"},
-{id:6,name:"Chicken Meal",price:12,kcal:520,img:"https://images.unsplash.com/photo-1604908177522-402f994d58a6?auto=format&fit=crop&w=900&q=80"}
+const quiz = [
+    {
+        q: "What is healthy food?",
+        options: ["Junk food", "Nutritious food", "Candy", "Fast food"],
+        answer: "Nutritious food"
+    },
+    {
+        q: "Why is healthy food important?",
+        options: ["It makes you tired", "It harms health", "It improves health", "It has no effect"],
+        answer: "It improves health"
+    },
+    {
+        q: "Which is a healthy drink?",
+        options: ["Soda", "Water", "Energy drink", "Cola"],
+        answer: "Water"
+    },
+    {
+        q: "Fruits are...",
+        options: ["Unhealthy", "Healthy", "Junk food", "Artificial"],
+        answer: "Healthy"
+    },
+    {
+        q: "Fast food is usually...",
+        options: ["Healthy", "Nutritious", "Unhealthy", "Fresh"],
+        answer: "Unhealthy"
+    }
 ];
 
-let cart=[];
+let index = 0;
+let selected = "";
 
-function render(list=products){
-productsEl.innerHTML=list.map(p=>`
-<div class="card">
-<img src="${p.img}">
-<div class="info">
-<div class="title">${p.name}</div>
-<div class="meta">${p.kcal} kcal</div>
+function loadQuestion(){
+    let q = quiz[index];
+    document.getElementById("question").innerText = q.q;
 
-<div class="row">
-<div><b>$${p.price}</b></div>
-<button onclick="addCart(${p.id})">Add</button>
-</div>
-</div>
-</div>
-`).join("");
+    let optionsDiv = document.getElementById("options");
+    optionsDiv.innerHTML = "";
+
+    document.getElementById("result").innerText = "";
+
+    q.options.forEach(opt => {
+        let btn = document.createElement("div");
+        btn.className = "option";
+        btn.innerText = opt;
+        btn.onclick = () => {
+            selected = opt;
+            checkAnswer();
+        };
+        optionsDiv.appendChild(btn);
+    });
 }
 
-function addCart(id){
-let item=cart.find(x=>x.id===id);
-if(item){item.qty++;}
-else{cart.push({id,qty:1});}
-drawCart();
+function checkAnswer(){
+    let correct = quiz[index].answer;
+    if(selected === correct){
+        document.getElementById("result").innerText = "Correct ✅";
+        document.getElementById("result").style.color = "green";
+    } else {
+        document.getElementById("result").innerText = "Wrong ❌ Correct: " + correct;
+        document.getElementById("result").style.color = "red";
+    }
 }
 
-function drawCart(){
-count.textContent=cart.reduce((a,b)=>a+b.qty,0);
-
-cartEl.innerHTML=cart.map(i=>{
-let p=products.find(x=>x.id===i.id);
-return `
-<div class="item">
-<div>${p.name} x${i.qty}</div>
-<div>$${p.price*i.qty}</div>
-</div>
-`;
-}).join("");
-
-total.textContent=cart.reduce((a,b)=>{
-let p=products.find(x=>x.id===b.id);
-return a+(p.price*b.qty);
-},0);
+function nextQuestion(){
+    index++;
+    if(index >= quiz.length){
+        index = 0;
+    }
+    loadQuestion();
 }
 
-function toggleCart(){
-drawer.classList.toggle("open");
-}
-
-function toggleTheme(){
-document.body.classList.toggle("dark");
-}
-
-function aiTalk(text){
-let speech=new SpeechSynthesisUtterance(text);
-speech.lang="en-US";
-speech.rate=1;
-speech.pitch=1;
-speechSynthesis.speak(speech);
-}
-
-function checkout(){
-if(cart.length===0){
-alert("Cart empty");
-return;
-}
-
-drawer.classList.remove("open");
-shop.style.display="block";
-
-music.currentTime=0;
-music.play().catch(()=>{});
-
-aiTalk("Your order has been confirmed. Our driver is preparing to leave.");
-
-setTimeout(()=>{
-status.textContent="AI: Driver picked up your food. Leaving the restaurant.";
-aiTalk("Driver picked up your food.");
-},2500);
-
-setTimeout(()=>{
-status.textContent="AI: Driver is on the way to your location.";
-aiTalk("Driver is on the way.");
-},5500);
-
-setTimeout(()=>{
-status.textContent="AI: Driver arrived. Enjoy your meal.";
-finish.style.display="block";
-aiTalk("Driver arrived. Enjoy your meal. Thank you.");
-cart=[];
-drawCart();
-},10000);
-}
-
-search.oninput=e=>{
-let q=e.target.value.toLowerCase();
-render(products.filter(p=>p.name.toLowerCase().includes(q)));
-};
-
-render();
-drawCart();
+loadQuestion();
 </script>
 
 </body>
