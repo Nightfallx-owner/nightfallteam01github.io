@@ -122,12 +122,8 @@ top:calc(50% - 170px);
 }
 
 @keyframes float{
-0%,100%{
-transform:translateY(0);
-}
-50%{
-transform:translateY(-5px);
-}
+0%,100%{transform:translateY(0);}
+50%{transform:translateY(-5px);}
 }
 
 /* CAR */
@@ -188,15 +184,12 @@ position:absolute;
 top:100px;
 left:50%;
 transform:translateX(-50%) scale(.8);
-
 background:#fff;
 padding:16px 22px;
 border-radius:18px;
 font-weight:900;
 color:var(--green);
-
 border:2px solid #dff5e3;
-
 opacity:0;
 transition:.5s;
 }
@@ -204,37 +197,6 @@ transition:.5s;
 .arrived.show{
 opacity:1;
 transform:translateX(-50%) scale(1);
-}
-
-/* 🌧 RAIN */
-.rain{
-position:fixed;
-inset:0;
-pointer-events:none;
-overflow:hidden;
-z-index:999;
-}
-
-.drop{
-position:absolute;
-bottom:100%;
-width:2px;
-height:80px;
-
-background:linear-gradient(
-transparent,
-#b8ffcb
-);
-
-opacity:.35;
-
-animation:rain linear infinite;
-}
-
-@keyframes rain{
-to{
-transform:translateY(120vh);
-}
 }
 
 /* FINAL */
@@ -257,21 +219,12 @@ border-radius:25px;
 text-align:center;
 border:2px solid #dff5e3;
 box-shadow:0 20px 50px rgba(0,0,0,.2);
-
 animation:popup .6s ease;
-position:relative;
-overflow:hidden;
 }
 
 @keyframes popup{
-from{
-opacity:0;
-transform:scale(.6) translateY(60px);
-}
-to{
-opacity:1;
-transform:scale(1) translateY(0);
-}
+from{opacity:0;transform:scale(.6) translateY(60px);}
+to{opacity:1;transform:scale(1) translateY(0);}
 }
 
 .bigIcon{
@@ -280,12 +233,8 @@ animation:bounce 1s infinite;
 }
 
 @keyframes bounce{
-0%,100%{
-transform:translateY(0);
-}
-50%{
-transform:translateY(-10px);
-}
+0%,100%{transform:translateY(0);}
+50%{transform:translateY(-10px);}
 }
 
 .finalStars{
@@ -294,57 +243,14 @@ margin:15px 0;
 color:var(--green);
 }
 
-.floatFood{
-position:absolute;
-left:0;
-right:0;
-bottom:-5px;
-font-size:30px;
-opacity:.15;
-animation:foodMove 6s linear infinite;
-}
-
-@keyframes foodMove{
-0%{
-transform:translateX(-100px);
-}
-100%{
-transform:translateX(120px);
-}
-}
-
-/* MOBILE */
-@media(max-width:700px){
-
-.panel{
-width:calc(100% - 40px);
-}
-
-.store,.home{
-font-size:13px;
-}
-
-.car{
-font-size:55px;
-}
-
-}
-
 </style>
 </head>
 
 <body>
 
 <header>
-
-<div class="logo">
-🚚 GREEN TRACK
-</div>
-
-<button onclick="restartTrack()">
-Restart
-</button>
-
+<div class="logo">🚚 GREEN TRACK</div>
+<button onclick="restartTrack()">Restart</button>
 </header>
 
 <div class="map">
@@ -352,72 +258,41 @@ Restart
 <div class="road"></div>
 <div class="line"></div>
 
-<div class="store">
- Restaurant
-</div>
+<div class="store">Restaurant</div>
+<div class="home">🏠 Home</div>
 
-<div class="home">
-🏠 Home
-</div>
+<div class="car" id="car">🚚</div>
 
-<div class="car" id="car">
-🚚
-</div>
-
-<div class="arrived" id="arrived">
- Delivered Successfully
-</div>
+<div class="arrived" id="arrived">Delivered Successfully</div>
 
 <div class="panel">
-
-<div class="status" id="status">
-Preparing your order...
-</div>
-
-<div class="small" id="info">
-
-</div>
+<div class="status" id="status">Preparing your order...</div>
+<div class="small" id="info"></div>
 
 <div class="progress">
 <div class="bar" id="bar"></div>
 </div>
 
-<div class="small" style="margin-top:12px">
-Estimated delivery: 1–2 min
 </div>
 
 </div>
 
-</div>
-
-<!-- 🌧 RAIN -->
-<div class="rain" id="rain"></div>
-
-<!-- 🎉 FINAL -->
+<!-- FINAL SCREEN -->
 <div class="finalScreen" id="finalScreen">
 
 <div class="successBox">
 
-<div class="bigIcon">
-🎉
-</div>
+<div class="bigIcon">🎉</div>
 
 <h1>ORDER DELIVERED</h1>
 
-<p style="margin-top:10px">
-Your food arrived 🚚
-</p>
+<p>Your food arrived 🚚</p>
 
-<div class="finalStars">
-★ ★ ★ ★ ★
-</div>
+<div class="finalStars">★ ★ ★ ★ ★</div>
 
-<div class="floatFood">
-
-</div>
-
-<button onclick="closeFinal()">
-https://nightfallx-owner.github.io/nightfallteam01github.io/quiz.html
+<!-- 🔥 FIXED BUTTON -->
+<button onclick="window.open('https://nightfallx-owner.github.io/nightfallteam01github.io/quiz.html','_blank')">
+Go to Quiz
 </button>
 
 </div>
@@ -426,192 +301,77 @@ https://nightfallx-owner.github.io/nightfallteam01github.io/quiz.html
 
 <script>
 
-/* 🌧 CREATE RAIN */
-const rain=document.getElementById("rain");
-
-for(let i=0;i<140;i++){
-
-let d=document.createElement("div");
-
-d.className="drop";
-
-d.style.left=Math.random()*100+"vw";
-
-d.style.animationDuration=
-(.5+Math.random())+"s";
-
-d.style.animationDelay=
-Math.random()*2+"s";
-
-rain.appendChild(d);
-
-}
-
-/* TRACK */
 let pos=30;
 let max=window.innerWidth-150;
 let timer;
 
-/* VOICE */
-function speak(t){
+const car=document.getElementById("car");
+const bar=document.getElementById("bar");
+const status=document.getElementById("status");
+const info=document.getElementById("info");
+const arrived=document.getElementById("arrived");
 
-try{
-
-speechSynthesis.cancel();
-
-let s=
-new SpeechSynthesisUtterance(t);
-
-speechSynthesis.speak(s);
-
-}catch(e){}
-
-}
-
-/* STATUS */
 function updateStatus(p){
 
 if(p<25){
-
-status.textContent=
-"Preparing your order";
-
-info.textContent=
-"Cooking fresh healthy food";
-
+status.textContent="Preparing your order";
+info.textContent="Cooking fresh healthy food";
 }
-
 else if(p<55){
-
-status.textContent=
-"Courier picked up";
-
-info.textContent=
-"Driver left restaurant safely";
-
+status.textContent="Courier picked up";
+info.textContent="Driver left restaurant";
 }
-
 else if(p<80){
-
-status.textContent=
-"Order on the way";
-
-info.textContent=
-"Courier driving through rain";
-
+status.textContent="On the way";
+info.textContent="Delivery in progress";
 }
-
 else{
-
-status.textContent=
-"Almost arrived";
-
-info.textContent=
-"Please be ready for delivery";
-
+status.textContent="Almost arrived";
+info.textContent="Be ready!";
 }
 
 }
 
-/* START */
 function startTrack(){
 
 pos=30;
-
 car.style.left=pos+"px";
-
 bar.style.width="0%";
-
 arrived.classList.remove("show");
-
-speak("Order confirmed");
 
 timer=setInterval(()=>{
 
 if(pos>=max){
-
 clearInterval(timer);
-
 bar.style.width="100%";
-
 arrived.classList.add("show");
 
-speak("Your order arrived");
-
 setTimeout(()=>{
-showFinal();
-},1200);
+document.getElementById("finalScreen").style.display="flex";
+},1000);
 
 return;
-
 }
 
 pos+=2;
-
 car.style.left=pos+"px";
 
-let percent=
-Math.round((pos/max)*100);
-
-bar.style.width=
-percent+"%";
+let percent=Math.round((pos/max)*100);
+bar.style.width=percent+"%";
 
 updateStatus(percent);
 
-},140);
+},80);
 
 }
 
-/* FINAL */
-function showFinal(){
-
-document.getElementById(
-"finalScreen"
-).style.display="flex";
-
-try{
-
-let audio=
-new Audio(
-"https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3"
-);
-
-audio.volume=.4;
-
-audio.play();
-
-}catch(e){}
-
-speak(
-"Order completed successfully"
-);
-
-}
-
-/* CLOSE */
-function closeFinal(){
-
-document.getElementById(
-"finalScreen"
-).style.display="none";
-
-}
-
-/* RESTART */
 function restartTrack(){
-
 clearInterval(timer);
-
-speechSynthesis.cancel();
-
 startTrack();
-
 }
 
 window.addEventListener("resize",()=>{
-
 max=window.innerWidth-150;
-
 });
 
 startTrack();
