@@ -1,105 +1,59 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>About Bite</title>
+<!-- Aloqa uchun bo'limi -->
+<div class="contact-section">
+    <h3>Aloqa uchun</h3>
+    <a href="https://ahmedoviskandar123-cpu.github.io/Site/" class="contact-main-btn" target="_blank">
+        Biz bilan bog'lanish
+    </a>
 
-<style>
-
-body{
-font-family:Arial;
-text-align:center;
-padding:60px;
-background:#f3fff5;
-}
-
-/* CARD */
-.card{
-background:white;
-display:inline-block;
-padding:30px;
-border-radius:15px;
-border:2px solid #22c55e;
-box-shadow:0 10px 20px rgba(0,0,0,.1);
-max-width:420px;
-}
-
-/* 🔥 LOGO CENTER */
-.logo{
-width:100px;
-height:100px;
-border-radius:20px;
-margin:0 auto 15px;
-display:block;
-box-shadow:0 0 20px #22c55e;
-animation:float 3s infinite;
-}
-
-@keyframes float{
-0%,100%{transform:translateY(0);}
-50%{transform:translateY(-10px);}
-}
-
-h1{
-color:#2e7d32;
-margin-bottom:10px;
-}
-
-p{
-line-height:1.6;
-color:#333;
-}
-
-a{
-display:inline-block;
-margin-top:20px;
-text-decoration:none;
-background:#22c55e;
-color:white;
-padding:15px 20px;
-border-radius:15px;
-}
-
-a:hover{
-background:#15803d;
-}
-
-</style>
-
-</head>
-
-<body>
-
-<div class="card">
-
-<!-- 🔥 CENTER LOGO -->
-<img class="logo" src="data:image/png;base64,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" alt="BSJ Logo">
-
-<h1>About Bite</h1>
-
-<p>Slogan - One bite endless energy</p>
-
-  <p>
-    This message is not only about food choices, but
-about overall lifestyle habits.
-Healthy eating affects different parts of life:
-.it improves daily discipline and self-control
-.it helps build consistent habits over time
-.it supports both physical and mental performance
-.it reduces dependence on unhealthy quick energy</p>
-
-
-
-
-</p>
-
-<p style="color:#2e7d32;font-weight:bold;">
-
-</p>
-
-<a href="shop.html">⬅ Back/a>
-
+    <!-- Ijtimoiy tarmoqlar -->
+    <div class="social-links">
+        <a href="https://t.me/Nightfallx_offical" target="_blank" class="social-btn tg">
+            <i class="fab fa-telegram"></i> Telegram
+        </a>
+        <a href="https://www.instagram.com/Nightfallx2.owner" target="_blank" class="social-btn insta">
+            <i class="fab fa-instagram"></i> Instagram
+        </a>
+        <a href="https://youtube.com/@Nightfallteam_owner" target="_blank" class="social-btn yt">
+            <i class="fab fa-youtube"></i> YouTube
+        </a>
+    </div>
 </div>
 
-</body>
-</html>
+<!-- FontAwesome (iconlar chiqishi uchun kerak) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<style>
+    .contact-section { text-align: center; padding: 30px; }
+    
+    .contact-main-btn {
+        display: inline-block;
+        padding: 12px 25px;
+        background-color: #8B0000;
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        transition: 0.3s;
+    }
+
+    .social-links { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
+
+    .social-btn {
+        padding: 10px 15px;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+        transition: 0.3s;
+    }
+
+    .tg { background-color: #0088cc; }
+    .insta { background-color: #E1306C; }
+    .yt { background-color: #FF0000; }
+
+    .social-btn:hover { transform: translateY(-3px); filter: brightness(1.2); }
+    .contact-main-btn:hover { background-color: #A50000; }
+</style>
