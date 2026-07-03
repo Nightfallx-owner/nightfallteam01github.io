@@ -2,83 +2,92 @@
 <html lang="uz">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nightfall Projects</title>
     <style>
-        :root { --dark-red: #8B0000; --deep-black: #050505; }
+        :root { --dark-red: #8B0000; --deep-black: #050505; --accent: #ff4d4d; }
         
         body { 
             background: var(--deep-black); color: white; 
-            font-family: 'Segoe UI', sans-serif; text-align: center; 
-            margin: 0; padding: 0; overflow-x: hidden;
+            font-family: 'Arial', sans-serif; text-align: center; 
+            margin: 0; padding: 20px; overflow-x: hidden;
         }
-
-        .container { padding: 50px 20px; }
 
         /* Qalqon (Shield) */
         .shield {
-            width: 140px; height: 160px;
+            width: 130px; height: 150px;
             background: var(--dark-red);
-            margin: 0 auto 30px;
+            margin: 30px auto;
             clip-path: polygon(50% 100%, 0 0, 100% 0, 100% 70%, 50% 100%);
-            display: flex; align-items: center; justify-content: center;
-            border: 3px solid #ff4d4d;
-            box-shadow: 0 0 30px rgba(139, 0, 0, 0.6);
+            border: 3px solid var(--accent);
+            box-shadow: 0 0 25px var(--dark-red);
             transition: 0.5s;
         }
+        .shield:hover { transform: scale(1.05); }
 
-        h1 { color: #ff4d4d; text-transform: uppercase; letter-spacing: 5px; }
+        h1 { color: var(--accent); text-transform: uppercase; letter-spacing: 3px; }
 
-        /* Asosiy tugma */
-        .main-btn {
-            display: inline-block; padding: 20px 50px;
-            background: var(--dark-red); color: white;
-            text-decoration: none; border-radius: 8px;
-            font-size: 1.2rem; font-weight: bold;
-            border: 2px solid #ff4d4d;
-            animation: glow 1.5s infinite alternate;
+        /* Tugmalar bloki */
+        .btn-container { display: flex; flex-direction: column; align-items: center; gap: 15px; margin-top: 20px; }
+
+        .btn {
+            width: 250px; padding: 15px;
+            background: #1a1a1a; color: white;
+            text-decoration: none; border: 1px solid var(--dark-red);
+            border-radius: 5px; font-weight: bold;
+            transition: 0.3s; cursor: pointer;
+        }
+        .btn:hover { background: var(--dark-red); transform: scale(1.05); }
+
+        .main-btn { background: var(--dark-red); animation: pulse 2s infinite; }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(139, 0, 0, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(139, 0, 0, 0); }
         }
 
-        @keyframes glow {
-            from { box-shadow: 0 0 5px #8B0000; }
-            to { box-shadow: 0 0 20px #ff4d4d; }
-        }
-
-        /* Aloqa bo'limi */
-        .social-links { margin-top: 40px; }
-        .social-btn {
-            display: inline-block; padding: 10px 20px;
-            margin: 5px; background: #1a1a1a; color: white;
-            text-decoration: none; border-radius: 5px;
-            border-bottom: 2px solid var(--dark-red);
-        }
+        .social-box { margin-top: 40px; border-top: 1px solid #333; padding-top: 20px; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="shield">EMBLEM</div>
-    <h1>NIGHTFALL PROJECTS</h1>
-    
-    <a href="https://nightfallx-owner.github.io/nightfallteam01github.io/shop.html" class="main-btn">FOOD MARKET</a>
-    
-    <div class="social-links">
-        <a href="https://t.me/Nightfallx_offical" class="social-btn">Telegram: @Nightfallx_offical</a>
-        <a href="https://youtube.com/@Nightfallteam_owner" class="social-btn">YouTube: Nightfallteam_owner</a>
-        <a href="https://ahmedoviskandar123-cpu.github.io/Site/" class="social-btn">Aloqa Uchun</a>
+    <div class="shield"></div>
+    <h1>NIGHTFALL TEAM</h1>
+
+    <div class="btn-container">
+        <!-- Asosiy Shop tugmasi -->
+        <a href="https://nightfallx-owner.github.io/nightfallteam01github.io/shop.html" class="btn main-btn">FOOD MARKET</a>
+        
+        <!-- Boshqa tugmalar -->
+        <button class="btn">Market</button>
+        <button class="btn">Kiyim do'kon</button>
+        <button class="btn">Xo'z mag</button>
     </div>
-</div>
 
-<!-- Musiqa qismi: URL ga Phonk musiqa qo'yildi -->
-<audio id="bg-music" loop>
-    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-</audio>
+    <div class="social-box">
+        <h3>Aloqa uchun</h3>
+        <div class="btn-container">
+            <a href="https://ahmedoviskandar123-cpu.github.io/Site/" class="btn">Rasmiy Sayt</a>
+            <a href="https://t.me/Nightfallx_offical" class="btn">Telegram: @Nightfallx_offical</a>
+            <a href="https://youtube.com/@Nightfallteam_owner" class="btn">YouTube: Nightfallteam_owner</a>
+        </div>
+    </div>
 
-<script>
-    // Musiqa foydalanuvchi saytga kirganda 1 marta bosilishi bilan ishga tushadi
-    window.addEventListener('click', () => {
-        document.getElementById('bg-music').play();
-    }, { once: true });
-</script>
+    <!-- Musiqa qismi -->
+    <audio id="bg-music" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        // Musiqani ishga tushirish funksiyasi
+        function playMusic() {
+            const audio = document.getElementById('bg-music');
+            audio.play();
+        }
+
+        // Sahifada istalgan joyni bosganda musiqa chaladi
+        document.body.addEventListener('click', playMusic, { once: true });
+    </script>
 
 </body>
 </html>
