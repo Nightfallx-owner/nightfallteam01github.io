@@ -2,80 +2,66 @@
 <html lang="uz">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nightfall Team | Official</title>
+    <title>Nightfall Team | Layout</title>
     <style>
-        /* Asosiy sozlamalar */
-        :root { --dark-red: #8B0000; --black: #0a0a0a; --white: #ffffff; }
-        body { background-color: var(--black); color: var(--white); font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+        body { background: #0a0a0a; color: white; font-family: sans-serif; margin: 0; padding: 20px; text-align: center; }
+        
+        .shield { width: 100px; height: 120px; background: #8B0000; clip-path: polygon(50% 100%, 0 0, 100% 0, 100% 70%, 50% 100%); margin: 20px auto; border: 2px solid #ff4d4d; }
 
-        /* Qalqon (Shield) */
-        .shield-box { margin-top: 40px; text-align: center; }
-        .shield {
-            width: 120px; height: 140px; background: var(--dark-red);
-            clip-path: polygon(50% 100%, 0 0, 100% 0, 100% 70%, 50% 100%);
-            margin: 0 auto 20px; border: 2px solid #ff4d4d;
-            box-shadow: 0 0 20px var(--dark-red); transition: 0.4s;
-        }
-        .shield:hover { transform: scale(1.1) rotate(5deg); }
-
-        /* Sarlavha */
-        h1 { margin: 0; font-size: 2rem; letter-spacing: 2px; text-transform: uppercase; color: var(--dark-red); text-shadow: 0 0 10px rgba(139,0,0,0.5); }
-
-        /* Tugmalar strukturasi */
-        .menu-section { width: 100%; max-width: 400px; padding: 20px; box-sizing: border-box; }
-        .btn {
-            display: block; width: 100%; padding: 15px; margin: 10px 0;
-            background: #151515; border: 1px solid var(--dark-red);
-            color: white; text-align: center; text-decoration: none;
-            border-radius: 8px; font-weight: bold; transition: 0.4s; cursor: pointer;
-        }
-        .btn:hover { background: var(--dark-red); color: white; transform: translateX(10px); }
-        .main-btn { background: var(--dark-red); animation: pulse 2s infinite; border: none; }
-
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(139, 0, 0, 0.7); }
-            70% { box-shadow: 0 0 0 15px rgba(139, 0, 0, 0); }
+        /* Grid tizimi: chap, orta, ong */
+        .grid-container { 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 15px; 
+            max-width: 800px; 
+            margin: 40px auto; 
         }
 
-        /* Aloqa bo'limi */
-        .contact-section { margin-top: 30px; border-top: 1px solid #333; padding-top: 20px; width: 100%; max-width: 400px; }
+        .btn { 
+            padding: 15px; background: #1a1a1a; border: 1px solid #8B0000; 
+            color: white; text-decoration: none; border-radius: 8px;
+            transition: 0.5s; cursor: pointer; display: block;
+        }
+
+        /* Animatsiyalar */
+        .btn:hover { background: #8B0000; transform: translateY(-10px) scale(1.05); box-shadow: 0 10px 20px #8B0000; }
+        
+        .main-btn { grid-column: span 3; background: #8B0000; font-weight: bold; animation: glow 2s infinite; }
+        
+        @keyframes glow { 0%, 100% { box-shadow: 0 0 10px #8B0000; } 50% { box-shadow: 0 0 30px #ff4d4d; } }
     </style>
 </head>
 <body>
 
-    <div class="shield-box">
-        <div class="shield"></div>
-        <h1>NIGHTFALL TEAM</h1>
-    </div>
+    <div class="shield"></div>
+    <h1>NIGHTFALL TEAM</h1>
 
-    <div class="menu-section">
+    <div class="grid-container">
+        <!-- Asosiy tugma tepada (butun qatorni egallaydi) -->
         <a href="https://nightfallx-owner.github.io/nightfallteam01github.io/shop.html" class="btn main-btn">FOOD MARKET</a>
+        
+        <!-- Chap, Orta, Ong -->
         <button class="btn">Market</button>
         <button class="btn">Kiyim do'kon</button>
         <button class="btn">Xo'z mag</button>
     </div>
 
-    <div class="contact-section">
-        <h3 style="text-align: center;">ALOQA UCHUN</h3>
-        <a href="https://ahmedoviskandar123-cpu.github.io/Site/" class="btn">Rasmiy Sayt</a>
-        <a href="https://t.me/Nightfallx_offical" class="btn">Telegram</a>
-        <a href="https://youtube.com/@Nightfallteam_owner" class="btn">YouTube</a>
+    <!-- Aloqa qismi -->
+    <div style="margin-top: 50px;">
+        <h3>ALOQA</h3>
+        <div class="grid-container" style="max-width: 600px;">
+            <a href="https://ahmedoviskandar123-cpu.github.io/Site/" class="btn">Sayt</a>
+            <a href="https://t.me/Nightfallx_offical" class="btn">Telegram</a>
+            <a href="https://youtube.com/@Nightfallteam_owner" class="btn">YouTube</a>
+        </div>
     </div>
 
-    <!-- Pianino musiqasi (Dark Piano) -->
-    <audio id="piano-music" loop>
+    <audio id="piano" loop>
         <source src="https://www.dl.dropboxusercontent.com/s/7i8t9j8k765/dark-piano.mp3" type="audio/mpeg">
     </audio>
 
     <script>
-        // Musiqa foydalanuvchi biror tugmani bosganida ishga tushadi
-        document.querySelectorAll('.btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const audio = document.getElementById('piano-music');
-                audio.play();
-            }, { once: true });
-        });
+        document.body.addEventListener('click', () => { document.getElementById('piano').play(); }, { once: true });
     </script>
 </body>
 </html>
