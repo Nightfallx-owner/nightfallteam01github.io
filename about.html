@@ -2,66 +2,83 @@
 <html lang="uz">
 <head>
     <meta charset="UTF-8">
-    <title>Nightfall Team | Layout</title>
+    <title>Nightfall Shop</title>
     <style>
-        body { background: #0a0a0a; color: white; font-family: sans-serif; margin: 0; padding: 20px; text-align: center; }
-        
-        .shield { width: 100px; height: 120px; background: #8B0000; clip-path: polygon(50% 100%, 0 0, 100% 0, 100% 70%, 50% 100%); margin: 20px auto; border: 2px solid #ff4d4d; }
-
-        /* Grid tizimi: chap, orta, ong */
-        .grid-container { 
-            display: grid; 
-            grid-template-columns: repeat(3, 1fr); 
-            gap: 15px; 
-            max-width: 800px; 
-            margin: 40px auto; 
+        body {
+            background-color: #0a0a0a;
+            color: #ffffff;
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
         }
-
-        .btn { 
-            padding: 15px; background: #1a1a1a; border: 1px solid #8B0000; 
-            color: white; text-decoration: none; border-radius: 8px;
-            transition: 0.5s; cursor: pointer; display: block;
+        .container {
+            width: 100%;
+            max-width: 400px;
         }
-
-        /* Animatsiyalar */
-        .btn:hover { background: #8B0000; transform: translateY(-10px) scale(1.05); box-shadow: 0 10px 20px #8B0000; }
-        
-        .main-btn { grid-column: span 3; background: #8B0000; font-weight: bold; animation: glow 2s infinite; }
-        
-        @keyframes glow { 0%, 100% { box-shadow: 0 0 10px #8B0000; } 50% { box-shadow: 0 0 30px #ff4d4d; } }
+        /* Chegirma va menyu tugmalari */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .menu-item {
+            background: #1a1a1a;
+            padding: 10px;
+            text-align: center;
+            border-radius: 12px;
+            font-size: 12px;
+        }
+        /* Animatsiyali tugma */
+        .cta-button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, #ff0000, #8b0000);
+            border: none;
+            color: white;
+            font-weight: bold;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            margin-top: 20px;
+        }
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
+        }
+        .promo-card {
+            background: #151515;
+            padding: 15px;
+            border-radius: 15px;
+            margin-top: 10px;
+            border-left: 4px solid red;
+        }
     </style>
 </head>
 <body>
 
-    <div class="shield"></div>
-    <h1>NIGHTFALL TEAM</h1>
-
-    <div class="grid-container">
-        <!-- Asosiy tugma tepada (butun qatorni egallaydi) -->
-        <a href="https://nightfallx-owner.github.io/nightfallteam01github.io/shop.html" class="btn main-btn">FOOD MARKET</a>
-        
-        <!-- Chap, Orta, Ong -->
-        <button class="btn">Market</button>
-        <button class="btn">Kiyim do'kon</button>
-        <button class="btn">Xo'z mag</button>
+<div class="container">
+    <h2>Nightfall Market</h2>
+    
+    <div class="menu-grid">
+        <div class="menu-item">%<br>Chegirma</div>
+        <div class="menu-item">♥<br>Saralangan</div>
+        <div class="menu-item">↻<br>Tarix</div>
+        <div class="menu-item">▣<br>QR</div>
     </div>
 
-    <!-- Aloqa qismi -->
-    <div style="margin-top: 50px;">
-        <h3>ALOQA</h3>
-        <div class="grid-container" style="max-width: 600px;">
-            <a href="https://ahmedoviskandar123-cpu.github.io/Site/" class="btn">Sayt</a>
-            <a href="https://t.me/Nightfallx_offical" class="btn">Telegram</a>
-            <a href="https://youtube.com/@Nightfallteam_owner" class="btn">YouTube</a>
-        </div>
+    <div class="promo-card">
+        <h3>Aksiya!</h3>
+        <p>Barcha mahsulotlarga 20% chegirma.</p>
     </div>
 
-    <audio id="piano" loop>
-        <source src="https://www.dl.dropboxusercontent.com/s/7i8t9j8k765/dark-piano.mp3" type="audio/mpeg">
-    </audio>
+    <!-- Yo'naltiruvchi tugma -->
+    <button class="cta-button" onclick="window.location.href='https://Nightfallx.site.je'">
+        DO'KONGA O'TISH
+    </button>
+</div>
 
-    <script>
-        document.body.addEventListener('click', () => { document.getElementById('piano').play(); }, { once: true });
-    </script>
 </body>
 </html>
