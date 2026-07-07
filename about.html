@@ -2,83 +2,126 @@
 <html lang="uz">
 <head>
     <meta charset="UTF-8">
-    <title>Nightfall Shop</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nightfall Redirect</title>
     <style>
-        body {
-            background-color: #0a0a0a;
-            color: #ffffff;
-            font-family: sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
-        }
-        .container {
+        body, html {
+            margin: 0;
+            padding: 0;
             width: 100%;
-            max-width: 400px;
+            height: 100%;
+            background: #050505;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            font-family: 'Segoe UI', sans-serif;
         }
-        /* Chegirma va menyu tugmalari */
-        .menu-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            margin: 20px 0;
+
+        #starfield {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
         }
-        .menu-item {
-            background: #1a1a1a;
-            padding: 10px;
+
+        .container {
+            position: relative;
+            z-index: 1;
             text-align: center;
-            border-radius: 12px;
-            font-size: 12px;
+            padding: 20px;
+            width: 90%;
+            max-width: 500px;
         }
-        /* Animatsiyali tugma */
+
+        .notice-box {
+            border: 2px solid #ff0000;
+            padding: 25px;
+            background: rgba(20, 0, 0, 0.8);
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+            backdrop-filter: blur(5px);
+        }
+
+        h1 { color: #ff3333; font-size: 24px; margin-bottom: 15px; text-transform: uppercase; }
+        p { color: #ccc; margin-bottom: 20px; }
+
         .cta-button {
             width: 100%;
-            padding: 15px;
-            background: linear-gradient(45deg, #ff0000, #8b0000);
-            border: none;
+            padding: 18px;
+            font-size: 18px;
+            background: linear-gradient(45deg, #cc0000, #ff4444);
             color: white;
-            font-weight: bold;
-            border-radius: 15px;
+            border: none;
+            border-radius: 12px;
             cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
-            margin-top: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 0, 0, 0.4);
+            font-weight: bold;
         }
+
         .cta-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(255, 0, 0, 0.6);
         }
-        .promo-card {
-            background: #151515;
-            padding: 15px;
-            border-radius: 15px;
-            margin-top: 10px;
-            border-left: 4px solid red;
+
+        /* Mobil qurilmalar uchun */
+        @media (max-width: 600px) {
+            h1 { font-size: 20px; }
+            .notice-box { padding: 15px; }
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h2>Nightfall Market</h2>
-    
-    <div class="menu-grid">
-        <div class="menu-item">%<br>Chegirma</div>
-        <div class="menu-item">♥<br>Saralangan</div>
-        <div class="menu-item">↻<br>Tarix</div>
-        <div class="menu-item">▣<br>QR</div>
+    <canvas id="starfield"></canvas>
+
+    <div class="container">
+        <div class="notice-box">
+            <h1>SAYT KO'CHIRILDI!</h1>
+            <p>To'liq ma'lumot olish uchun quyidagi tugmani bosing:</p>
+            <button class="cta-button" onclick="window.location.href='https://Nightfallx.site.je'">
+                O'TISH
+            </button>
+        </div>
     </div>
 
-    <div class="promo-card">
-        <h3>Aksiya!</h3>
-        <p>Barcha mahsulotlarga 20% chegirma.</p>
-    </div>
+    <script>
+        const canvas = document.getElementById('starfield');
+        const ctx = canvas.getContext('2d');
+        
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.onresize = resize;
+        resize();
 
-    <!-- Yo'naltiruvchi tugma -->
-    <button class="cta-button" onclick="window.location.href='https://Nightfallx.site.je'">
-        DO'KONGA O'TISH
-    </button>
-</div>
+        let stars = [];
+        for(let i=0; i<150; i++) {
+            stars.push({
+                x: Math.random()*canvas.width, 
+                y: Math.random()*canvas.height, 
+                size: Math.random()*1.5,
+                speed: Math.random()*0.5 + 0.2
+            });
+        }
 
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "white";
+            stars.forEach(s => {
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, s.size, 0, Math.PI*2);
+                ctx.fill();
+                s.x += s.speed; 
+                if(s.x > canvas.width) s.x = 0;
+            });
+            requestAnimationFrame(draw);
+        }
+        draw();
+    </script>
 </body>
 </html>
